@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/valuesHours"
+                    android:layout_gravity="center_horizontal|left"
+                    android:text="@string/Hours"
+                android:layout_below="@+id/textOverflow"
+                android:layout_toRightOf="@+id/textHours"
+                android:layout_toEndOf="@+id/textHours" />
+                <TextView
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Hours:"
+                    android:id="@+id/textHours"
+                    android:layout_gravity="left"
+
+                    android:layout_below="@+id/textOverflow"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Stun Damage"
+        android:id="@+id/textStunDamage"
+
+        android:paddingBottom="9dp"
+        android:layout_below="@+id/spinnerSprite"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Physical Damage"
+        android:id="@+id/textPhysicalDamage"
+
+        android:layout_gravity="start"
+        android:layout_below="@id/textStunDamage"
+        android:paddingBottom="9dp"
+        android:layout_marginTop="-10dp" />
+
+    <RatingBar
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/physicalTrack"
+        style="@style/damageRatingBar"
+        android:numStars="@integer/PhysicalTrack"
+        android:rating="0"
+        android:stepSize="1"
+        android:clickable="false"
+        android:layout_gravity="start"
+        android:layout_toRightOf="@id/textPhysicalDamage"
+        android:layout_alignBottom="@id/textPhysicalDamage"
+        android:layout_marginLeft="5dp"/>
+
+    <RatingBar
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/stunTrack"
+        style="@style/damageRatingBar"
+        android:numStars="@integer/StunTrack"
+        android:rating="0"
+        android:stepSize="1"
+        android:clickable="false"
+        android:layout_gravity="start"
+        android:layout_alignLeft="@+id/physicalTrack"
+        android:layout_alignBottom="@+id/textStunDamage"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignWithParentIfMissing="false"
+        android:longClickable="false"
+        android:mirrorForRtl="false"
+        android:nestedScrollingEnabled="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Overflow Damage"
+        android:id="@+id/textOverflow"
+
+        android:layout_gravity="start"
+        android:layout_below="@id/textPhysicalDamage"
+        android:paddingBottom="9dp"
+        android:layout_marginTop="-10dp" />
+
+    <RatingBar
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/overflowTrack"
+        android:numStars="@integer/OverflowTrack"
+        android:rating="0"
+        android:stepSize="1"
+        android:clickable="false"
+        android:layout_gravity="start"
+        android:layout_toRightOf="@id/textPhysicalDamage"
+        android:layout_alignBottom="@id/textOverflow"
+        android:layout_marginLeft="5dp"
+        style="@style/damageRatingBar"
+        android:layout_alignParentBottom="false" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Karma for Skill"
+        android:id="@+id/SkillKarma"
+
+        android:checked="false"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/valuesHours"
+
+         />
+
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Karma for Drain"
+        android:id="@+id/DrainKarma"
+
+        android:checked="false"
+        android:layout_below="@+id/valuesHours"
+        android:layout_toRightOf="@+id/SkillKarma"
+        android:layout_toEndOf="@+id/SkillKarma" />
+
+                <Button
+                    android:id="@+id/Compile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Compile"
+                    android:layout_gravity="start"
+                    android:layout_below="@+id/SkillKarma" />
+
+                <Button
+                    android:id="@+id/Rest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Rest"
+                    android:layout_gravity="left"
+
+                    android:layout_alignBottom="@+id/Compile"
+                    android:layout_toRightOf="@+id/Compile"/>
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Configure"
+                    android:id="@+id/ButtonConfig"
+                    android:layout_gravity="right"
+
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Service"
+        android:id="@+id/buttonUseService"
+        android:layout_alignTop="@+id/Rest"
+        android:layout_toRightOf="@+id/Rest"
+        android:layout_toEndOf="@+id/Rest" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerSprite"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        style="@style/Base.TextAppearance.AppCompat.Small" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerSpriteType"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/npSpriteRating"/>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/npSpriteRating"
+        android:layout_below="@+id/Compile"
+        android:layout_gravity="start" />
+
+
+</RelativeLayout>

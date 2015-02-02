@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="StunTrack">8</integer>
+    <integer name="PhysicalTrack">8</integer>
+    <integer name="OverflowTrack">1</integer>
+</resources>
