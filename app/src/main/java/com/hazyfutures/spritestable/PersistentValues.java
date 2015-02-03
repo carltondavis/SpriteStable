@@ -52,7 +52,6 @@ public class PersistentValues {
         datasource.updateStat("Registering", pvRegistering);
         datasource.updateStat("Hours", pvHours);
         datasource.updateStat("ActiveSpriteId", pvActiveSpriteId);
-        //TODO Update all sprites
         datasource.updateSprite(pvSprites.get(pvActiveSpriteId));
     }
 

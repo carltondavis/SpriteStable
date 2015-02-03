@@ -23,7 +23,6 @@ public class MainActivity extends Activity {
         // Get the view from viewpager_main.xml
         setContentView(R.layout.viewpager_main);
 
-        //TODO Load info from database, creating persistant data object
 
         data.RestoreFromDB(this);
 

@@ -1,14 +1,23 @@
 package com.hazyfutures.spritestable;
-//TODO: Make SpriteList update happen when compile/rest/use service, etc.
-//Todo: Make sure compile button is pointed at selected sprite
-//TODO CHECK FOR BUGS EVERYWHERE
-//TODO: Add Sprite editor page
-//TODO: Add Qualities Page
-//TODO: Add Matrix page
-
+//TODO Something multiplying sprites in list
+//TODO Compile not shifting to Register when spirit used up and automatically switches to a registered spirit
+//TODO Sprite Force not reflecting changed sprite in list when changing fragments
+//TODO Sprite Force not changing when spinner changes.
+//TODO Make sure sprite list is updated correctly after change force
+//TODO Make sure sprite list is updated correctly after change type
+//TODO Move Sprite list to Sprite fragment
+//TODO Test update for each attribute
+//Todo Add display of sprite stats + abilities for specific sprite listed
 //ToDo Add Karma Usage Used Karma added to Stats
+
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 //ToDo Add Karma regenerating, Track resting, 8 hours in a row regens karma
+//ToDo Add list of important qualities
+//Todo Update Database to handle qualities
+//Todo Update Compile/Register/Rest to account for qualities
+
+
+//Todo: Make sure compile button is pointed at selected sprite
 //Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
 //Todo add Insomnia A/B Checkbox to turn it on, radiobutton to pick which type, add code to check when regen karma, adds counter for failed rolls to keep karma refresh button disabled, add code to muck with healing
 //ToDo Add Sleep button  Sleep button under Rest, adds 8 hours, resets fatigue, regen karma
@@ -52,9 +61,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ViewPagerAdapter extends PagerAdapter {
     // Declare Variables
@@ -250,6 +256,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         UpdateTypePicker(data.getCurrentSprite().getServicesOwed()==0, vg);
         UseService.setClickable(enabled);
         UseService.setEnabled(enabled);
+        UpdateSpriteList(vg);
     }
     //Update ForcePicker Enabled
     private void UpdateForcePicker(ViewGroup vg){
@@ -275,61 +282,20 @@ public class ViewPagerAdapter extends PagerAdapter {
         tp.setSelection(data.getCurrentSprite().getSpriteType()-1);
     }
     private void UpdateSpriteList(ViewGroup vg){
-        boolean unregisteredExists=false;
-        data.pvSpriteList.clear();
-        List<Sprite> Unnecessary = new ArrayList<>();
-        for(Sprite sprite : data.pvSprites){
-
-            //Keep the first unregistered sprite
-            //Delete any other unregistered sprites
-            //If no unregistered sprites found, create a NEW SPRITE
-            //If sprite is Registered and Services==0 delete it
-            //Add it to the list if it's registered and services>0 or if it's the first unregistered services>0
-
-            if((sprite.getRegistered()==0&&unregisteredExists)||(sprite.getRegistered()==1&&sprite.getServicesOwed()==0)){ //Second or later unregistered item, or all services used
-                Unnecessary.add(sprite);        //Set up to remove it from the list
-                if(data.pvSprites.get(data.pvActiveSpriteId)==sprite){      //If we're deleting the active sprite then aim the sprite pointer at an existing sprite.
-                    if(data.pvActiveSpriteId>0){data.pvActiveSpriteId--;}
-                }
-            }else{
-                String title = String.valueOf("Force " + sprite.getRating() + " " + sprite.getType()) + " with " + sprite.getServicesOwed() + " services";
-
-                if(sprite.getRegistered()==1){
-                    title=title + " Registered";
-                }else{
-                    unregisteredExists=true;
-                }
-                data.pvSpriteList.add(title);
-            }
-        }
-        for(Sprite deleteSprite : Unnecessary){
-            data.DeleteSprite(deleteSprite);
-        }
-        data.pvSprites.removeAll(Unnecessary);
-
-        if(!unregisteredExists){//Creating a new Sprite is an option
-            Sprite newSprite= new Sprite();
-            newSprite.setRating(data.getCurrentSprite().getRating());
-            newSprite.setSpriteType(data.getCurrentSprite().getType());
-            data.pvSprites.add(newSprite);
-            //Populate Sprite List with NEW option
-            String title = "NEW SPRITE";
-            data.pvSpriteList.add(title);
-
-            data.UpdateSprite(data.pvSprites.get(data.pvSpriteList.size()-1));  //Save the new sprite to the DB
-        }
+        data.UpdateSpriteList();
         Spinner spriteSpinner = (Spinner) vg.findViewById(R.id.spinnerSprite);                                             //Update the dropdown
         ArrayAdapter<String> adp1=new ArrayAdapter<String>(vg.getContext(), android.R.layout.simple_list_item_1, data.pvSpriteList);
         adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spriteSpinner.setAdapter(adp1);
-        spriteSpinner.setSelection(data.pvActiveSpriteId);
-        data.SaveAllToDB();
+        if(spriteSpinner.getSelectedItemPosition()!=data.pvActiveSpriteId) {
+            spriteSpinner.setSelection(data.pvActiveSpriteId);
+       }
+        //data.SaveAllToDB();Infinite loop
 
     }
 
     private void UpdateDisplay(ViewGroup vg){
         UpdateDamage(vg);
-        UpdateServices(vg);
         UpdateUseService(vg);
         UpdateRest(vg);
         UpdateRating(vg);
@@ -337,12 +303,6 @@ public class ViewPagerAdapter extends PagerAdapter {
         UpdateHours(vg);
         UpdateTypePicker(vg);
         UpdateSpriteList(vg);
-
-
-
-
-
-
 
     }
 
@@ -378,27 +338,9 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
    public void PrepareCompileFragment(final ViewGroup container){
-        Button restButton = (Button) container.findViewById(R.id.Rest);
-        restButton.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-
-                //Healing Roll
-                data.pvStun -= Dice.rollDice(data.pvBody + data.pvWillpower, false);
-                if (data.pvStun < 0) {
-                    data.pvStun = 0;
-                }
-                //UpdateDamage();
-
-                //Add hours
-                data.pvHours += 1;
-                TextView valueHours = (TextView) container.findViewById(R.id.valuesHours);
-                valueHours.setText(String.valueOf(data.pvHours));
-            }
-        });
         data.RestoreFromDB(container.getContext());
-        data.UpdateSpriteList();
+
 
         Button compileButton = (Button) container.findViewById(R.id.Compile);
         final CheckBox checkDrainKarma = (CheckBox) container.findViewById(R.id.DrainKarma);
@@ -424,12 +366,77 @@ public class ViewPagerAdapter extends PagerAdapter {
         npSpriteRating.setMaxValue(data.pvResonance*2);
         npSpriteRating.setValue(data.getCurrentSprite().getRating());
 
+
+       //Sprite List
+       spriteSpinner.setOnItemSelectedListener(
+               new AdapterView.OnItemSelectedListener() {
+                   public void onItemSelected(
+                           AdapterView<?> parent, View view, int position, long id) {
+                       if(position!=data.pvActiveSpriteId) {
+                            data.pvActiveSpriteId= position;
+                       //UpdateSprite();
+                           UpdateDisplay(container);
+                       }else{
+                          // UpdateUseService(container);
+                          // UpdateCompile(container);
+
+                       }
+                   }
+
+                   public void onNothingSelected(AdapterView<?> parent) {
+                   }
+               });
+
+//Sprite Type Picker
+       typeSpinner.setOnItemSelectedListener(
+               new AdapterView.OnItemSelectedListener() {
+                   public void onItemSelected(
+                           AdapterView<?> parent, View view, int position, long id) {
+
+                       UpdateSpriteType(position + 1, container);
+                       UpdateSpriteList(container);
+                       data.SaveSpriteToDB();
+
+                   }
+
+                   public void onNothingSelected(AdapterView<?> parent) {
+                   }
+               });
+
+       Button restButton = (Button) container.findViewById(R.id.Rest);
+       restButton.setOnClickListener(new View.OnClickListener() {
+
+           @Override
+           public void onClick(View v) {
+
+               //Healing Roll
+               data.pvStun -= Dice.rollDice(data.pvBody + data.pvWillpower, false);
+               if (data.pvStun < 0) {
+                   data.pvStun = 0;
+               }
+               UpdateDamage(container);
+
+               //Add hours
+               data.pvHours += 1;
+               TextView valueHours = (TextView) container.findViewById(R.id.valuesHours);
+               valueHours.setText(String.valueOf(data.pvHours));
+           }
+       });
+
+       useService.setOnClickListener(new View.OnClickListener() {
+
+           @Override
+           public void onClick(View v) {
+            UpdateServices((data.getCurrentSprite().getServicesOwed()-1), container);
+           }
+       });
+
         //Create Listeners
         npSpriteRating.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
 
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                data.UpdateSpriteList();
+                UpdateSpriteList(container);
                 Spinner sSpinner = (Spinner) container.findViewById(R.id.spinnerSprite);                                             //Update the dropdown
                 ArrayAdapter<String> adp1=new ArrayAdapter<>(container.getContext(), android.R.layout.simple_list_item_1, data.pvSpriteList);
                 adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -491,22 +498,24 @@ public class ViewPagerAdapter extends PagerAdapter {
                     data.pvStun += SpriteRoll;
 
                 }
-                        /*UpdateDamage();
-                        UpdateServices();
-                        UpdateUseService();
-                        UpdateRest();
-                        UpdateRating();
-                        UpdateCompile();
-                        UpdateHours();
-                        UpdateTypePicker();
-                        UpdateSpriteList();*/
+                        UpdateDamage(container);
+                        UpdateServices(container);
+                        UpdateUseService(container);
+                        UpdateRest(container);
+                        UpdateRating(container);
+                        UpdateCompile(container);
+                        UpdateHours(container);
+                        UpdateTypePicker(container);
+                        UpdateSpriteList(container);
 
             }
         });
     }
-    public void PrepareStatsFragment(ViewGroup vg){
+    public void PrepareStatsFragment(final ViewGroup vg){
+
         data.RestoreFromDB(vg.getContext());
-        data.UpdateSpriteList();
+        UpdateSpriteList(vg);
+        UpdateDisplay(vg);
 
         Spinner spinnerSprites = (Spinner) vg.findViewById(R.id.spinnerSprites);
         ArrayAdapter<String> adp1=new ArrayAdapter<String>(vg.getContext(), android.R.layout.simple_list_item_1, data.pvSpriteList);
@@ -547,7 +556,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                 }else{
                     data.getCurrentSprite().setRegistered(0);
                 }
-                data.UpdateSpriteList();
+                UpdateSpriteList(vg);
             }
         });
 
@@ -577,7 +586,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                             AdapterView<?> parent, View view, int position, long id) {
                         if((position+1)!=data.getCurrentSprite().getSpriteType()) {
                             data.getCurrentSprite().setSpriteType(position + 1);
-                            data.UpdateSpriteList();
+                            UpdateSpriteList(vg);
                         }
                         //UpdateSpriteList(); Causing infinite loop
                     }
@@ -597,7 +606,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
                         data.getCurrentSprite().setCondition(newValue);
                         data.UpdateSprite(data.getCurrentSprite());
-                        data.UpdateSpriteList();
+                        UpdateSpriteList(vg);
 
                     }
                 }
@@ -620,7 +629,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
                         data.getCurrentSprite().setRating(newValue);
                         data.UpdateSprite(data.getCurrentSprite()); //Save the sprite to the DB
-                        data.UpdateSpriteList();
+                        UpdateSpriteList(vg);
 
                     }
                 }
@@ -669,7 +678,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
                         data.getCurrentSprite().setServicesOwed(newValue);
                         data.UpdateSprite(data.getCurrentSprite()); //Save the sprite to the DB
-                        data.UpdateSpriteList();
+                        UpdateSpriteList(vg);
 
                     }
                 }}
@@ -688,12 +697,11 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     private void CreateListener(Integer etId, Integer value, ViewGroup vg) {
         final EditText et = (EditText) vg.findViewById(etId);
-        et.setText(String.valueOf(value));
+        //et.setText(String.valueOf(value));
         et.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (!et.getText().toString().isEmpty()) {
                     Integer value = Integer.valueOf(et.getText().toString());
-
                     switch (et.getId()) {
                         case R.id.editBody:
                             data.pvBody=value;
@@ -729,6 +737,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                             data.pvKarma=value;
                             break;
                     }
+                    data.SaveAllToDB();
                 }
             }
 
