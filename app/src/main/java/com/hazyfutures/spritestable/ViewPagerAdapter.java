@@ -1,5 +1,5 @@
 package com.hazyfutures.spritestable;
-//TODO Something multiplying sprites in list
+
 //TODO Compile not shifting to Register when spirit used up and automatically switches to a registered spirit
 //TODO Sprite Force not reflecting changed sprite in list when changing fragments
 //TODO Sprite Force not changing when spinner changes.
@@ -376,10 +376,6 @@ public class ViewPagerAdapter extends PagerAdapter {
                             data.pvActiveSpriteId= position;
                        //UpdateSprite();
                            UpdateDisplay(container);
-                       }else{
-                          // UpdateUseService(container);
-                          // UpdateCompile(container);
-
                        }
                    }
 
@@ -436,12 +432,14 @@ public class ViewPagerAdapter extends PagerAdapter {
 
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                data.getCurrentSprite().setRating(newVal);
                 UpdateSpriteList(container);
                 Spinner sSpinner = (Spinner) container.findViewById(R.id.spinnerSprite);                                             //Update the dropdown
                 ArrayAdapter<String> adp1=new ArrayAdapter<>(container.getContext(), android.R.layout.simple_list_item_1, data.pvSpriteList);
                 adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                 sSpinner.setAdapter(adp1);
                 sSpinner.setSelection(data.pvActiveSpriteId);
+                UpdateSpriteList(container);
                 //data.SaveAllToDB();
             }
         });
