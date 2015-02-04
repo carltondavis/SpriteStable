@@ -1,11 +1,7 @@
 package com.hazyfutures.spritestable;
-//TODO Something multiplying sprites in list
-//TODO Compile not shifting to Register when spirit used up and automatically switches to a registered spirit
-//TODO Sprite Force not reflecting changed sprite in list when changing fragments
-//TODO Sprite Force not changing when spinner changes.
-//TODO Make sure sprite list is updated correctly after change force
-//TODO Make sure sprite list is updated correctly after change type
+//TODO Something multiplying sprites in list?
 //TODO Move Sprite list to Sprite fragment
+//TODO Updates not populating when fragment loads
 //TODO Test update for each attribute
 //Todo Add display of sprite stats + abilities for specific sprite listed
 //ToDo Add Karma Usage Used Karma added to Stats
@@ -17,7 +13,6 @@ package com.hazyfutures.spritestable;
 //Todo Update Compile/Register/Rest to account for qualities
 
 
-//Todo: Make sure compile button is pointed at selected sprite
 //Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
 //Todo add Insomnia A/B Checkbox to turn it on, radiobutton to pick which type, add code to check when regen karma, adds counter for failed rolls to keep karma refresh button disabled, add code to muck with healing
 //ToDo Add Sleep button  Sleep button under Rest, adds 8 hours, resets fatigue, regen karma
@@ -173,7 +168,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
     private void UpdateServices(int services, ViewGroup vg){
         data.getCurrentSprite().setServicesOwed(services);
-        data.getCurrentSprite().setServicesOwed(services);
+        UpdateSpriteList(vg);
         UpdateCompile(vg);
         UpdateUseService(vg);
 
@@ -254,6 +249,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         Button UseService = (Button) vg.findViewById(R.id.buttonUseService);
         UpdateForcePicker(data.getCurrentSprite().getServicesOwed()==0, vg);
         UpdateTypePicker(data.getCurrentSprite().getServicesOwed()==0, vg);
+        UpdateCompile(data.getCurrentSprite().getServicesOwed()==0, IsConscious(), vg);
         UseService.setClickable(enabled);
         UseService.setEnabled(enabled);
         UpdateSpriteList(vg);
@@ -268,7 +264,6 @@ public class ViewPagerAdapter extends PagerAdapter {
         np.setClickable(enabled);
         np.setValue(data.getCurrentSprite().getRating());
         np.setMaxValue(data.pvResonance * 2);
-        np.setValue(data.getCurrentSprite().getRating());
     }
 
     //Update TypePicker Enabled
@@ -436,13 +431,14 @@ public class ViewPagerAdapter extends PagerAdapter {
 
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                data.getCurrentSprite().setRating(newVal);
                 UpdateSpriteList(container);
-                Spinner sSpinner = (Spinner) container.findViewById(R.id.spinnerSprite);                                             //Update the dropdown
+                /*Spinner sSpinner = (Spinner) container.findViewById(R.id.spinnerSprite);                                             //Update the dropdown
                 ArrayAdapter<String> adp1=new ArrayAdapter<>(container.getContext(), android.R.layout.simple_list_item_1, data.pvSpriteList);
                 adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                 sSpinner.setAdapter(adp1);
-                sSpinner.setSelection(data.pvActiveSpriteId);
-                //data.SaveAllToDB();
+                sSpinner.setSelection(data.pvActiveSpriteId);*/
+                data.SaveSpriteToDB();
             }
         });
 
@@ -500,13 +496,13 @@ public class ViewPagerAdapter extends PagerAdapter {
                 }
                         UpdateDamage(container);
                         UpdateServices(container);
-                        UpdateUseService(container);
+                        //UpdateUseService(container); Handled in UpdateServices
                         UpdateRest(container);
                         UpdateRating(container);
-                        UpdateCompile(container);
+                        //UpdateCompile(container); Handled in UpdateServices
                         UpdateHours(container);
                         UpdateTypePicker(container);
-                        UpdateSpriteList(container);
+                        // UpdateSpriteList(container); Handled in UpdateServices
 
             }
         });
