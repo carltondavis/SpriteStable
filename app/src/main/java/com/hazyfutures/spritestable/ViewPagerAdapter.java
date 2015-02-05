@@ -2,7 +2,10 @@ package com.hazyfutures.spritestable;
 //TODO COMPILE FRAGMENT:
 //TODO Something multiplying sprites in list?  Haven't seen recently
 //TODO Test update for each attribute
-//ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
+
+//ToDo Add warnings about fatigue/damage  Change Hours to Total Hours.
+//TODO  add toast for taking fatigue damage
+//ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
 
 //TODO SPRITE FRAGMENT:
 //Todo Add display of sprite stats + abilities for specific sprite listed
@@ -13,25 +16,24 @@ package com.hazyfutures.spritestable;
 
 //TODO QUALITIES FRAGMENT:
 //Todo add Insomnia A/B Checkbox to turn it on, radiobutton to pick which type, add code to check when regen karma, adds counter for failed rolls to keep karma refresh button disabled, add code to muck with healing
-//ToDo Add Fatigue Rules after 24 hours take 1S, then again every 3 hours, +1 each time resist with Body+Willpower
-//ToDo Add warnings about fatigue/damage  Change Hours to Total Hours.
-//TODO  add toast for taking fatigue damage
-//ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
 //ToDo Add possible Overflow/Death warnings If compiling/registering something, calculate if worst case stun/physical could max out stun or physical chart.  Warn of possibility.
-//Todo Someday Add statistics for rolls to include actual percentage chance of something happening to warnings
-//Todo add Toast for disabled buttons explaining why they're disabled
-//TODO settings page: dice rolls display, Fatigue rules, fatigue warnings, Penalty popup warning, possible death warning
-//TODO TabHost for system?
-//Todo: Add access to persisted data on Config page side
-//ToDo: Only load from DB when persisted data doesn't exist.
-//Todo: Change DB writing to happen on pause/close.  Load from DB on resume
 //ToDo Add automated registering system: Set the amount of time to use, and it runs
-//Todo: Add page for Playing
+
+//Todo: MATRIX FRAGMENT
 //Todo: Add Playing hacking buttons
 //Todo: Add Playing List of sprites and Sprite assistance/assist sprite radio buttons
+
+//Fancy UI:
+//ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
+//Todo add Toast for disabled buttons explaining why they're disabled
+//Todo Someday Add statistics for rolls to include actual percentage chance of something happening to warnings
+//TODO settings page: dice rolls display, Fatigue rules, fatigue warnings, Penalty popup warning, possible death warning
+//ToDo: Only load from DB when persisted data doesn't exist.
+//Todo: Change DB writing to happen on pause/close.  Load from DB on resume
 //Todo add multiple character option
 //Todo add a Spirit/Mage handler option
 //Todo: Add Playing Spells buttons
+
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -670,13 +672,33 @@ public class ViewPagerAdapter extends PagerAdapter {
                     NetHits = Dice.rollDice((data.pvResonance + data.pvCompiling - DamagePenalties), checkSkillKarma.isChecked());
                     SpriteRoll = Dice.rollDice(data.getCurrentSprite().getRating(), false);
                 } else {//Already has services, so Register
-                    NetHits = Dice.rollDice((data.pvResonance + data.pvRegistering - DamagePenalties), checkSkillKarma.isChecked());
-                    SpriteRoll = Dice.rollDice(data.getCurrentSprite().getRating() * 2, false);
                     data.pvHoursThisSession += data.getCurrentSprite().getRating();  //Registering takes hours
                     data.pvHoursSinceKarmaRefresh+=data.getCurrentSprite().getRating();
+                    //TODO Check that this is actually working correctly
+                    //Check for fatigue before making the roll, no fair registering your sprite before you pass out from sleep exhaustion.
+                    if(data.pvSleeplessHours+data.getCurrentSprite().getRating()>=24){//If you've been awake 24 hours you start taking stun.  24, 27, 30, etc hours
+                        int sleepydamage=1;
+                        int sleepyresist=0;
+                        for(int sleepycounter=data.pvSleeplessHours;sleepycounter<=data.pvSleeplessHours+data.getCurrentSprite().getRating();sleepycounter++){
+                            if((sleepycounter-24)/3==Math.round((sleepycounter-24)/3)){
+                                sleepydamage=Math.round((sleepycounter-24)/3)+1;
+                                sleepyresist=Dice.rollDice(data.pvBody+data.pvWillpower, false);
+                                if(sleepydamage>sleepyresist){
+                                    data.pvStun+=(sleepydamage-sleepyresist);
+                                    UpdateDamage(container);
+                                    DamagePenalties = (int) (Math.floor(data.pvStun / 3) + Math.floor(data.pvPhysical / 3));
+                                }
+                            }
+                        }
+                    }
                     data.pvSleeplessHours+=data.getCurrentSprite().getRating();
-                }
 
+                        NetHits = Dice.rollDice((data.pvResonance + data.pvRegistering - DamagePenalties), checkSkillKarma.isChecked());
+                        SpriteRoll = Dice.rollDice(data.getCurrentSprite().getRating() * 2, false);
+
+                }
+            if(data.pvStun>(8+Math.floor(data.pvWillpower/2))) {//Maybe they passed out from sleep deprivation before they could finish.  Nothing happens if they did.
+                //TODO Add a toast here to alert the user that they fell asleep.
                 //Add net successes
                 NetHits -= SpriteRoll;
                 if (NetHits <= 0) {
@@ -720,6 +742,8 @@ public class ViewPagerAdapter extends PagerAdapter {
                         // UpdateSpriteList(container); Handled in UpdateServices
 
             }
+            }
+
         });
         if(checkDrainKarma.isChecked()){
             data.pvKarmaUsed++;
