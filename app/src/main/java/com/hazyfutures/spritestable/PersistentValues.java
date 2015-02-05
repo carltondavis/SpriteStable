@@ -24,7 +24,10 @@ public class PersistentValues {
     public int pvResonance = 0;
     public int pvCompiling = 0;
     public int pvRegistering = 0;
-    public int pvHours = 0;
+    public int pvHoursThisSession = 0;
+    public int pvSleeplessHours = 0;
+    public int pvConsecutiveRest = 0;
+
     public int pvActiveSpriteId = 0;
     public List<String> pvSpriteList = new ArrayList<String>();
     List<Sprite> pvSprites = new ArrayList<>();
@@ -52,7 +55,9 @@ public class PersistentValues {
         datasource.updateStat("Resonance", pvResonance);
         datasource.updateStat("Compiling", pvCompiling);
         datasource.updateStat("Registering", pvRegistering);
-        datasource.updateStat("Hours", pvHours);
+        datasource.updateStat("Hours", pvHoursThisSession);
+        datasource.updateStat("Hours", pvSleeplessHours);
+        datasource.updateStat("Hours", pvConsecutiveRest);
         datasource.updateStat("ActiveSpriteId", pvActiveSpriteId);
         datasource.updateSprite(pvSprites.get(pvActiveSpriteId));
     }
@@ -106,6 +111,15 @@ public class PersistentValues {
                     break;
                 case "KarmaUsed":
                     pvKarmaUsed = value;
+                    break;
+                case "HoursThisSession":
+                    pvHoursThisSession = value;
+                    break;
+                case "SleeplessHours":
+                    pvSleeplessHours= value;
+                    break;
+                case "ConsecutiveRest":
+                    pvConsecutiveRest= value;
                     break;
             }
 

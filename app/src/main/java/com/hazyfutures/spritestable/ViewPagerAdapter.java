@@ -1,23 +1,29 @@
 package com.hazyfutures.spritestable;
+//TODO COMPILE FRAGMENT:
 //TODO Something multiplying sprites in list?  Haven't seen recently
-//TODO Add Hours without Sleep counter,
 //TODO Test update for each attribute
-//ToDO add Consecutive Rest hour tracking
-//TODO Add sleepless hours tracking (rest button, sleep button, heal button
-//Todo add Karma used tracking
-//Todo Disable Karma checkboxes when out of karma
-//ToDo Add Karma regenerating, Track resting, 8 hours in a row regens karma
-//ToDo Add Sleep button  Sleep button under Rest, adds 8 hours, resets fatigue, regen karma
-//Todo Add Healing day available if no stun damage, makes physical damage healing test, adds 24 hours
+//Todo add HoursSinceKarmaRefresh counter
+//Todo Add sleep button (Adds 8 hours, heal stun, regen karma, reset consecutive hours without sleep
+//Todo Add heal button Available if no stun.  Adds 24 hours, heals physical, regen karma, reset consecutive hours without sleep)
+//ToDo increment HoursSinceKarmaRefresh on register, sleep, rest, heal
+//ToDO add Consecutive Rest hour tracking (rest button, sleep button, heal button, compile/register)
+//ToDo reset consecutive Rest whenever it hits 8 hours
+//TODO Add sleepless hours tracking (Register Button, sleep button)
+//Todo add Karma used tracking (Compile/Register) (Consecutive rest reset)
+//ToDo Increment Karma usage tracker when compile/register with checkboxes
+//Todo Disable Karma checkboxes when out of karma or when 1 shy and one checked
+//ToDo Decrement karmaUsed when Consecutive rest resets, reset hoursSInceKArmaRefresh at same time
 
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 
+//TODO SPRITE FRAGMENT:
 //Todo Add display of sprite stats + abilities for specific sprite listed
 //ToDo Add list of important qualities
 //Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
 //Todo Update Database to handle qualities
 //Todo Update Compile/Register/Rest to account for qualities
 
+//TODO QUALITIES FRAGMENT:
 //Todo add Insomnia A/B Checkbox to turn it on, radiobutton to pick which type, add code to check when regen karma, adds counter for failed rolls to keep karma refresh button disabled, add code to muck with healing
 //ToDo Add Fatigue Rules after 24 hours take 1S, then again every 3 hours, +1 each time resist with Body+Willpower
 //ToDo Add warnings about fatigue/damage  Change Hours to Total Hours.
@@ -162,7 +168,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             case 2: //Qualities
                 inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemView = inflater.inflate(R.layout.activity_main, container,
+                itemView = inflater.inflate(R.layout.fragment_qualities, container,
                         false);
 
                 ((ViewPager) container).addView(itemView);
@@ -171,7 +177,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             case 3: //Sprite
                 inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemView = inflater.inflate(R.layout.activity_main, container,
+                itemView = inflater.inflate(R.layout.fragment_sprite, container,
                         false);
 
                 ((ViewPager) container).addView(itemView);
@@ -180,7 +186,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             case 4: //Matrix
                 inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                itemView = inflater.inflate(R.layout.activity_main, container,
+                itemView = inflater.inflate(R.layout.fragment_matrix, container,
                         false);
 
                 ((ViewPager) container).addView(itemView);
@@ -239,13 +245,13 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     //UpdateHours
     private void UpdateHours(ViewGroup vg){
-        UpdateHours(data.pvHours, vg);
+        UpdateHours(data.pvHoursThisSession, vg);
     }
 
     private void UpdateHours(int hours, ViewGroup vg){
         final TextView ValueHours = (TextView) vg.findViewById(R.id.valuesHours);
         ValueHours.setText(String.valueOf(hours));
-        data.pvHours=hours;
+        data.pvHoursThisSession =hours;
     }
 
     //UpdateDamage             Compile Button, Rest, Use Service
@@ -468,9 +474,9 @@ public class ViewPagerAdapter extends PagerAdapter {
                UpdateDamage(container);
 
                //Add hours
-               data.pvHours += 1;
+               data.pvHoursThisSession += 1;
                TextView valueHours = (TextView) container.findViewById(R.id.valuesHours);
-               valueHours.setText(String.valueOf(data.pvHours));
+               valueHours.setText(String.valueOf(data.pvHoursThisSession));
            }
        });
 
@@ -515,7 +521,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                 } else {//Already has services, so Register
                     NetHits = Dice.rollDice((data.pvResonance + data.pvRegistering - DamagePenalties), checkSkillKarma.isChecked());
                     SpriteRoll = Dice.rollDice(data.getCurrentSprite().getRating() * 2, false);
-                    data.pvHours += data.getCurrentSprite().getRating();  //Registering takes hours
+                    data.pvHoursThisSession += data.getCurrentSprite().getRating();  //Registering takes hours
                 }
 
                 //Add net successes

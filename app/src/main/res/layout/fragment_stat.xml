@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-    tools:context="com.hazyfutures.spritestable.StatFragment">
+    tools:context="com.hazyfutures.spritestable.StatFragment"
+    >
 
     <EditText
             android:layout_width="40dp"
@@ -16,19 +17,18 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
             android:width="100dp"
             android:id="@+id/editWillpower"
-            android:layout_below="@+id/editBody"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/editBody" />
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/editLogic"
+            android:layout_alignStart="@+id/editLogic" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:width="100dp"
@@ -36,25 +36,21 @@
             android:id="@+id/editIntuition"
             android:layout_below="@+id/editWillpower"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textView2"
-            android:layout_toStartOf="@+id/textView2" />
+            android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:width="100dp"
             android:inputType="number"
             android:ems="10"
             android:id="@+id/editLogic"
-            android:layout_below="@+id/editIntuition"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/editBody"
-            android:layout_alignEnd="@+id/editBody" />
+            android:layout_below="@+id/textWillpower"
+            android:layout_alignLeft="@+id/editRegistering"
+            android:layout_alignStart="@+id/editRegistering" />" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:width="100dp"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -62,12 +58,10 @@
             android:id="@+id/editCharisma"
             android:layout_below="@+id/editLogic"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textView3"
-            android:layout_toStartOf="@+id/textView3" />
+            android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:width="100dp"
             android:inputType="number"
@@ -75,25 +69,21 @@
             android:id="@+id/editCompiling"
             android:layout_below="@+id/editCharisma"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textView5"
-            android:layout_toStartOf="@+id/textView5" />
+            android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
             android:width="100dp"
             android:id="@+id/editRegistering"
-            android:layout_below="@+id/editCompiling"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textView6"
-            android:layout_toStartOf="@+id/textView6" />
+            android:layout_alignBottom="@+id/textCompiling"
+            android:layout_toRightOf="@+id/textResonance"
+            android:layout_toEndOf="@+id/textResonance" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
@@ -101,12 +91,10 @@
             android:id="@+id/editResonance"
             android:layout_below="@+id/editRegistering"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textView7"
-            android:layout_toStartOf="@+id/textView7" />
+            android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:width="100dp"
@@ -114,30 +102,25 @@
             android:id="@+id/editStun"
             android:layout_below="@+id/editResonance"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textView8"
-            android:layout_toStartOf="@+id/textView8" />
+            android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:width="100dp"
             android:inputType="number"
             android:ems="10"
             android:id="@+id/editPhysical"
-            android:layout_below="@+id/editStun"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textView9"
-            android:layout_toStartOf="@+id/textView9" />
+            android:layout_below="@+id/textResonance"
+            android:layout_alignLeft="@+id/editRegistering"
+            android:layout_alignStart="@+id/editRegistering" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Body"
-            android:id="@+id/textView1"
-            android:layout_above="@+id/editWillpower"
+            android:id="@+id/textBody"
             android:layout_toRightOf="@+id/editBody"
             android:layout_alignBottom="@+id/editBody"
             />
@@ -147,7 +130,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Willpower"
-            android:id="@+id/textView2"
+            android:id="@+id/textWillpower"
             android:layout_alignBottom="@+id/editWillpower"
             android:layout_toRightOf="@+id/editWillpower" />
 
@@ -156,7 +139,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Intuition"
-            android:id="@+id/textView3"
+            android:id="@+id/textIntuition"
             android:layout_alignBottom="@+id/editIntuition"
             android:layout_toRightOf="@+id/editIntuition" />
 
@@ -165,7 +148,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Logic"
-            android:id="@+id/textView4"
+            android:id="@+id/textLogic"
             android:layout_alignBottom="@+id/editLogic"
             android:layout_toRightOf="@+id/editLogic" />
 
@@ -174,7 +157,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Charisma"
-            android:id="@+id/textView5"
+            android:id="@+id/textCharisma"
             android:layout_alignBottom="@+id/editCharisma"
             android:layout_toRightOf="@+id/editCharisma" />
 
@@ -183,7 +166,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Compiling"
-            android:id="@+id/textView6"
+            android:id="@+id/textCompiling"
             android:layout_alignBottom="@+id/editCompiling"
             android:layout_toRightOf="@+id/editCompiling" />
 
@@ -192,7 +175,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Registering"
-            android:id="@+id/textView7"
+            android:id="@+id/textRegistering"
             android:layout_alignBottom="@+id/editRegistering"
             android:layout_toRightOf="@+id/editRegistering" />
 
@@ -201,7 +184,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Resonance"
-            android:id="@+id/textView8"
+            android:id="@+id/textResonance"
             android:layout_alignBottom="@+id/editResonance"
             android:layout_toRightOf="@+id/editResonance" />
 
@@ -210,7 +193,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Stun"
-            android:id="@+id/textView9"
+            android:id="@+id/textStun"
             android:layout_alignBottom="@+id/editStun"
             android:layout_toRightOf="@+id/editStun" />
 
@@ -219,43 +202,39 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Physical"
-            android:id="@+id/textView10"
+            android:id="@+id/textPhysical"
             android:layout_alignBottom="@+id/editPhysical"
             android:layout_toRightOf="@+id/editPhysical" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:width="100dp"
             android:inputType="number"
             android:ems="10"
             android:id="@+id/editKarma"
             android:layout_below="@+id/editPhysical"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/editBody" />
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Karma"
-            android:id="@+id/textView11"
+            android:id="@+id/textKarma"
             android:layout_alignBottom="@+id/editKarma"
-            android:layout_toRightOf="@+id/editPhysical"
+            android:layout_toRightOf="@+id/editKarma"
             android:layout_toEndOf="@+id/editPhysical" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:width="100dp"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/editKarmaUsed"
-        android:layout_below="@+id/editKarma"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editBody" />
+        android:layout_below="@+id/textPhysical"
+        android:layout_alignLeft="@+id/editPhysical"
+        android:layout_alignStart="@+id/editPhysical" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -263,14 +242,13 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Karma Used"
         android:id="@+id/textKarmaUsed"
-        android:layout_toRightOf="@+id/editBody"
+        android:layout_toRightOf="@+id/editKarmaUsed"
         android:layout_toEndOf="@+id/textView1"
         android:layout_alignBottom="@+id/editKarmaUsed" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:width="100dp"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/editConsecutiveHoursRested"
@@ -285,9 +263,53 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Consecutive Hours Rested"
         android:id="@+id/textConsecutiveHoursRested"
-        android:layout_alignLeft="@+id/textKarmaUsed"
-        android:layout_alignStart="@+id/textKarmaUsed"
-        android:layout_alignBottom="@+id/editConsecutiveHoursRested" />
+        android:layout_below="@+id/editKarmaUsed"
+        android:layout_alignBottom="@+id/editConsecutiveHoursRested"
+        android:layout_toRightOf="@+id/editConsecutiveHoursRested"
+        />
+
+    <EditText
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editHoursWithoutSleep"
+        android:layout_below="@+id/editConsecutiveHoursRested"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/editBody" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Hours Without Sleep"
+        android:id="@+id/textHoursWithoutSleep"
+        android:layout_below="@+id/editConsecutiveHoursRested"
+        android:layout_alignBottom="@+id/editHoursThisSession"
+        android:layout_toRightOf="@+id/editHoursThisSession" />
+
+    <EditText
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editHoursThisSession"
+        android:layout_below="@+id/editHoursWithoutSleep"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/editBody" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Hours This Session"
+        android:id="@+id/textHoursThisSession"
+        android:layout_below="@+id/editHoursWithoutSleep"
+        android:layout_alignBottom="@+id/editHoursThisSession"
+        android:layout_toRightOf="@+id/editHoursThisSession"
+         />
 
 
 </RelativeLayout>
