@@ -310,6 +310,27 @@
         android:layout_alignBottom="@+id/editHoursThisSession"
         android:layout_toRightOf="@+id/editHoursThisSession"
          />
+    <EditText
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editHoursSinceKarmaRefresh"
+        android:layout_below="@+id/editHoursThisSession"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/editBody" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Hours Since Karma Refresh"
+        android:id="@+id/textHoursSinceKarmaRefresh"
+        android:layout_below="@+id/editHoursThisSession"
+        android:layout_alignBottom="@+id/editHoursSinceKarmaRefresh"
+        android:layout_toRightOf="@+id/editHoursSinceKarmaRefresh"
+        />
 
 
 </RelativeLayout>

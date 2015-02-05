@@ -152,17 +152,18 @@
             android:text="@string/Rest"
             android:layout_gravity="left"
 
-            android:layout_alignBottom="@+id/Compile"
-            android:layout_toRightOf="@+id/Compile"/>
+            android:layout_below="@+id/npSpriteRating"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Use Service"
             android:id="@+id/buttonUseService"
-            android:layout_alignTop="@+id/Rest"
-            android:layout_toRightOf="@+id/Rest"
-            android:layout_toEndOf="@+id/Rest" />
+        android:layout_below="@+id/SkillKarma"
+        android:layout_toRightOf="@+id/Compile"
+        android:layout_toEndOf="@+id/Compile" />
 
         <Spinner
             android:layout_width="wrap_content"
@@ -186,5 +187,29 @@
             android:layout_below="@+id/Compile"
             android:layout_gravity="start" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sleep"
+        android:id="@+id/buttonSleep"
+        android:layout_below="@+id/Rest"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/Rest"
+        android:layout_alignEnd="@+id/Rest" />
 
-    </RelativeLayout>
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heal"
+        android:id="@+id/buttonHeal"
+        android:layout_below="@+id/buttonSleep"
+        android:layout_alignRight="@+id/buttonSleep"
+        android:layout_alignEnd="@+id/buttonSleep"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
