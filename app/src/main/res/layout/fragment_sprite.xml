@@ -7,4 +7,125 @@
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
         android:text="@string/hello_blank_fragment" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="2"
+        android:maxEms="2"
+        android:id="@+id/editText"
+        android:layout_below="@+id/spinnerSprites"
+        android:text="0"
+        android:layout_alignLeft="@+id/spinnerSprites"
+        android:layout_gravity="left|top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Force"
+        android:id="@+id/textView"
+        android:layout_alignEnd="@+id/textView1"
+        android:layout_alignBottom="@+id/editForce"
+        android:layout_toRightOf="@+id/editForce"
+        android:layout_gravity="left|top" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="2"
+        android:maxEms="2"
+        android:id="@+id/editText2"
+        android:text="0"
+        android:layout_alignBottom="@+id/textDamage"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/textDamage"
+        android:layout_gravity="center_horizontal|top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Services"
+        android:id="@+id/textView12"
+        android:layout_alignBottom="@+id/editServices"
+        android:layout_toRightOf="@+id/editServices"
+        android:layout_toEndOf="@+id/checkRegistered"
+        android:layout_gravity="center_horizontal|top" />
+
+    <EditText
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="2"
+        android:maxEms="2"
+        android:id="@+id/editText2"
+        android:text="0"
+        android:layout_alignLeft="@+id/spinnerSprites"
+        android:layout_below="@+id/spinnerSprites"
+        android:layout_gravity="center_horizontal|top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Damage"
+        android:id="@+id/textView12"
+        android:layout_alignEnd="@+id/textView10"
+        android:layout_toRightOf="@+id/editDamage"
+        android:layout_alignBottom="@+id/editDamage"
+        android:layout_gravity="center_horizontal|top" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/editKarma"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="left|center_vertical" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/spinnerSprites"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="left|center_vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="GOD Score"
+        android:id="@+id/textView13"
+        android:layout_alignBottom="@+id/editGOD"
+        android:layout_toRightOf="@+id/editGOD"
+        android:layout_gravity="left|center_vertical" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="2"
+        android:maxEms="4"
+        android:id="@+id/editText3"
+        android:text="0"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/spinnerSprites"
+        android:enabled="true"
+        android:layout_below="@+id/spinnerSprites"
+        android:layout_gravity="left|center_vertical" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registered"
+        android:id="@+id/checkBox"
+        android:checked="false"
+        android:layout_toEndOf="@+id/textView8"
+        android:layout_gravity="right|top" />
+
 </FrameLayout>

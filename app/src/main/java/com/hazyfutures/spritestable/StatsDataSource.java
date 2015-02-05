@@ -97,9 +97,11 @@ public class StatsDataSource {
         try {
             int val = database.update(Database.TABLE_SPRITES, value, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
+                Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getOverwatchScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
                 database.setTransactionSuccessful();
             }else{
                 if(database.insert(Database.TABLE_SPRITES, null,value)!=-1){
+                    Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getOverwatchScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
                     database.setTransactionSuccessful();
                 }
             }

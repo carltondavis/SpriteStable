@@ -25,8 +25,7 @@
             android:layout_below="@+id/editBody"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/textForce"
-            android:layout_toStartOf="@+id/textForce" />
+            android:layout_alignRight="@+id/editBody" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -233,7 +232,8 @@
             android:id="@+id/editKarma"
             android:layout_below="@+id/editPhysical"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/editBody" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -245,118 +245,49 @@
             android:layout_toRightOf="@+id/editPhysical"
             android:layout_toEndOf="@+id/editPhysical" />
 
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerSprites"
-            android:layout_below="@+id/editKarma"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="100dp"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editKarmaUsed"
+        android:layout_below="@+id/editKarma"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/editBody" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="2"
-            android:maxEms="2"
-            android:id="@+id/editForce"
-            android:layout_below="@+id/spinnerSprites"
-            android:text="0"
-            android:layout_alignLeft="@+id/spinnerSprites" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Karma Used"
+        android:id="@+id/textKarmaUsed"
+        android:layout_toRightOf="@+id/editBody"
+        android:layout_toEndOf="@+id/textView1"
+        android:layout_alignBottom="@+id/editKarmaUsed" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Force"
-            android:id="@+id/textForce"
-            android:layout_alignEnd="@+id/textView1"
-            android:layout_alignBottom="@+id/editForce"
-            android:layout_toRightOf="@+id/editForce" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="100dp"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editConsecutiveHoursRested"
+        android:layout_below="@+id/editKarmaUsed"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/editBody" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="2"
-            android:maxEms="2"
-            android:id="@+id/editServices"
-            android:text="0"
-            android:layout_alignBottom="@+id/textDamage"
-            android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@+id/textDamage" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="2"
-            android:maxEms="4"
-            android:id="@+id/editGOD"
-            android:text="0"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/spinnerSprites"
-            android:layout_below="@+id/editDamage"
-            android:enabled="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Consecutive Hours Rested"
+        android:id="@+id/textConsecutiveHoursRested"
+        android:layout_alignLeft="@+id/textKarmaUsed"
+        android:layout_alignStart="@+id/textKarmaUsed"
+        android:layout_alignBottom="@+id/editConsecutiveHoursRested" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Services"
-            android:id="@+id/textServices"
-            android:layout_alignBottom="@+id/editServices"
-            android:layout_toRightOf="@+id/editServices"
-            android:layout_toEndOf="@+id/checkRegistered" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="GOD Score"
-            android:id="@+id/textGOD"
-            android:layout_alignBottom="@+id/editGOD"
-            android:layout_toRightOf="@+id/editGOD" />
-
-        <EditText
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="2"
-            android:maxEms="2"
-            android:id="@+id/editDamage"
-            android:text="0"
-            android:layout_below="@+id/editForce"
-            android:layout_toStartOf="@+id/textForce"
-            android:layout_alignLeft="@+id/spinnerSprites" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Damage"
-            android:id="@+id/textDamage"
-            android:layout_alignEnd="@+id/textView10"
-            android:layout_toRightOf="@+id/editDamage"
-            android:layout_alignBottom="@+id/editDamage" />
-
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/spinnerSpriteType"
-            android:layout_below="@+id/spinnerSprites"
-            android:layout_toRightOf="@+id/textForce" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Registered"
-            android:id="@+id/checkRegistered"
-            android:checked="false"
-            android:layout_toRightOf="@+id/textGOD"
-            android:layout_toEndOf="@+id/textView8"
-            android:layout_alignBottom="@+id/textGOD" />
-
-
-    </RelativeLayout>
+</RelativeLayout>

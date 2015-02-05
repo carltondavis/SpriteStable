@@ -10,21 +10,12 @@ public class MainActivity extends Activity {
     // Declare Variables
     ViewPager viewPager;
     PagerAdapter adapter;
-    String[] rank;
-    String[] country;
-    String[] population;
-    int[] flag;
-    private Dice Dice = new Dice();
-    public PersistentValues data = new PersistentValues();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Get the view from viewpager_main.xml
         setContentView(R.layout.viewpager_main);
-
-
-        data.RestoreFromDB(this);
 
         // Generate sample data
 
@@ -35,6 +26,25 @@ public class MainActivity extends Activity {
         adapter = new ViewPagerAdapter(MainActivity.this);
         // Binds the Adapter to the ViewPager
         viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+                //This code is run every time a new page is chosen
+
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
     }
 

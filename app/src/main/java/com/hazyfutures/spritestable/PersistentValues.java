@@ -20,6 +20,7 @@ public class PersistentValues {
     public int pvStun = 0;
     public int pvPhysical = 0;
     public int pvKarma = 0;
+    public int pvKarmaUsed = 0;
     public int pvResonance = 0;
     public int pvCompiling = 0;
     public int pvRegistering = 0;
@@ -42,6 +43,7 @@ public class PersistentValues {
         datasource.updateStat("Stun", pvStun);
         datasource.updateStat("Physical", pvPhysical);
         datasource.updateStat("Karma", pvKarma);
+        datasource.updateStat("KarmaUsed", pvKarmaUsed);
         datasource.updateStat("Body", pvBody);
         datasource.updateStat("Intuition", pvIntuition);
         datasource.updateStat("Willpower", pvWillpower);
@@ -101,6 +103,9 @@ public class PersistentValues {
                     break;
                 case "Karma":
                     pvKarma = value;
+                    break;
+                case "KarmaUsed":
+                    pvKarmaUsed = value;
                     break;
             }
 

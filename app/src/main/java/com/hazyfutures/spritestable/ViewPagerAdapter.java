@@ -1,24 +1,27 @@
 package com.hazyfutures.spritestable;
-//TODO Something multiplying sprites in list?
-//TODO Move Sprite list to Sprite fragment
-//TODO Updates not populating when fragment loads
+//TODO Something multiplying sprites in list?  Haven't seen recently
+//TODO Add Hours without Sleep counter,
 //TODO Test update for each attribute
-//Todo Add display of sprite stats + abilities for specific sprite listed
-//ToDo Add Karma Usage Used Karma added to Stats
+//ToDO add Consecutive Rest hour tracking
+//TODO Add sleepless hours tracking (rest button, sleep button, heal button
+//Todo add Karma used tracking
+//Todo Disable Karma checkboxes when out of karma
+//ToDo Add Karma regenerating, Track resting, 8 hours in a row regens karma
+//ToDo Add Sleep button  Sleep button under Rest, adds 8 hours, resets fatigue, regen karma
+//Todo Add Healing day available if no stun damage, makes physical damage healing test, adds 24 hours
 
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
-//ToDo Add Karma regenerating, Track resting, 8 hours in a row regens karma
+
+//Todo Add display of sprite stats + abilities for specific sprite listed
 //ToDo Add list of important qualities
+//Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
 //Todo Update Database to handle qualities
 //Todo Update Compile/Register/Rest to account for qualities
 
-
-//Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
 //Todo add Insomnia A/B Checkbox to turn it on, radiobutton to pick which type, add code to check when regen karma, adds counter for failed rolls to keep karma refresh button disabled, add code to muck with healing
-//ToDo Add Sleep button  Sleep button under Rest, adds 8 hours, resets fatigue, regen karma
-//Todo Add Healing day available if no stun damage, makes physical damage healing test, adds 24 hours
 //ToDo Add Fatigue Rules after 24 hours take 1S, then again every 3 hours, +1 each time resist with Body+Willpower
-//ToDo Add warnings about fatigue/damage  Change Hours to Total Hours.  Add Hours without Sleep counter, add toast for taking fatigue damage
+//ToDo Add warnings about fatigue/damage  Change Hours to Total Hours.
+//TODO  add toast for taking fatigue damage
 //ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
 //ToDo Add possible Overflow/Death warnings If compiling/registering something, calculate if worst case stun/physical could max out stun or physical chart.  Warn of possibility.
 //Todo Someday Add statistics for rolls to include actual percentage chance of something happening to warnings
@@ -62,6 +65,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     //TODO Declare local variables for persistant data
     Context context;
     PersistentValues data=new PersistentValues();
+
     private Dice Dice = new Dice();
     LayoutInflater inflater;
 
@@ -74,6 +78,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     }
 
+
     @Override
     public int getCount() {
         //TODO Increase number as new layouts are added
@@ -84,11 +89,51 @@ public class ViewPagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return view == ((RelativeLayout) object);
     }
+    public void onPageSelected (int position){
+
+    }
+
 
     @Override
     public Object instantiateItem(final ViewGroup container, int position) {
 //TODO Handle Compile, Stat, Sprite, Qualities, Matrix pages
 // Depending on Position, pick a layout file, create variables, inflate the layout, set the links to objects within the layout, set the initial values of items
+        ViewPager viewPager = (ViewPager) container.findViewById(R.id.pager);
+        // Pass results to ViewPagerAdapter Class
+        //TODO pass persistant data object
+        ViewPagerAdapter adapter = new ViewPagerAdapter(container.getContext());
+        // Binds the Adapter to the ViewPager
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+                if(i==0) {
+                    data.RestoreFromDB(container.getContext());
+                    UpdateDamage(data.pvStun, data.pvPhysical, container);
+                }else{
+                    if(i==1){
+                        EditText et = (EditText) container.findViewById(R.id.editStun);
+                        et.setText(String.valueOf(data.pvStun));
+                        et = (EditText) container.findViewById(R.id.editPhysical);
+                        et.setText(String.valueOf(data.pvPhysical));
+                        et = (EditText) container.findViewById(R.id.editKarmaUsed);
+                        et.setText(String.valueOf(data.pvKarmaUsed));
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
         View itemView;
         //TODO Configure 5 layouts
         switch (position) {
@@ -155,6 +200,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         return itemView;
     }
+
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -277,6 +323,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         tp.setSelection(data.getCurrentSprite().getSpriteType()-1);
     }
     private void UpdateSpriteList(ViewGroup vg){
+        data.UpdateSprite(data.getCurrentSprite());
         data.UpdateSpriteList();
         Spinner spriteSpinner = (Spinner) vg.findViewById(R.id.spinnerSprite);                                             //Update the dropdown
         ArrayAdapter<String> adp1=new ArrayAdapter<String>(vg.getContext(), android.R.layout.simple_list_item_1, data.pvSpriteList);
@@ -306,35 +353,40 @@ public class ViewPagerAdapter extends PagerAdapter {
         int MaxPhysical=(int) Math.floor(data.pvBody / 2) + 8;
         int _overflow=0;
         RatingBar stunDamage = (RatingBar) vg.findViewById(R.id.stunTrack);
-        stunDamage.setNumStars(MaxStun);
-        stunDamage.setMax(MaxStun);
-        if (stun > MaxStun) {//Did we exceed the stun condition monitor?
-            physical += (int) Math.floor((stun - MaxStun) / 2);  //(TotalStun - StunMax)/2 rounded down is overflow
-            data.pvStun = MaxStun;
+        if(stunDamage.getRating()!=stun||MaxStun!=stunDamage.getMax()) {
+            stunDamage.setNumStars(MaxStun);
+            stunDamage.setMax(MaxStun);
+            if (stun > MaxStun) {//Did we exceed the stun condition monitor?
+                physical += (int) Math.floor((stun - MaxStun) / 2);  //(TotalStun - StunMax)/2 rounded down is overflow
+                data.pvStun = MaxStun;
+            }
+            stunDamage.setRating(data.pvStun);
         }
-        stunDamage.setRating(data.pvStun);
-
-
         RatingBar physicalDamage = (RatingBar) vg.findViewById(R.id.physicalTrack);
-        physicalDamage.setNumStars(MaxPhysical);
-        physicalDamage.setMax(MaxPhysical);
+        if(physicalDamage.getRating()!=physical||MaxPhysical!=physicalDamage.getMax()) {
+            physicalDamage.setNumStars(MaxPhysical);
+            physicalDamage.setMax(MaxPhysical);
 
-        RatingBar overflowDamage = (RatingBar) vg.findViewById(R.id.overflowTrack);
-        overflowDamage.setNumStars(data.pvBody);
-        overflowDamage.setMax(data.pvBody);
+            RatingBar overflowDamage = (RatingBar) vg.findViewById(R.id.overflowTrack);
+            overflowDamage.setNumStars(data.pvBody);
+            overflowDamage.setMax(data.pvBody);
 
-        if(physical>MaxPhysical){_overflow=physical-MaxPhysical;}
-        physicalDamage.setRating(physical-_overflow);//Don't count overflow when drawing boxes of damage
-        overflowDamage.setRating(_overflow);
-        data.pvPhysical=physical;
+            if (physical > MaxPhysical) {
+                _overflow = physical - MaxPhysical;
+            }
+            physicalDamage.setRating(physical - _overflow);//Don't count overflow when drawing boxes of damage
+            overflowDamage.setRating(_overflow);
+            data.pvPhysical = physical;
+        }
         UpdateCompile(vg);
         UpdateUseService(vg);
         UpdateRest(vg);
     }
 
    public void PrepareCompileFragment(final ViewGroup container){
+       //Toast.makeText(container.getContext(), "Compile", Toast.LENGTH_SHORT).show();
 
-        data.RestoreFromDB(container.getContext());
+       data.RestoreFromDB(container.getContext());
 
 
         Button compileButton = (Button) container.findViewById(R.id.Compile);
@@ -360,6 +412,10 @@ public class ViewPagerAdapter extends PagerAdapter {
         npSpriteRating.setMinValue(1);
         npSpriteRating.setMaxValue(data.pvResonance*2);
         npSpriteRating.setValue(data.getCurrentSprite().getRating());
+
+
+
+
 
 
        //Sprite List
@@ -506,10 +562,11 @@ public class ViewPagerAdapter extends PagerAdapter {
 
             }
         });
-    }
-    public void PrepareStatsFragment(final ViewGroup vg){
 
-        data.RestoreFromDB(vg.getContext());
+       UpdateDisplay(container);
+    }
+
+    public void PrepareSpriteFragment(final ViewGroup vg){
         UpdateSpriteList(vg);
         UpdateDisplay(vg);
 
@@ -531,18 +588,6 @@ public class ViewPagerAdapter extends PagerAdapter {
         final EditText editGOD = (EditText) vg.findViewById(R.id.editGOD);
         final EditText editDamage = (EditText) vg.findViewById(R.id.editDamage);
         final CheckBox checkRegistered = (CheckBox) vg.findViewById(R.id.checkRegistered);
-
-                    CreateListener(R.id.editBody, data.pvBody, vg);
-                    CreateListener(R.id.editWillpower, data.pvWillpower, vg);
-                    CreateListener(R.id.editIntuition, data.pvIntuition, vg);
-                    CreateListener(R.id.editLogic, data.pvLogic, vg);
-                    CreateListener(R.id.editCharisma, data.pvCharisma, vg);
-                    CreateListener(R.id.editCompiling, data.pvCompiling, vg);
-                    CreateListener(R.id.editRegistering, data.pvRegistering, vg);
-                    CreateListener(R.id.editResonance, data.pvResonance, vg);
-                    CreateListener(R.id.editStun, data.pvStun, vg);
-                    CreateListener(R.id.editPhysical, data.pvPhysical, vg);
-                    CreateListener(R.id.editKarma, data.pvKarma, vg);
 
         checkRegistered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -687,11 +732,32 @@ public class ViewPagerAdapter extends PagerAdapter {
         });
 
     }
+    public void PrepareStatsFragment(final ViewGroup vg){
+        //Toast.makeText(vg.getContext(), "Stats", Toast.LENGTH_SHORT).show();
+
+        data.RestoreFromDB(vg.getContext());
+
+
+                    CreateListener(R.id.editBody, data.pvBody, vg);
+                    CreateListener(R.id.editWillpower, data.pvWillpower, vg);
+                    CreateListener(R.id.editIntuition, data.pvIntuition, vg);
+                    CreateListener(R.id.editLogic, data.pvLogic, vg);
+                    CreateListener(R.id.editCharisma, data.pvCharisma, vg);
+                    CreateListener(R.id.editCompiling, data.pvCompiling, vg);
+                    CreateListener(R.id.editRegistering, data.pvRegistering, vg);
+                    CreateListener(R.id.editResonance, data.pvResonance, vg);
+                    CreateListener(R.id.editStun, data.pvStun, vg);
+                    CreateListener(R.id.editPhysical, data.pvPhysical, vg);
+                    CreateListener(R.id.editKarma, data.pvKarma, vg);
+
+
+
+    }
 
 
 
 
-    private void CreateListener(Integer etId, Integer value, ViewGroup vg) {
+   /* private void CreateListener(Integer etId, Integer value, ViewGroup vg) {
         final EditText et = (EditText) vg.findViewById(etId);
         //et.setText(String.valueOf(value));
         et.addTextChangedListener(new TextWatcher() {
@@ -743,8 +809,78 @@ public class ViewPagerAdapter extends PagerAdapter {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+*/
+   private void CreateListener(Integer etId, Integer value,final ViewGroup vg) {
+       final EditText et = (EditText) vg.findViewById(etId);
+       et.setText(String.valueOf(value));
+       et.addTextChangedListener(new TextWatcher() {
+           public void afterTextChanged(Editable s) {
+               if(!s.toString().equals(et.getText())) {
+                   UpdateStats(et, vg);
+                   UpdateDisplay(vg);
+               }
+           }
 
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+           }
 
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+           }
+       });
+   }
+       private void UpdateStats(View view, ViewGroup vg){
+           EditText et = (EditText) vg.findViewById(view.getId());
+           if (!et.getText().toString().isEmpty()) {
+               Integer value = Integer.valueOf(et.getText().toString());
+
+               switch (view.getId()) {
+                   case R.id.editBody:
+                        data.pvBody=value;
+                       data.SaveStatToDB("Body", value);
+                       break;
+                   case R.id.editWillpower:
+                       data.pvWillpower=value;
+                       data.SaveStatToDB("Willpower", value);
+                       break;
+                   case R.id.editIntuition:
+                       data.pvIntuition=value;
+                       data.SaveStatToDB("Intuition", value);
+                       break;
+                   case R.id.editLogic:
+                       data.pvLogic=value;
+                       data.SaveStatToDB("Logic", value);
+                       break;
+                   case R.id.editCharisma:
+                       data.pvCharisma=value;
+                       data.SaveStatToDB("Charisma", value);
+                       break;
+                   case R.id.editCompiling:
+                       data.pvCompiling=value;
+                       data.SaveStatToDB("Compiling", value);
+                       break;
+                   case R.id.editRegistering:
+                       data.pvRegistering=value;
+                       data.SaveStatToDB("Registering", value);
+                       break;
+                   case R.id.editResonance:
+                       data.pvResonance=value;
+                       data.SaveStatToDB("Resonance", value);
+                       break;
+                   case R.id.editStun:
+                       data.pvStun=value;
+                       data.SaveStatToDB("Stun", value);
+                       break;
+                   case R.id.editPhysical:
+                       data.pvPhysical=value;
+
+                       data.SaveStatToDB("Physical", value);
+                       break;
+                   case R.id.editKarma:
+                       data.pvKarma=value;
+                       data.SaveStatToDB("Karma", value);
+                       break;
+               }
+           }
 
 
     }
