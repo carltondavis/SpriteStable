@@ -3,6 +3,10 @@ package com.hazyfutures.spritestable;
 //TODO Something multiplying sprites in list?  Haven't seen recently
 //TODO Test update for each attribute
 
+//Todo Heal after 24 hours consecutive rest
+//Todo karma regen after 8 hours consecutive rest
+//todo test consecutive rest karma reset
+//todo disable heal when stun, re-enable when no-stun and damage, disable when no damage
 //ToDo Add warnings about fatigue/damage  Change Hours to Total Hours.
 //TODO  add toast for taking fatigue damage
 //ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
@@ -111,7 +115,8 @@ public class ViewPagerAdapter extends PagerAdapter {
 
                 if(i==0) {
                     data.RestoreFromDB(container.getContext());
-                    UpdateDamage(data.pvStun, data.pvPhysical, container);
+                    UpdateDisplay(container);
+                    //UpdateDamage(data.pvStun, data.pvPhysical, container);
                 }else{
                     if(i==1){
                         EditText et = (EditText) container.findViewById(R.id.editStun);
@@ -120,6 +125,14 @@ public class ViewPagerAdapter extends PagerAdapter {
                         et.setText(String.valueOf(data.pvPhysical));
                         et = (EditText) container.findViewById(R.id.editKarmaUsed);
                         et.setText(String.valueOf(data.pvKarmaUsed));
+                        et = (EditText) container.findViewById(R.id.editConsecutiveHoursRested);
+                        et.setText(String.valueOf(data.pvConsecutiveRest));
+                        et = (EditText) container.findViewById(R.id.editHoursWithoutSleep);
+                        et.setText(String.valueOf(data.pvSleeplessHours));
+                        et = (EditText) container.findViewById(R.id.editHoursThisSession);
+                        et.setText(String.valueOf(data.pvHoursThisSession));
+                        et = (EditText) container.findViewById(R.id.editHoursSinceKarmaRefresh);
+                        et.setText(String.valueOf(data.pvHoursSinceKarmaRefresh));
                     }
                 }
             }
@@ -277,11 +290,22 @@ public class ViewPagerAdapter extends PagerAdapter {
         Rest.setClickable(enabled);
         Rest.setEnabled(enabled);
     }
+
+    //disable heal when stun, re-enable when no-stun and damage, disable when no damage
+    private void UpdateHeal(ViewGroup vg){
+        UpdateHeal((data.pvStun==0)&&(data.pvPhysical>0)&&IsAlive(), vg);
+    }
+    private void UpdateHeal(boolean enabled, ViewGroup vg){
+        Button Heal = (Button) vg.findViewById(R.id.buttonHeal);
+        Heal.setClickable(enabled);
+        Heal.setEnabled(enabled);
+    }
+
     private boolean IsConscious(){
-        return (data.pvStun<(8+Math.floor(data.pvWillpower/2)))&&(data.pvPhysical<(8+Math.floor(data.pvBody/2)));
+        return (data.pvStun<(9+Math.floor(data.pvWillpower/2)))&&(data.pvPhysical<(9+Math.floor(data.pvBody/2)));
     }
     private boolean IsAlive(){
-        return (data.pvPhysical<(8+Math.floor(data.pvBody/2)));
+        return (data.pvPhysical<(9+Math.floor(data.pvBody/2)));
     }
     //UpdateUseService Button  Enabled
     private void UpdateUseService(ViewGroup vg){
@@ -333,14 +357,15 @@ public class ViewPagerAdapter extends PagerAdapter {
     }
 
     private void UpdateDisplay(ViewGroup vg){
+        UpdateServices(vg);
         UpdateDamage(vg);
-        UpdateUseService(vg);
-        UpdateRest(vg);
+        //UpdateUseService(vg);in Services
+        //UpdateRest(vg); in damage
         UpdateRating(vg);
-        UpdateCompile(vg);
+        //UpdateCompile(vg);in Services
         UpdateHours(vg);
         UpdateTypePicker(vg);
-        UpdateSpriteList(vg);
+        //UpdateSpriteList(vg); in Services
         UpdateCheckBoxes(vg);
 
     }
@@ -376,8 +401,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         }
     }
     private void UpdateDamage(int stun, int physical, ViewGroup vg) {
-        int MaxStun=(int) Math.floor(data.pvWillpower / 2) + 8;
-        int MaxPhysical=(int) Math.floor(data.pvBody / 2) + 8;
+        int MaxStun=(int) Math.floor(data.pvWillpower / 2) + 9;
+        int MaxPhysical=(int) Math.floor(data.pvBody / 2) + 9;
         int _overflow=0;
         RatingBar stunDamage = (RatingBar) vg.findViewById(R.id.stunTrack);
         if(stunDamage.getRating()!=stun||MaxStun!=stunDamage.getMax()) {
@@ -408,6 +433,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         UpdateCompile(vg);
         UpdateUseService(vg);
         UpdateRest(vg);
+        UpdateHeal(vg);
     }
 
    public void PrepareCompileFragment(final ViewGroup container){
@@ -508,6 +534,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                    data.pvSleeplessHours=0;
                    data.pvConsecutiveRest=0;
                }
+
                TextView valueHours = (TextView) container.findViewById(R.id.valuesHours);
                valueHours.setText(String.valueOf(data.pvHoursThisSession));
            }
@@ -548,7 +575,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
 //Heal Button
 //Adds 24 hours, heal stun or physical, regen karma, reset consecutive hours without sleep
-       Button healButton = (Button) container.findViewById(R.id.buttonSleep);
+       Button healButton = (Button) container.findViewById(R.id.buttonHeal);
        healButton.setOnClickListener(new View.OnClickListener() {
 
            @Override
@@ -571,7 +598,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                         }
                     }
                 }
-               UpdateDamage(container);
+
 
                //Add hours
                data.pvHoursThisSession += 24;
@@ -592,6 +619,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                data.pvConsecutiveRest=0;
                TextView valueHours = (TextView) container.findViewById(R.id.valuesHours);
                valueHours.setText(String.valueOf(data.pvHoursThisSession));
+               UpdateDamage(container);
            }
        });
 
@@ -679,9 +707,11 @@ public class ViewPagerAdapter extends PagerAdapter {
                     if(data.pvSleeplessHours+data.getCurrentSprite().getRating()>=24){//If you've been awake 24 hours you start taking stun.  24, 27, 30, etc hours
                         int sleepydamage=1;
                         int sleepyresist=0;
-                        for(int sleepycounter=data.pvSleeplessHours;sleepycounter<=data.pvSleeplessHours+data.getCurrentSprite().getRating();sleepycounter++){
-                            if((sleepycounter-24)/3==Math.round((sleepycounter-24)/3)){
-                                sleepydamage=Math.round((sleepycounter-24)/3)+1;
+                        for(int sleepycounter=data.pvSleeplessHours+1;sleepycounter<=data.pvSleeplessHours+data.getCurrentSprite().getRating();sleepycounter++){
+                            double actualsleepy =((float) sleepycounter-24)/3;
+                            double floorsleepy=Math.floor(((float) sleepycounter-24)/3);
+                            if(actualsleepy==floorsleepy){
+                                sleepydamage=(int) Math.floor((sleepycounter-24)/3)+1;
                                 sleepyresist=Dice.rollDice(data.pvBody+data.pvWillpower, false);
                                 if(sleepydamage>sleepyresist){
                                     data.pvStun+=(sleepydamage-sleepyresist);
@@ -693,11 +723,11 @@ public class ViewPagerAdapter extends PagerAdapter {
                     }
                     data.pvSleeplessHours+=data.getCurrentSprite().getRating();
 
-                        NetHits = Dice.rollDice((data.pvResonance + data.pvRegistering - DamagePenalties), checkSkillKarma.isChecked());
-                        SpriteRoll = Dice.rollDice(data.getCurrentSprite().getRating() * 2, false);
+                    NetHits = Dice.rollDice((data.pvResonance + data.pvRegistering - DamagePenalties), checkSkillKarma.isChecked());
+                    SpriteRoll = Dice.rollDice(data.getCurrentSprite().getRating() * 2, false);
 
                 }
-            if(data.pvStun>(8+Math.floor(data.pvWillpower/2))) {//Maybe they passed out from sleep deprivation before they could finish.  Nothing happens if they did.
+            if(data.pvStun<(9+Math.floor(data.pvWillpower/2))) {//Only do stuff if they didn't pass out from sleep deprivation before they could finish.  Nothing happens if they did.
                 //TODO Add a toast here to alert the user that they fell asleep.
                 //Add net successes
                 NetHits -= SpriteRoll;
@@ -731,27 +761,32 @@ public class ViewPagerAdapter extends PagerAdapter {
                     data.pvStun += SpriteRoll;
 
                 }
-                        UpdateDamage(container);
-                        UpdateServices(container);
-                        //UpdateUseService(container); Handled in UpdateServices
-                        UpdateRest(container);
-                        UpdateRating(container);
-                        //UpdateCompile(container); Handled in UpdateServices
-                        UpdateHours(container);
-                        UpdateTypePicker(container);
+                        //UpdateDamage(container);
+                        //UpdateServices(container);
+                        //UpdateRest(container);
+                        //UpdateRating(container);
+                        //UpdateHours(container);
+                        //UpdateTypePicker(container);
+
+
+                //UpdateUseService(container); Handled in UpdateServices
+                //UpdateCompile(container); Handled in UpdateServices
                         // UpdateSpriteList(container); Handled in UpdateServices
 
             }
-            }
+                if(checkDrainKarma.isChecked()){
+                    data.pvKarmaUsed++;
+                    checkDrainKarma.setChecked(false);
+                }
+                if(checkSkillKarma.isChecked()){
+                    data.pvKarmaUsed++;
+                    checkSkillKarma.setChecked(false);
+                }
 
-        });
-        if(checkDrainKarma.isChecked()){
-            data.pvKarmaUsed++;
-        }
-       if(checkSkillKarma.isChecked()){
-           data.pvKarmaUsed++;
-       }
-       UpdateDisplay(container);
+                UpdateDisplay(container);
+
+            }});
+
     }
 
     public void PrepareSpriteFragment(final ViewGroup vg){
