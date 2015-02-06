@@ -6,9 +6,7 @@ package com.hazyfutures.spritestable;
 //Todo Heal after 24 hours consecutive rest
 //Todo karma regen after 8 hours consecutive rest
 //todo test consecutive rest karma reset
-//todo disable heal when stun, re-enable when no-stun and damage, disable when no damage
-//ToDo Add warnings about fatigue/damage  Change Hours to Total Hours.
-//TODO  add toast for taking fatigue damage
+//ToDo Change Hours to Total Hours.
 //ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
 
 //TODO SPRITE FRAGMENT:
@@ -59,6 +57,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewPagerAdapter extends PagerAdapter {
     // Declare Variables
@@ -713,6 +712,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                             if(actualsleepy==floorsleepy){
                                 sleepydamage=(int) Math.floor((sleepycounter-24)/3)+1;
                                 sleepyresist=Dice.rollDice(data.pvBody+data.pvWillpower, false);
+                                Toast.makeText(container.getContext(),"Resisting " + sleepydamage + "S from fatigue.", Toast.LENGTH_SHORT).show();
                                 if(sleepydamage>sleepyresist){
                                     data.pvStun+=(sleepydamage-sleepyresist);
                                     UpdateDamage(container);
@@ -786,7 +786,7 @@ public class ViewPagerAdapter extends PagerAdapter {
                 UpdateDisplay(container);
 
             }});
-
+    UpdateDisplay(container);
     }
 
     public void PrepareSpriteFragment(final ViewGroup vg){
