@@ -1,34 +1,33 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hazyfutures.spritestable.SpriteFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+    tools:context="com.hazyfutures.spritestable.SpriteFragment"
+    >
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="2"
         android:maxEms="2"
-        android:id="@+id/editText"
-        android:layout_below="@+id/spinnerSprites"
+        android:id="@+id/editServices"
         android:text="0"
-        android:layout_alignLeft="@+id/spinnerSprites"
-        android:layout_gravity="left|top" />
+        android:layout_gravity="left|top"
+        android:layout_below="@+id/editGod"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Force"
-        android:id="@+id/textView"
-        android:layout_alignEnd="@+id/textView1"
-        android:layout_alignBottom="@+id/editForce"
+        android:id="@+id/textForce"
+        android:layout_gravity="left|top"
+        android:layout_below="@+id/spinnerSprites"
         android:layout_toRightOf="@+id/editForce"
-        android:layout_gravity="left|top" />
+        android:layout_toEndOf="@+id/editForce"
+        android:layout_marginTop="38dp" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -36,23 +35,23 @@
         android:inputType="number"
         android:ems="2"
         android:maxEms="2"
-        android:id="@+id/editText2"
+        android:id="@+id/editDamage"
         android:text="0"
-        android:layout_alignBottom="@+id/textDamage"
-        android:layout_centerHorizontal="true"
-        android:layout_toRightOf="@+id/textDamage"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="center_horizontal|top"
+        android:layout_below="@+id/editServices"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Services"
-        android:id="@+id/textView12"
-        android:layout_alignBottom="@+id/editServices"
+        android:id="@+id/textServices"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_above="@+id/editDamage"
         android:layout_toRightOf="@+id/editServices"
-        android:layout_toEndOf="@+id/checkRegistered"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_toEndOf="@+id/editServices" />
 
     <EditText
         android:layout_width="30dp"
@@ -60,50 +59,54 @@
         android:inputType="number"
         android:ems="2"
         android:maxEms="2"
-        android:id="@+id/editText2"
+        android:id="@+id/editForce"
         android:text="0"
-        android:layout_alignLeft="@+id/spinnerSprites"
-        android:layout_below="@+id/spinnerSprites"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="center_horizontal|top"
+        android:layout_alignBottom="@+id/textForce"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/editGod"
+        android:layout_alignEnd="@+id/editGod" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Damage"
-        android:id="@+id/textView12"
-        android:layout_alignEnd="@+id/textView10"
-        android:layout_toRightOf="@+id/editDamage"
+        android:id="@+id/textDamage"
+        android:layout_gravity="center_horizontal|top"
         android:layout_alignBottom="@+id/editDamage"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_toRightOf="@+id/editDamage"
+        android:layout_toEndOf="@+id/editDamage" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_below="@+id/editKarma"
+        android:id="@+id/spinnerSprites"
+        android:layout_gravity="left|center_vertical"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="left|center_vertical" />
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_below="@+id/spinnerSprites"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="left|center_vertical" />
+        android:id="@+id/spinnerType"
+        android:layout_gravity="left|center_vertical"
+        android:layout_above="@+id/textGOD"
+        android:layout_toRightOf="@+id/checkBoxRegistered"
+        android:layout_toEndOf="@+id/checkBoxRegistered" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="GOD Score"
-        android:id="@+id/textView13"
-        android:layout_alignBottom="@+id/editGOD"
-        android:layout_toRightOf="@+id/editGOD"
-        android:layout_gravity="left|center_vertical" />
+        android:id="@+id/textGOD"
+        android:layout_gravity="left|center_vertical"
+        android:layout_above="@+id/editServices"
+        android:layout_toRightOf="@+id/editGod"
+        android:layout_toEndOf="@+id/editGod" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -111,21 +114,23 @@
         android:inputType="number"
         android:ems="2"
         android:maxEms="4"
-        android:id="@+id/editText3"
+        android:id="@+id/editGod"
         android:text="0"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/spinnerSprites"
         android:enabled="true"
-        android:layout_below="@+id/spinnerSprites"
-        android:layout_gravity="left|center_vertical" />
+        android:layout_gravity="left|center_vertical"
+        android:layout_below="@+id/editForce"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Registered"
-        android:id="@+id/checkBox"
+        android:id="@+id/checkBoxRegistered"
         android:checked="false"
-        android:layout_toEndOf="@+id/textView8"
-        android:layout_gravity="right|top" />
+        android:layout_gravity="right|top"
+        android:layout_alignTop="@+id/textForce"
+        android:layout_toRightOf="@+id/textForce"
+        android:layout_toEndOf="@+id/textForce" />
 
-</FrameLayout>
+</RelativeLayout>

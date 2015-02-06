@@ -807,10 +807,10 @@ public class ViewPagerAdapter extends PagerAdapter {
 
 
         final EditText editForce = (EditText) vg.findViewById(R.id.editForce);
-        final EditText editServices = (EditText) vg.findViewById(R.id.editServices);
-        final EditText editGOD = (EditText) vg.findViewById(R.id.editGOD);
-        final EditText editDamage = (EditText) vg.findViewById(R.id.editDamage);
-        final CheckBox checkRegistered = (CheckBox) vg.findViewById(R.id.checkRegistered);
+        final EditText editServices = (EditText) vg.findViewById(R.id.editDamage);
+        final EditText editGOD = (EditText) vg.findViewById(R.id.editGod);
+        final EditText editDamage = (EditText) vg.findViewById(R.id.editForce);
+        final CheckBox checkRegistered = (CheckBox) vg.findViewById(R.id.checkBoxRegistered);
 
         checkRegistered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -1115,10 +1115,10 @@ public class ViewPagerAdapter extends PagerAdapter {
     private void UpdateSprite(ViewGroup vg) {
 
         final EditText editForce = (EditText) vg.findViewById(R.id.editForce);
-        final EditText editServices = (EditText) vg.findViewById(R.id.editServices);
+        final EditText editServices = (EditText) vg.findViewById(R.id.editDamage);
         //final EditText editGOD = (EditText) vg.findViewById(R.id.editGOD);
-        final EditText editDamage = (EditText) vg.findViewById(R.id.editDamage);
-        final CheckBox checkRegistered = (CheckBox) vg.findViewById(R.id.checkRegistered);
+        final EditText editDamage = (EditText) vg.findViewById(R.id.editForce);
+        final CheckBox checkRegistered = (CheckBox) vg.findViewById(R.id.checkBoxRegistered);
         final Spinner spinnerSpriteType = (Spinner) vg.findViewById(R.id.spinnerSpriteType);
         editForce.setText(String.valueOf(data.getCurrentSprite().getRating()));
         editServices.setText(String.valueOf(data.getCurrentSprite().getServicesOwed()));

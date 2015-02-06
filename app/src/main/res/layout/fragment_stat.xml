@@ -243,7 +243,7 @@
         android:text="Karma Used"
         android:id="@+id/textKarmaUsed"
         android:layout_toRightOf="@+id/editKarmaUsed"
-        android:layout_toEndOf="@+id/textView1"
+        android:layout_toEndOf="@+id/textBody"
         android:layout_alignBottom="@+id/editKarmaUsed" />
 
     <EditText
