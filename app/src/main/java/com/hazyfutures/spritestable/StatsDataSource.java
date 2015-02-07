@@ -91,17 +91,17 @@ public class StatsDataSource {
         value.put(Database.COLUMN_SERVICES, sprite.getServicesOwed());//Services
         value.put(Database.COLUMN_TYPE, sprite.getSpriteType());//SpriteType
         value.put(Database.COLUMN_REGISTERED,sprite.getRegistered());
-        value.put(Database.COLUMN_OVERWATCHSCORE, sprite.getOverwatchScore());
+        value.put(Database.COLUMN_OVERWATCHSCORE, sprite.getGODScore());
         value.put(Database.COLUMN_CONDITION, sprite.getCondition());
         database.beginTransaction();
         try {
             int val = database.update(Database.TABLE_SPRITES, value, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
-                Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getOverwatchScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+                Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
                 database.setTransactionSuccessful();
             }else{
                 if(database.insert(Database.TABLE_SPRITES, null,value)!=-1){
-                    Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getOverwatchScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+                    Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
                     database.setTransactionSuccessful();
                 }
             }
@@ -143,10 +143,10 @@ public class StatsDataSource {
         sprite.setId(Integer.parseInt(cursor.getString(0)));//ID
         sprite.setSpriteType(Integer.parseInt(cursor.getString(6)));//SpriteType
         sprite.setRegistered(Integer.parseInt(cursor.getString(3)));
-        sprite.setOverwatchScore(Integer.parseInt(cursor.getString(1)));
+        sprite.setGODScore(Integer.parseInt(cursor.getString(1)));
         sprite.setCondition(Integer.parseInt(cursor.getString(4)));
 
-        Log.i("LoadSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getOverwatchScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+        Log.i("LoadSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
         return sprite;
     }
 

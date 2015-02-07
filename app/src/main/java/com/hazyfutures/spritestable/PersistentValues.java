@@ -66,6 +66,7 @@ public class PersistentValues {
 
     public void RestoreFromDB(Context content) {
         this.context = content;
+
         datasource = new StatsDataSource(this.context);
         datasource.open();
         List<Stat> values = datasource.getAllStats();
@@ -129,7 +130,6 @@ public class PersistentValues {
             }
 
         }
-
     }
 
     public Sprite getCurrentSprite() {

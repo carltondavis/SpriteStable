@@ -24,7 +24,7 @@
         android:text="Force"
         android:id="@+id/textForce"
         android:layout_gravity="left|top"
-        android:layout_below="@+id/spinnerSprites"
+        android:layout_below="@+id/SpriteSpinnerSprites"
         android:layout_toRightOf="@+id/editForce"
         android:layout_toEndOf="@+id/editForce"
         android:layout_marginTop="38dp" />
@@ -82,7 +82,7 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinnerSprites"
+        android:id="@+id/SpriteSpinnerSprites"
         android:layout_gravity="left|center_vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -91,11 +91,11 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinnerType"
+        android:id="@+id/SpriteSpinnerType"
         android:layout_gravity="left|center_vertical"
-        android:layout_above="@+id/textGOD"
-        android:layout_toRightOf="@+id/checkBoxRegistered"
-        android:layout_toEndOf="@+id/checkBoxRegistered" />
+        android:layout_alignTop="@+id/editForce"
+        android:layout_toRightOf="@+id/textResonance"
+        android:layout_toEndOf="@+id/textResonance" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -129,8 +129,98 @@
         android:id="@+id/checkBoxRegistered"
         android:checked="false"
         android:layout_gravity="right|top"
-        android:layout_alignTop="@+id/textForce"
-        android:layout_toRightOf="@+id/textForce"
-        android:layout_toEndOf="@+id/textForce" />
+        android:layout_above="@+id/textAttack"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Attack"
+        android:id="@+id/textAttack"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Sleaze"
+        android:id="@+id/textSleaze"
+        android:layout_below="@+id/textAttack"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Data Processing"
+        android:id="@+id/textDataProcessing"
+        android:layout_below="@+id/textSleaze"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Firewall"
+        android:id="@+id/textFirewall"
+        android:layout_below="@+id/textDataProcessing"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Initiative"
+        android:id="@+id/textInitiative"
+        android:layout_below="@+id/textFirewall"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Initiative Dice 4D6"
+        android:id="@+id/textInitiativeDice"
+        android:layout_below="@+id/textInitiative"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Resonance"
+        android:id="@+id/textResonance"
+        android:layout_below="@+id/textInitiativeDice"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Skills"
+        android:id="@+id/textSkills"
+        android:layout_below="@+id/textResonance"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Powers"
+        android:id="@+id/textPowers"
+        android:layout_below="@+id/textSkills"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
         adapter = new ViewPagerAdapter(MainActivity.this);
         // Binds the Adapter to the ViewPager
         viewPager.setAdapter(adapter);
+        /*
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
@@ -45,6 +46,7 @@ public class MainActivity extends Activity {
 
             }
         });
+        */
 
     }
 

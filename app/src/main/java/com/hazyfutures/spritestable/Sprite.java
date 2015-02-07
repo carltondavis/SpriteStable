@@ -17,9 +17,10 @@ public class Sprite {
     private int Rating = 1;
     private int ServicesOwed = 0;
     private int SpriteType = 1;
-    private int OverwatchScore = 0;
+    private int GODScore = 0;
     private int Condition = 0;
     private int Registered = 0;
+
 
 
     public String getType() {
@@ -103,15 +104,15 @@ public class Sprite {
         this.SpriteType = spriteType;
     }
 
-    public int getOverwatchScore() {
-        return OverwatchScore;
+    public int getGODScore() {
+        return GODScore;
     }
 
-    public void setOverwatchScore(Integer OverwatchScore) {
-        if(null==OverwatchScore) {
-            OverwatchScore = 0;
+    public void setGODScore(Integer GODScore) {
+        if(null==GODScore) {
+            GODScore = 0;
         }
-        this.OverwatchScore = OverwatchScore;
+        this.GODScore = GODScore;
     }
 
     public int getRegistered() {
