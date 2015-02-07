@@ -1,15 +1,12 @@
 package com.hazyfutures.spritestable;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     // Declare Variables
-    ViewPager viewPager;
-    PagerAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,15 +14,10 @@ public class MainActivity extends Activity {
         // Get the view from viewpager_main.xml
         setContentView(R.layout.viewpager_main);
 
-        // Generate sample data
 
-        // Locate the ViewPager in viewpager_main.xml
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        // Pass results to ViewPagerAdapter Class
-        //TODO pass persistant data object
-        adapter = new ViewPagerAdapter(MainActivity.this);
-        // Binds the Adapter to the ViewPager
-        viewPager.setAdapter(adapter);
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+
         /*
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
