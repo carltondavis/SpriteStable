@@ -27,6 +27,7 @@ public class Dice {
             hits = Limit;
         }
 //TODO: Glitches
+//Todo: Critical Glitches
         return hits;
     }
 }

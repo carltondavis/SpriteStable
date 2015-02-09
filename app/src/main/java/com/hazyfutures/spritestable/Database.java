@@ -42,7 +42,7 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
 
     public Database(Context context) {
@@ -100,6 +100,28 @@ public class Database extends SQLiteOpenHelper {
         values.put(Database.COLUMN_VALUE, 0);
         database.insert(Database.TABLE_STATS, null,
                 values);
+
+        values.put(Database.COLUMN_STAT, "HoursThisSession");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "SleeplessHours");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "ConsecutiveRest");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "HoursSinceKarmaRefresh");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+
 
         spritevalues.put(Database.COLUMN_RATING, 1);
         spritevalues.put(Database.COLUMN_TYPE, 1);

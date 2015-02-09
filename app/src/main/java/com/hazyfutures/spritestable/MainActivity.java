@@ -7,19 +7,20 @@ import android.support.v4.view.ViewPager;
 public class MainActivity extends FragmentActivity {
 
     // Declare Variables
-
+    public PersistentValues data = new PersistentValues();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Get the view from viewpager_main.xml
+        data.RestoreFromDB(this);
         setContentView(R.layout.viewpager_main);
 
 
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
 
-        /*
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+/*
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
 
@@ -29,8 +30,7 @@ public class MainActivity extends FragmentActivity {
             public void onPageSelected(int i) {
 
                 //This code is run every time a new page is chosen
-
-
+)
             }
 
             @Override
@@ -38,9 +38,27 @@ public class MainActivity extends FragmentActivity {
 
             }
         });
-        */
+
+*/
 
     }
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
 
+        if (data != null) {
+            data.SaveAllToDB();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+
+        if (data == null) {
+            data.RestoreFromDB(this);
+        }
+    }
 
 }

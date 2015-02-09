@@ -4,9 +4,12 @@
       <w>actualsleepy</w>
       <w>cybercombat</w>
       <w>floorsleepy</w>
+      <w>hskr</w>
+      <w>physicaltext</w>
       <w>sleepycounter</w>
       <w>sleepydamage</w>
       <w>sleepyresist</w>
+      <w>stuntext</w>
     </words>
   </dictionary>
 </component>

@@ -10,7 +10,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,8 @@ public class StatsDataSource {
         ContentValues value = new ContentValues();
         value.put(Database.COLUMN_VALUE, Value);
         int val = database.update(Database.TABLE_STATS, value, Database.COLUMN_STAT + " = '" + attribute + "'", null);
-        Log.i("SaveStat: ", attribute + ":" + Value + "Return:" + val);
+       // Log.i("SaveStat: ", attribute + ":" + Value + "Return:" + val);
+
     }
 
     public void deleteSprite(Sprite sprite){
@@ -97,11 +97,11 @@ public class StatsDataSource {
         try {
             int val = database.update(Database.TABLE_SPRITES, value, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
-                Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+                //Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
                 database.setTransactionSuccessful();
             }else{
                 if(database.insert(Database.TABLE_SPRITES, null,value)!=-1){
-                    Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+                  //  Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
                     database.setTransactionSuccessful();
                 }
             }
@@ -146,7 +146,7 @@ public class StatsDataSource {
         sprite.setGODScore(Integer.parseInt(cursor.getString(1)));
         sprite.setCondition(Integer.parseInt(cursor.getString(4)));
 
-        Log.i("LoadSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+       // Log.i("LoadSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
         return sprite;
     }
 

@@ -7,58 +7,82 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class StatFragment extends Fragment {
-    PersistentValues data = new PersistentValues();
+    
+    MainActivity Main = (MainActivity)getActivity();
+//Todo: Add onResume code to update stats from DB
+//Todo add multiple character option
+//TODO Test update for each attribute
+//Todo add a Spirit/Mage handler option
+//Display display;// = new Display(getActivity());
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Main = (MainActivity)getActivity();
+        //Toast.makeText(getActivity(), "Stat.onResume()", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_stat, container, false);
-        data.RestoreFromDB(v.getContext());
+        Main = (MainActivity)getActivity();
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
 */
-/*
-        CreateListener(R.id.editBody, data.pvBody);
-        CreateListener(R.id.editWillpower, data.pvWillpower );
-        CreateListener(R.id.editIntuition, data.pvIntuition);
-        CreateListener(R.id.editLogic, data.pvLogic);
-        CreateListener(R.id.editCharisma, data.pvCharisma);
-        CreateListener(R.id.editCompiling, data.pvCompiling);
-        CreateListener(R.id.editRegistering, data.pvRegistering);
-        CreateListener(R.id.editResonance, data.pvResonance);
-        CreateListener(R.id.editStun, data.pvStun);
-        CreateListener(R.id.editPhysical, data.pvPhysical);
-        CreateListener(R.id.editKarma, data.pvKarma);
-        CreateListener(R.id.editKarmaUsed, data.pvKarmaUsed);
-        CreateListener(R.id.editConsecutiveHoursRested, data.pvConsecutiveRest);
-        CreateListener(R.id.editHoursWithoutSleep, data.pvSleeplessHours);
-        CreateListener(R.id.editHoursThisSession, data.pvHoursThisSession);
-        CreateListener(R.id.editHoursSinceKarmaRefresh, data.pvHoursSinceKarmaRefresh);
-*/
+
+        CreateListener(R.id.editBody, Main.data.pvBody, v);
+        CreateListener(R.id.editWillpower, Main.data.pvWillpower , v);
+        CreateListener(R.id.editIntuition, Main.data.pvIntuition, v);
+        CreateListener(R.id.editLogic, Main.data.pvLogic, v);
+        CreateListener(R.id.editCharisma, Main.data.pvCharisma, v);
+        CreateListener(R.id.editCompiling, Main.data.pvCompiling, v);
+        CreateListener(R.id.editRegistering, Main.data.pvRegistering, v);
+        CreateListener(R.id.editResonance, Main.data.pvResonance, v);
+        CreateListener(R.id.editStun, Main.data.pvStun, v);
+        CreateListener(R.id.editPhysical, Main.data.pvPhysical, v);
+        CreateListener(R.id.editKarma, Main.data.pvKarma, v);
+        CreateListener(R.id.editKarmaUsed, Main.data.pvKarmaUsed, v);
+        CreateListener(R.id.editConsecutiveHoursRested, Main.data.pvConsecutiveRest, v);
+        CreateListener(R.id.editHoursWithoutSleep, Main.data.pvSleeplessHours, v);
+        CreateListener(R.id.editHoursThisSession, Main.data.pvHoursThisSession, v);
+        CreateListener(R.id.editHoursSinceKarmaRefresh, Main.data.pvHoursSinceKarmaRefresh, v);
+        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
         return v;
     }
 
-    public static StatFragment newInstance(PersistentValues data) {
+    public static StatFragment newInstance() {
 
         StatFragment f = new StatFragment();
-        Bundle b = new Bundle();
+     /*   Bundle b = new Bundle();
         //b.putString("msg", text);
-
         f.setArguments(b);
-
+*/
         return f;
     }
-    private void CreateListener(Integer etId, Integer value) {
-        final EditText et = (EditText) this.getView().findViewById(etId);
+    private void CreateListener(Integer etId, Integer value, View view) {
+
+
+
+        final EditText et = (EditText) view.findViewById(etId);
         et.setText(String.valueOf(value));
         et.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (!s.toString().equals(et.getText())) {
                     UpdateStatsStats(et);
+
+
                     //UpdateCompileDisplay(vg);
+
                 }
             }
 
@@ -69,61 +93,290 @@ public class StatFragment extends Fragment {
             }
         });
     }
+    private void UpdateDamage() {
+        RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.stunTrack);
+        if(stunDamage!=null) {
+            int MaxStun = (int) Math.floor(Main.data.pvWillpower / 2) + 9;
+            int MaxPhysical = (int) Math.floor(Main.data.pvBody / 2) + 9;
+            int _overflow = 0;
+
+            stunDamage.setClickable(false);
+            stunDamage.setEnabled(false);
+            if (stunDamage.getRating() != Main.data.pvStun || MaxStun != stunDamage.getMax()) {
+                stunDamage.setNumStars(MaxStun);
+                stunDamage.setMax(MaxStun);
+                if (Main.data.pvStun > MaxStun) {//Did we exceed the stun condition monitor?
+                    Main.data.pvPhysical += (int) Math.floor((Main.data.pvStun - MaxStun) / 2);  //(TotalStun - StunMax)/2 rounded down is overflow
+                    Main.data.pvStun = MaxStun;
+                }
+                stunDamage.setRating(Main.data.pvStun);
+            }
+            RatingBar physicalDamage = (RatingBar) getActivity().findViewById(R.id.physicalTrack);
+            physicalDamage.setClickable(false);
+            physicalDamage.setEnabled(false);
+            if (physicalDamage.getRating() != Main.data.pvPhysical || MaxPhysical != physicalDamage.getMax()) {
+                physicalDamage.setNumStars(MaxPhysical);
+                physicalDamage.setMax(MaxPhysical);
+
+                RatingBar overflowDamage = (RatingBar) getActivity().findViewById(R.id.overflowTrack);
+                overflowDamage.setClickable(false);
+                overflowDamage.setEnabled(false);
+                overflowDamage.setNumStars(Main.data.pvBody);
+                overflowDamage.setMax(Main.data.pvBody);
+
+                if (Main.data.pvPhysical > MaxPhysical) {
+                    _overflow = Main.data.pvPhysical - MaxPhysical;
+                }
+                physicalDamage.setRating(Main.data.pvPhysical - _overflow);//Don't count overflow when drawing boxes of damage
+                overflowDamage.setRating(_overflow);
+            }
+            UpdateCompile();
+            UpdateUseService();
+            UpdateRest();
+            UpdateHeal();
+        }
+    }
+
+    private void UpdateForcePicker() {
+        UpdateForcePicker(Main.data.getCurrentSprite().getServicesOwed() == 0);  //Looking at an unCompiled Sprite
+    }
+
+    private void UpdateForcePicker(boolean enabled) {
+        NumberPicker np = (NumberPicker) getActivity().findViewById(R.id.npSpriteRating);
+        if(np!=null) {
+            np.setMaxValue(Main.data.pvResonance * 2);
+        }
+    }
+
+    private void UpdateCheckBoxes() {
+        CheckBox checkDrain = (CheckBox) getActivity().findViewById(R.id.DrainKarma);
+        if(checkDrain!=null) {
+            CheckBox checkSkill = (CheckBox) getActivity().findViewById(R.id.SkillKarma);
+            if (checkDrain.isChecked()) {
+                if (Main.data.pvKarmaUsed < (Main.data.pvKarma - 1)) {
+                    checkSkill.setEnabled(true);
+                } else {
+                    checkSkill.setEnabled(false);
+                }
+            } else {
+                if (Main.data.pvKarmaUsed < Main.data.pvKarma) {
+                    checkSkill.setEnabled(true);
+                } else {
+                    checkSkill.setEnabled(false);
+                }
+            }
+            if (checkSkill.isChecked()) {
+                if (Main.data.pvKarmaUsed < (Main.data.pvKarma - 1)) {
+                    checkDrain.setEnabled(true);
+                } else {
+                    checkDrain.setEnabled(false);
+                }
+            } else {
+                if (Main.data.pvKarmaUsed < (Main.data.pvKarma)) {
+                    checkDrain.setEnabled(true);
+                } else {
+                    checkDrain.setEnabled(false);
+                }
+            }
+        }
+    }
 
     private void UpdateStatsStats(View view) {
-        EditText et = (EditText) this.getView().findViewById(view.getId());
+        EditText et = (EditText) getActivity().findViewById(view.getId());
         if (!et.getText().toString().isEmpty()) {
             Integer value = Integer.valueOf(et.getText().toString());
 
             switch (view.getId()) {
                 case R.id.editBody:
-                    data.pvBody = value;
-                    data.SaveStatToDB("Body", value);
+                    if(Main.data.pvBody != value){
+                    Main.data.pvBody = value;
+                    Main.data.SaveStatToDB("Body", value);
+                    //Change Physical boxes
+                    //Change IsDead stuff
+                    UpdateDamage();
+                    }
                     break;
                 case R.id.editWillpower:
-                    data.pvWillpower = value;
-                    data.SaveStatToDB("Willpower", value);
+                    if(Main.data.pvWillpower != value) {
+                        Main.data.pvWillpower = value;
+                        Main.data.SaveStatToDB("Willpower", value);
+                        //Change stun boxes
+                        //Change IsConscious stuff
+                        UpdateDamage();
+                    }
                     break;
                 case R.id.editIntuition:
-                    data.pvIntuition = value;
-                    data.SaveStatToDB("Intuition", value);
+                    if(Main.data.pvIntuition != value) {
+                        Main.data.pvIntuition = value;
+                        Main.data.SaveStatToDB("Intuition", value);
+                    }
                     break;
                 case R.id.editLogic:
-                    data.pvLogic = value;
-                    data.SaveStatToDB("Logic", value);
+                    if(Main.data.pvLogic != value) {
+                        Main.data.pvLogic = value;
+                        Main.data.SaveStatToDB("Logic", value);
+                        //Change Register button availability
+                        UpdateCompile();
+                    }
                     break;
                 case R.id.editCharisma:
-                    data.pvCharisma = value;
-                    data.SaveStatToDB("Charisma", value);
+                    if(Main.data.pvCharisma != value) {
+                        Main.data.pvCharisma = value;
+                        Main.data.SaveStatToDB("Charisma", value);
+                    }
                     break;
                 case R.id.editCompiling:
-                    data.pvCompiling = value;
-                    data.SaveStatToDB("Compiling", value);
+                    if(Main.data.pvCompiling != value) {
+                        Main.data.pvCompiling = value;
+                        Main.data.SaveStatToDB("Compiling", value);
+                    }
                     break;
                 case R.id.editRegistering:
-                    data.pvRegistering = value;
-                    data.SaveStatToDB("Registering", value);
+                    if(Main.data.pvRegistering != value) {
+                        Main.data.pvRegistering = value;
+                        Main.data.SaveStatToDB("Registering", value);
+                    }
                     break;
                 case R.id.editResonance:
-                    data.pvResonance = value;
-                    data.SaveStatToDB("Resonance", value);
+                    if(Main.data.pvResonance != value) {
+                        Main.data.pvResonance = value;
+                        Main.data.SaveStatToDB("Resonance", value);
+                        //Change max Force spinner
+                        UpdateForcePicker();
+                    }
                     break;
                 case R.id.editStun:
-                    data.pvStun = value;
-                    data.SaveStatToDB("Stun", value);
+                    if(Main.data.pvStun != value) {
+                        Main.data.pvStun = value;
+                        Main.data.SaveStatToDB("Stun", value);
+                        //Change same as willpower + number of boxes
+                        UpdateDamage();
+                    }
                     break;
                 case R.id.editPhysical:
-                    data.pvPhysical = value;
+                    if(Main.data.pvPhysical != value) {
+                        Main.data.pvPhysical = value;
 
-                    data.SaveStatToDB("Physical", value);
+                        Main.data.SaveStatToDB("Physical", value);
+                        //Change same as body + number of boxes
+                        UpdateDamage();
+                    }
                     break;
                 case R.id.editKarma:
-                    data.pvKarma = value;
-                    data.SaveStatToDB("Karma", value);
+                    if(Main.data.pvKarma != value) {
+                        Main.data.pvKarma = value;
+                        Main.data.SaveStatToDB("Karma", value);
+                        //Change checkboxes
+                        UpdateCheckBoxes();
+                    }
+                    break;
+                case R.id.editKarmaUsed:
+                    if(Main.data.pvKarmaUsed != value){
+                    Main.data.pvKarmaUsed = value;
+                    Main.data.SaveStatToDB("KarmaUsed", value);
+                    //Change checkboxes
+                    UpdateCheckBoxes();
+                    }
+                    break;
+                case R.id.editHoursThisSession:
+                    if(Main.data.pvHoursThisSession != value) {
+                        Main.data.pvHoursThisSession = value;
+                        Main.data.SaveStatToDB("HoursThisSession", value);
+                        //Change Time
+                        TextView tv = (TextView) getActivity().findViewById(R.id.valuesHours);
+                        if (tv != null) {
+                            tv.setText(String.valueOf(Main.data.pvHoursThisSession));
+                        }
+                    }
+                    break;
+                case R.id.editConsecutiveHoursRested:
+                    if(Main.data.pvConsecutiveRest != value) {
+                        Main.data.pvConsecutiveRest = value;
+                        Main.data.SaveStatToDB("ConsecutiveRest", value);
+                    }
+                    break;
+                case R.id.editHoursWithoutSleep:
+                    if(Main.data.pvSleeplessHours != value) {
+                        Main.data.pvSleeplessHours = value;
+                        Main.data.SaveStatToDB("SleeplessHours", value);
+                    }
+                    break;
+                case R.id.editHoursSinceKarmaRefresh:
+                    if(Main.data.pvHoursSinceKarmaRefresh != value) {
+                        Main.data.pvHoursSinceKarmaRefresh = value;
+                        Main.data.SaveStatToDB("HoursSinceKarmaRefresh", value);
+                    }
                     break;
             }
         }
 
 
+    }
+    private void UpdateCompile() {
+        UpdateCompile(Main.data.getCurrentSprite().getServicesOwed() == 0, IsConscious());
+    }
+
+    private void UpdateCompile(boolean isCompile, boolean enabled) {
+        Button Compile = (Button) getActivity().findViewById(R.id.Compile);
+        if(Compile!=null) {
+            if (isCompile) {
+                Compile.setText("Compile");
+            } else {
+                Compile.setText("Register");
+                //Disable Registration if there are more than LOGIC sprites registered.  Because there's always an unregistered sprite floating around that means the number of sprites-1== number registered
+                if (((Main.data.pvSprites.size()) > Main.data.pvLogic) && Main.data.getCurrentSprite().getRegistered() == 0) { //Also only disable if we're looking at an unregistered sprite.  We can always get more services.
+                    enabled = false;
+                }
+            }
+            Compile.setClickable(enabled);
+            Compile.setEnabled(enabled);
+        }
+    }
+    //UpdateRest Button        Enabled
+    private void UpdateRest() {
+        UpdateRest((Main.data.pvStun > 0) && IsAlive());
+    }
+
+    private void UpdateRest(boolean enabled) {
+        Button Rest = (Button) getActivity().findViewById(R.id.Rest);
+        if(Rest!=null) {
+            Rest.setClickable(enabled);
+            Rest.setEnabled(enabled);
+        }
+    }
+
+    //disable heal when stun, re-enable when no-stun and damage, disable when no damage
+    private void UpdateHeal() {
+        UpdateHeal((Main.data.pvStun == 0) && (Main.data.pvPhysical > 0) && IsAlive());
+    }
+
+    private void UpdateHeal(boolean enabled) {
+        Button Heal = (Button) getActivity().findViewById(R.id.buttonHeal);
+        if(Heal!=null) {
+            Heal.setClickable(enabled);
+            Heal.setEnabled(enabled);
+        }
+    }
+
+    private boolean IsConscious() {
+        return (Main.data.pvStun < (9 + Math.floor(Main.data.pvWillpower / 2))) && (Main.data.pvPhysical < (9 + Math.floor(Main.data.pvBody / 2)));
+    }
+
+    private boolean IsAlive() {
+        return (Main.data.pvPhysical < (9 + Math.floor(Main.data.pvBody / 2)));
+    }
+
+    //UpdateUseService Button  Enabled
+    private void UpdateUseService() {
+        UpdateUseService(Main.data.getCurrentSprite().getServicesOwed() > 0 && IsConscious());// Has Services, isn't unconscious, isn't dying.
+    }
+
+    private void UpdateUseService(boolean enabled) {
+        Button UseService = (Button) getActivity().findViewById(R.id.buttonUseService);
+        if(UseService!=null) {
+            UpdateCompile(Main.data.getCurrentSprite().getServicesOwed() == 0, IsConscious());
+            UseService.setClickable(enabled);
+            UseService.setEnabled(enabled);
+        }
     }
 }
