@@ -11,6 +11,7 @@ public class QualitiesFragment extends Fragment {
 //TODO QUALITIES FRAGMENT:
 
 //Todo: Create database to hold these records
+//ID, Name, Rating
 //Todo: UI widgets for each entry
 //Todo: Code to load and save info
 //Todo: Add modifiers for any given die rolls to make these stats generic (MatrixMod, PerceptionMod, HealingMod, etc)
@@ -43,7 +44,7 @@ public class QualitiesFragment extends Fragment {
 //Dimmer bulb: -1 logic + intuition tests
 //Illiterate: -2 matrix tests
 //Oblivious 1-2: (1) -2 perception tests, (2) +1 threshold perception tests
-//Pie Iesu Domine: High pain tolerence 1, Always has one box physical damage
+//Pie Iesu Domine: High pain tolerance 1, Always has one box physical damage
 //Noise reduction from equipment
 //TODO Add code to Compile to handle qualities
 //Todo Add onResume to pull from DB when restoring?

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //Fancy UI:
+//TODO: Redesign page to work with tiny screens
 //TODO FIXED? Something multiplying sprites in list.
 //Todo Heal after 24 hours consecutive rest
 //Todo karma regen after 8 hours consecutive rest
@@ -44,6 +45,7 @@ public class CompileFragment extends Fragment {
     //UpdateCompile Button text   Register/Compile  Enabled
     private void UpdateCompile() {
         UpdateCompile(Main.data.getCurrentSprite().getServicesOwed() == 0, IsConscious());
+
     }
 
     private void UpdateCompile(boolean isCompile, boolean enabled) {

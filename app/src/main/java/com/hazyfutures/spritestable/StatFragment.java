@@ -37,6 +37,7 @@ public class StatFragment extends Fragment {
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
 */
+//TODO: Make Stats a scrolling fragment
 
         CreateListener(R.id.editBody, Main.data.pvBody, v);
         CreateListener(R.id.editWillpower, Main.data.pvWillpower , v);

@@ -13,7 +13,7 @@
             android:id="@+id/valuesHours"
             android:layout_gravity="center_horizontal|left"
             android:text="@string/Hours"
-            android:layout_below="@+id/textOverflow"
+            android:layout_below="@+id/overflowTrack"
             android:layout_toRightOf="@+id/textHours"
             android:layout_toEndOf="@+id/textHours" />
         <TextView
@@ -24,7 +24,7 @@
             android:id="@+id/textHours"
             android:layout_gravity="left"
 
-            android:layout_below="@+id/textOverflow"
+            android:layout_below="@+id/overflowTrack"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -35,24 +35,40 @@
             android:text="Stun Damage"
             android:id="@+id/textStunDamage"
 
-            android:paddingBottom="9dp"
             android:layout_below="@+id/CompileSpinnerSprite"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
-        <TextView
+    <RatingBar
+        android:layout_height="30sp"
+        android:layout_width="wrap_content"
+        android:id="@+id/stunTrack"
+        style="@style/damageRatingBar"
+        android:numStars="@integer/StunTrack"
+        android:rating="0"
+        android:stepSize="1"
+        android:clickable="false"
+        android:layout_gravity="start"
+
+        android:layout_alignWithParentIfMissing="false"
+        android:longClickable="false"
+        android:mirrorForRtl="false"
+        android:nestedScrollingEnabled="false"
+        android:layout_below="@+id/textStunDamage"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Physical Damage"
             android:id="@+id/textPhysicalDamage"
-
             android:layout_gravity="start"
-            android:layout_below="@id/textStunDamage"
-            android:paddingBottom="9dp"
-            android:layout_marginTop="-10dp" />
+            android:layout_below="@id/stunTrack"
+            android:layout_marginTop="5dp" />
 
         <RatingBar
-            android:layout_height="wrap_content"
+            android:layout_height="30sp"
             android:layout_width="wrap_content"
             android:id="@+id/physicalTrack"
             style="@style/damageRatingBar"
@@ -61,29 +77,10 @@
             android:stepSize="1"
             android:clickable="false"
             android:layout_gravity="start"
-            android:layout_toRightOf="@id/textPhysicalDamage"
-            android:layout_alignBottom="@id/textPhysicalDamage"
-            android:layout_marginLeft="5dp"/>
+            android:layout_below="@+id/textPhysicalDamage"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-        <RatingBar
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/stunTrack"
-            style="@style/damageRatingBar"
-            android:numStars="@integer/StunTrack"
-            android:rating="0"
-            android:stepSize="1"
-            android:clickable="false"
-            android:layout_gravity="start"
-            android:layout_alignLeft="@+id/physicalTrack"
-            android:layout_alignBottom="@+id/textStunDamage"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_alignWithParentIfMissing="false"
-            android:longClickable="false"
-            android:mirrorForRtl="false"
-            android:nestedScrollingEnabled="false" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -93,12 +90,10 @@
             android:id="@+id/textOverflow"
 
             android:layout_gravity="start"
-            android:layout_below="@id/textPhysicalDamage"
-            android:paddingBottom="9dp"
-            android:layout_marginTop="-10dp" />
+            android:layout_below="@id/physicalTrack" />
 
         <RatingBar
-            android:layout_height="wrap_content"
+            android:layout_height="30sp"
             android:layout_width="wrap_content"
             android:id="@+id/overflowTrack"
             android:numStars="@integer/OverflowTrack"
@@ -106,11 +101,10 @@
             android:stepSize="1"
             android:clickable="false"
             android:layout_gravity="start"
-            android:layout_toRightOf="@id/textPhysicalDamage"
-            android:layout_alignBottom="@id/textOverflow"
-            android:layout_marginLeft="5dp"
             style="@style/damageRatingBar"
-            android:layout_alignParentBottom="false" />
+            android:layout_below="@+id/textOverflow"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -152,9 +146,9 @@
             android:text="@string/Rest"
             android:layout_gravity="left"
 
-            android:layout_below="@+id/npSpriteRating"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignBottom="@+id/npSpriteRating"
+            android:layout_toRightOf="@+id/Compile"
+            android:layout_toEndOf="@+id/Compile" />
 
     <Button
             android:layout_width="wrap_content"
@@ -177,8 +171,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/CompileSpinnerSpriteType"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/npSpriteRating"/>
+            android:layout_alignTop="@+id/npSpriteRating"
+            android:layout_toRightOf="@+id/Compile"
+            android:layout_toEndOf="@+id/Compile" />
 
         <NumberPicker
             android:layout_width="wrap_content"
@@ -193,11 +188,9 @@
         android:layout_height="wrap_content"
         android:text="Sleep"
         android:id="@+id/buttonSleep"
-        android:layout_below="@+id/Rest"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/Rest"
-        android:layout_alignEnd="@+id/Rest" />
+        android:layout_alignTop="@+id/Rest"
+        android:layout_toRightOf="@+id/Rest"
+        android:layout_toEndOf="@+id/Rest" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -205,11 +198,9 @@
         android:layout_height="wrap_content"
         android:text="Heal"
         android:id="@+id/buttonHeal"
-        android:layout_below="@+id/buttonSleep"
-        android:layout_alignRight="@+id/buttonSleep"
-        android:layout_alignEnd="@+id/buttonSleep"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignTop="@+id/buttonSleep"
+        android:layout_toRightOf="@+id/buttonSleep"
+        android:layout_toEndOf="@+id/buttonSleep" />
 
 
 </RelativeLayout>

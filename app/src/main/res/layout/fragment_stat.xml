@@ -263,7 +263,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Consecutive Hours Rested"
         android:id="@+id/textConsecutiveHoursRested"
-        android:layout_below="@+id/editKarmaUsed"
         android:layout_alignBottom="@+id/editConsecutiveHoursRested"
         android:layout_toRightOf="@+id/editConsecutiveHoursRested"
         />
@@ -285,9 +284,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Hours Without Sleep"
         android:id="@+id/textHoursWithoutSleep"
-        android:layout_below="@+id/editConsecutiveHoursRested"
-        android:layout_alignBottom="@+id/editHoursThisSession"
-        android:layout_toRightOf="@+id/editHoursThisSession" />
+        android:layout_toRightOf="@+id/editHoursThisSession"
+        android:layout_alignBottom="@+id/editHoursWithoutSleep" />
 
     <EditText
         android:layout_width="40dp"
@@ -306,7 +304,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Hours This Session"
         android:id="@+id/textHoursThisSession"
-        android:layout_below="@+id/editHoursWithoutSleep"
         android:layout_alignBottom="@+id/editHoursThisSession"
         android:layout_toRightOf="@+id/editHoursThisSession"
          />
@@ -327,7 +324,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Hours Since Karma Refresh"
         android:id="@+id/textHoursSinceKarmaRefresh"
-        android:layout_below="@+id/editHoursThisSession"
         android:layout_alignBottom="@+id/editHoursSinceKarmaRefresh"
         android:layout_toRightOf="@+id/editHoursSinceKarmaRefresh"
         />
