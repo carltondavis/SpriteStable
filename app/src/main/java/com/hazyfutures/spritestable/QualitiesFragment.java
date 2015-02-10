@@ -47,6 +47,16 @@ public class QualitiesFragment extends Fragment {
 //Noise reduction from equipment
 //TODO Add code to Compile to handle qualities
 //Todo Add onResume to pull from DB when restoring?
+    MainActivity Main = (MainActivity)getActivity();
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Main = (MainActivity)getActivity();
+        //Toast.makeText(getActivity(), "Stat.onResume()", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -19,9 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //Fancy UI:
-//TODO: Update Stats page when changing damage,
-//TODO: Update Stats page when changing karma used,
-//TODO: Update Stats page when changing and time
 //TODO Something multiplying sprites in list.
 //Todo Heal after 24 hours consecutive rest
 //Todo karma regen after 8 hours consecutive rest
@@ -163,10 +160,6 @@ public class CompileFragment extends Fragment {
                             Main.data.pvActiveSpriteId = position;
                             //UpdateSprite();
                             UpdateDisplay();
-                        } else {
-                            // UpdateUseService(container);
-                            // UpdateCompile(container);
-
                         }
                     }
 
@@ -181,6 +174,7 @@ public class CompileFragment extends Fragment {
                             AdapterView<?> parent, View view, int position, long id) {
 
                         UpdateSpriteType(position + 1);
+                        Main.data.SaveSpriteToDB();
                         UpdateCompileSpriteList();
                         Main.data.SaveSpriteToDB();
 
@@ -324,6 +318,7 @@ public class CompileFragment extends Fragment {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 Main.data.getCurrentSprite().setRating(newVal);
+                Main.data.SaveSpriteToDB();
                 UpdateCompileSpriteList();
                 Main.data.SaveSpriteToDB();
             }
@@ -432,6 +427,7 @@ public class CompileFragment extends Fragment {
                     if (Main.data.getCurrentSprite().getServicesOwed() == 0) {
                         Main.data.getCurrentSprite().setRegistered(0);
                     }
+                    Main.data.SaveSpriteToDB();
                     //Drain Resistance
                     if (SpriteRoll < 1) {
                         SpriteRoll = 1;
@@ -519,10 +515,13 @@ public class CompileFragment extends Fragment {
     }
 
     private void UpdateServices(int services) {
-        Main.data.getCurrentSprite().setServicesOwed(services);
-        UpdateCompileSpriteList();
-        UpdateCompile();
-        UpdateUseService();
+        if(services!=Main.data.getCurrentSprite().getServicesOwed()) {
+            Main.data.getCurrentSprite().setServicesOwed(services);
+            Main.data.SaveSpriteToDB();
+            UpdateCompileSpriteList();
+            UpdateCompile();
+            UpdateUseService();
+        }
     }
 
     // /UpdateRating
@@ -531,8 +530,10 @@ public class CompileFragment extends Fragment {
     }
 
     private void UpdateRating(int rating) {
-        Main.data.getCurrentSprite().setRating(rating);
-        UpdateForcePicker();
+        if(rating!=Main.data.getCurrentSprite().getRating()) {
+            Main.data.getCurrentSprite().setRating(rating);
+            UpdateForcePicker();
+        }
     }
 
     //UpdateHours
@@ -542,9 +543,11 @@ public class CompileFragment extends Fragment {
 
     private void UpdateHours(int hours) {
         TextView valueHours = (TextView) getActivity().findViewById(R.id.valuesHours);
-        valueHours.setText(String.valueOf(hours));
-        Main.data.pvHoursThisSession = hours;
-        UpdateStatTime();
+        if(valueHours.getText().toString()!=String.valueOf(hours)) {
+            valueHours.setText(String.valueOf(hours));
+            Main.data.pvHoursThisSession = hours;
+            UpdateStatTime();
+        }
     }
 
     //UpdateDamage             Compile Button, Rest, Use Service
@@ -625,7 +628,7 @@ public class CompileFragment extends Fragment {
     }
 
     private void UpdateCompileSpriteList() {
-        Main.data.UpdateSprite(Main.data.getCurrentSprite());
+        //Main.data.SaveSpriteToDB(); Should always be up to date
         Main.data.UpdateSpriteList();
         Spinner spriteSpinner = (Spinner) getActivity().findViewById(R.id.CompileSpinnerSprite);                                             //Update the dropdown
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Main.data.pvSpriteList);

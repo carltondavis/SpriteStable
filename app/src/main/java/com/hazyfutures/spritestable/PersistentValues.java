@@ -40,8 +40,13 @@ public class PersistentValues {
     }
 
     public void SaveSpriteToDB() {
-        datasource.updateSprite(pvSprites.get(pvActiveSpriteId));
+        SaveSpriteToDB(pvSprites.get(pvActiveSpriteId));
     }
+
+    public void SaveSpriteToDB(Sprite SpriteToSave){
+        datasource.updateSprite(SpriteToSave);
+    }
+
 
     public void SaveAllToDB() {
         datasource.updateStat("Stun", pvStun);
@@ -155,9 +160,6 @@ public class PersistentValues {
         datasource.deleteSprite(SpriteToDie);
     }
 
-    public void UpdateSprite(Sprite SpriteToSave){
-        datasource.updateSprite(SpriteToSave);
-    }
 
     public void UpdateSpriteList(){
         boolean unregisteredExists=false;

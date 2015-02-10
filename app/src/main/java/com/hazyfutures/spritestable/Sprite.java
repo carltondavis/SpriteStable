@@ -77,7 +77,7 @@ public class Sprite {
 
     public void setSpriteType(Integer SpriteType) {
         if(null==SpriteType) {
-            SpriteType = 0;
+            SpriteType = 1;
         }
         this.SpriteType = SpriteType;
     }

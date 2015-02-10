@@ -13,12 +13,10 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class StatFragment extends Fragment {
     
     MainActivity Main = (MainActivity)getActivity();
-//Todo: Add onResume code to update stats from DB
 //Todo add multiple character option
 //TODO Test update for each attribute
 //Todo add a Spirit/Mage handler option
@@ -56,7 +54,7 @@ public class StatFragment extends Fragment {
         CreateListener(R.id.editHoursWithoutSleep, Main.data.pvSleeplessHours, v);
         CreateListener(R.id.editHoursThisSession, Main.data.pvHoursThisSession, v);
         CreateListener(R.id.editHoursSinceKarmaRefresh, Main.data.pvHoursSinceKarmaRefresh, v);
-        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
         return v;
     }
 

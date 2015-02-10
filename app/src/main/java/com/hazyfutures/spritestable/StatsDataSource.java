@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,7 @@ public class StatsDataSource {
         try {
             int val = database.delete(Database.TABLE_SPRITES, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
+                Log.i("DELETESprite: ", "ID:" + sprite.getId());
                 database.setTransactionSuccessful();
             }
         } finally {
@@ -97,11 +99,11 @@ public class StatsDataSource {
         try {
             int val = database.update(Database.TABLE_SPRITES, value, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
-                //Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+                Log.i("UPDATESprite: ", "ID: " + sprite.getId());
                 database.setTransactionSuccessful();
             }else{
                 if(database.insert(Database.TABLE_SPRITES, null,value)!=-1){
-                  //  Log.i("SaveSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+                    Log.i("ADDSprite: ", "ID: " + sprite.getId());
                     database.setTransactionSuccessful();
                 }
             }
@@ -146,7 +148,7 @@ public class StatsDataSource {
         sprite.setGODScore(Integer.parseInt(cursor.getString(1)));
         sprite.setCondition(Integer.parseInt(cursor.getString(4)));
 
-       // Log.i("LoadSprite: ", "V" + sprite.getRating() + "S" + sprite.getServicesOwed() + "T" + sprite.getSpriteType() + "R" + sprite.getRegistered() + "O" + sprite.getGODScore() + "C" + sprite.getCondition() + "I" + sprite.getId());
+        Log.i("LoadSprite: ", "Grabbed ID: " + sprite.getId());
         return sprite;
     }
 
@@ -160,8 +162,10 @@ public class StatsDataSource {
         while (!cursor.isAfterLast()) {
             Sprite sprite = cursorToSprite(cursor);
             sprites.add(sprite);
-            sprites.set(sprites.size() - 1, sprite);
+            //sprites.set(sprites.size() - 1, sprite);
             //sprites.add(sprite);
+            Log.i("LoadSprite: ", "Added sprite ID: " + sprite.getId());
+
             cursor.moveToNext();
         }
         // make sure to close the cursor
