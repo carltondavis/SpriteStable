@@ -79,8 +79,8 @@
             android:width="100dp"
             android:id="@+id/editRegistering"
             android:layout_alignBottom="@+id/textCompiling"
-            android:layout_toRightOf="@+id/textResonance"
-            android:layout_toEndOf="@+id/textResonance" />
+            android:layout_toRightOf="@+id/textStatResonance"
+            android:layout_toEndOf="@+id/textStatResonance" />
 
         <EditText
             android:layout_width="40dp"
@@ -111,7 +111,7 @@
             android:inputType="number"
             android:ems="10"
             android:id="@+id/editPhysical"
-            android:layout_below="@+id/textResonance"
+            android:layout_below="@+id/textStatResonance"
             android:layout_alignLeft="@+id/editRegistering"
             android:layout_alignStart="@+id/editRegistering" />
 
@@ -184,7 +184,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Resonance"
-            android:id="@+id/textResonance"
+            android:id="@+id/textStatResonance"
             android:layout_alignBottom="@+id/editResonance"
             android:layout_toRightOf="@+id/editResonance" />
 

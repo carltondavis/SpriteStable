@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //Fancy UI:
-//TODO Something multiplying sprites in list.
+//TODO FIXED? Something multiplying sprites in list.
 //Todo Heal after 24 hours consecutive rest
 //Todo karma regen after 8 hours consecutive rest
 //todo test consecutive rest karma reset
@@ -636,6 +636,13 @@ public class CompileFragment extends Fragment {
         spriteSpinner.setAdapter(adp1);
         if (spriteSpinner.getSelectedItemPosition() != Main.data.pvActiveSpriteId) {
             spriteSpinner.setSelection(Main.data.pvActiveSpriteId);
+        }
+        Spinner sspriteSpinner = (Spinner) getActivity().findViewById(R.id.SpriteSpinnerSprites);                                             //Update the dropdown
+        if(sspriteSpinner!=null) {
+            sspriteSpinner.setAdapter(adp1);
+            if (sspriteSpinner.getSelectedItemPosition() != Main.data.pvActiveSpriteId) {
+                sspriteSpinner.setSelection(Main.data.pvActiveSpriteId);
+            }
         }
         //data.SaveAllToDB();Infinite loop
 

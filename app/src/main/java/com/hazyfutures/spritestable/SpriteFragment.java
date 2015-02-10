@@ -32,6 +32,7 @@ public class SpriteFragment extends Fragment {
         super.onResume();
 
         Main = (MainActivity)getActivity();
+        UpdateSpriteList();
         UpdateSpritePage();
         //Toast.makeText(getActivity(), "Stat.onResume()", Toast.LENGTH_SHORT).show();
     }
@@ -239,22 +240,6 @@ public class SpriteFragment extends Fragment {
 
     }
 
-    private void UpdateSprite(ViewGroup vg) {
-
-        final EditText editForce = (EditText) vg.findViewById(R.id.editForce);
-        final EditText editServices = (EditText) vg.findViewById(R.id.editServices);
-        final EditText editGOD = (EditText) vg.findViewById(R.id.editGod);
-        final EditText editDamage = (EditText) vg.findViewById(R.id.editDamage);
-        final CheckBox checkRegistered = (CheckBox) vg.findViewById(R.id.checkBoxRegistered);
-        final Spinner spinnerSpriteType = (Spinner) vg.findViewById(R.id.SpriteSpinnerType);
-        editForce.setText(String.valueOf(Main.data.getCurrentSprite().getRating()));
-        editServices.setText(String.valueOf(Main.data.getCurrentSprite().getServicesOwed()));
-        editGOD.setText(String.valueOf(Main.data.getCurrentSprite().getGODScore()));
-        editDamage.setText(String.valueOf(Main.data.getCurrentSprite().getCondition()));
-        checkRegistered.setChecked(Main.data.getCurrentSprite().getRegistered() == 1);
-        spinnerSpriteType.setSelection(Main.data.getCurrentSprite().getSpriteType() - 1);
-
-    }
 
     public void UpdateSpritePage() {
 
@@ -264,7 +249,7 @@ public class SpriteFragment extends Fragment {
         final TextView tvFirewall = (TextView) getActivity().findViewById(R.id.textFirewall);
         final TextView tvInitiative = (TextView) getActivity().findViewById(R.id.textInitiative);
         final TextView tvInitiativeDice = (TextView) getActivity().findViewById(R.id.textInitiativeDice);
-        final TextView tvResonance = (TextView) getActivity().findViewById(R.id.textResonance);
+        final TextView tvResonance = (TextView) getActivity().findViewById(R.id.textSpriteResonance);
         final TextView tvSkills = (TextView) getActivity().findViewById(R.id.textSkills);
         final TextView tvPowers = (TextView) getActivity().findViewById(R.id.textPowers);
         tvInitiativeDice.setText("4D6");

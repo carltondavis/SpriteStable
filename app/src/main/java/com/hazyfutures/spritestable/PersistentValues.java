@@ -202,7 +202,7 @@ public class PersistentValues {
             //Populate Sprite List with NEW option
             String title = "NEW SPRITE";
             pvSpriteList.add(title);
-            datasource.updateSprite(pvSprites.get(pvSpriteList.size()-1));  //Save the new sprite to the DB
+            pvSprites.get(pvSpriteList.size()-1).setId(datasource.insertSprite(pvSprites.get(pvSpriteList.size()-1)));  //Save the new sprite to the DB
         }
 
         //SaveAllToDB();

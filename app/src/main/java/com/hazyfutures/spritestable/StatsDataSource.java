@@ -78,7 +78,8 @@ public class StatsDataSource {
         try {
             int val = database.delete(Database.TABLE_SPRITES, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
-                Log.i("DELETESprite: ", "ID:" + sprite.getId());
+                Log.i("Sprite", "Delete ID:" + sprite.getId());
+                //todo I suspect things aren't actually deleting.
                 database.setTransactionSuccessful();
             }
         } finally {
@@ -86,6 +87,33 @@ public class StatsDataSource {
         }
     }
 
+    public long insertSprite(Sprite sprite){
+        ContentValues value = new ContentValues();
+        long  val=0;
+
+        value.put(Database.COLUMN_RATING, sprite.getRating());
+        value.put(Database.COLUMN_SERVICES, sprite.getServicesOwed());//Services
+        value.put(Database.COLUMN_TYPE, sprite.getSpriteType());//SpriteType
+        value.put(Database.COLUMN_REGISTERED,sprite.getRegistered());
+        value.put(Database.COLUMN_OVERWATCHSCORE, sprite.getGODScore());
+        value.put(Database.COLUMN_CONDITION, sprite.getCondition());
+        database.beginTransaction();
+        try {
+            val = database.insert(Database.TABLE_SPRITES, null,value);
+                if(val>0){
+                    sprite.setId(val);
+                    Log.i("Sprite", "Insert ID: " + val);
+                    database.setTransactionSuccessful();
+                }else{
+                    Log.i("Sprite", "FAILED UPDATE/INSERT");
+                }
+
+        } finally {
+            database.endTransaction();
+        }
+        return val;
+
+    }
     public void updateSprite(Sprite sprite) {
         ContentValues value = new ContentValues();
 
@@ -97,15 +125,12 @@ public class StatsDataSource {
         value.put(Database.COLUMN_CONDITION, sprite.getCondition());
         database.beginTransaction();
         try {
-            int val = database.update(Database.TABLE_SPRITES, value, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
+            long  val = database.update(Database.TABLE_SPRITES, value, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
-                Log.i("UPDATESprite: ", "ID: " + sprite.getId());
+                Log.i("Sprite", "Update ID: " + sprite.getId());
                 database.setTransactionSuccessful();
             }else{
-                if(database.insert(Database.TABLE_SPRITES, null,value)!=-1){
-                    Log.i("ADDSprite: ", "ID: " + sprite.getId());
-                    database.setTransactionSuccessful();
-                }
+                Log.i("Sprite", "FAILED UPDATE/INSERT");
             }
         } finally {
             database.endTransaction();
@@ -148,7 +173,7 @@ public class StatsDataSource {
         sprite.setGODScore(Integer.parseInt(cursor.getString(1)));
         sprite.setCondition(Integer.parseInt(cursor.getString(4)));
 
-        Log.i("LoadSprite: ", "Grabbed ID: " + sprite.getId());
+        Log.i("Sprite", "Loaded ID: " + sprite.getId());
         return sprite;
     }
 
@@ -159,15 +184,18 @@ public class StatsDataSource {
         Cursor cursor = database.query(Database.TABLE_SPRITES, allSpriteColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
+        int i=0;
         while (!cursor.isAfterLast()) {
+            i++;
             Sprite sprite = cursorToSprite(cursor);
             sprites.add(sprite);
             //sprites.set(sprites.size() - 1, sprite);
             //sprites.add(sprite);
-            Log.i("LoadSprite: ", "Added sprite ID: " + sprite.getId());
+
 
             cursor.moveToNext();
         }
+        Log.i("Sprite", "Loaded " + i + " sprites");
         // make sure to close the cursor
         cursor.close();
         return sprites;

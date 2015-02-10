@@ -94,8 +94,8 @@
         android:id="@+id/SpriteSpinnerType"
         android:layout_gravity="left|center_vertical"
         android:layout_alignTop="@+id/editForce"
-        android:layout_toRightOf="@+id/textResonance"
-        android:layout_toEndOf="@+id/textResonance" />
+        android:layout_toRightOf="@+id/textSpriteResonance"
+        android:layout_toEndOf="@+id/textSpriteResonance" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -198,7 +198,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Resonance"
-        android:id="@+id/textResonance"
+        android:id="@+id/textSpriteResonance"
         android:layout_below="@+id/textInitiativeDice"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -209,7 +209,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Skills"
         android:id="@+id/textSkills"
-        android:layout_below="@+id/textResonance"
+        android:layout_below="@+id/textSpriteResonance"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
