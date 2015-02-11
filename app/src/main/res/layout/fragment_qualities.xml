@@ -13,6 +13,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:isScrollContainer="true"
+    android:shrinkColumns="1"
     >
 
     <!-- 2 columns -->
@@ -26,7 +27,21 @@
         <TextView
             android:id="@+id/CodeSlinger"
             android:text="Code Slinger"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+</TableRow>
+    <TableRow
+        android:id="@+id/tableRow1a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+
+
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerCodeSlinger"
+            android:layout_column="0" />
     </TableRow>
     <TableRow
         android:id="@+id/tableRow2"
@@ -37,47 +52,58 @@
         <TextView
             android:id="@+id/FocusedConcentration"
             android:text="Focused Concentration"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow2a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/rgFocusedConcentration"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <RadioButton android:id="@+id/FocusedConcentrationOff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/FocusedConcentration1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/FocusedConcentration2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/FocusedConcentration3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/FocusedConcentration4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/FocusedConcentration5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5"
-            android:onClick="onRadioButtonClicked"/>
-        <RadioButton android:id="@+id/FocusedConcentration6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6"
-            android:onClick="onRadioButtonClicked"/>
-    </RadioGroup>
+            <RadioButton android:id="@+id/FocusedConcentrationOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:paddingLeft="-5dp" />
+            <RadioButton android:id="@+id/FocusedConcentration1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1" />
+            <RadioButton android:id="@+id/FocusedConcentration2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                />
+            <RadioButton android:id="@+id/FocusedConcentration3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                />
+            <RadioButton android:id="@+id/FocusedConcentration4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                />
+            <RadioButton android:id="@+id/FocusedConcentration5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                />
+            <RadioButton android:id="@+id/FocusedConcentration6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6"
+                />
+        </RadioGroup>
     </TableRow>
     <TableRow
         android:id="@+id/tableRow3"
@@ -88,31 +114,42 @@
         <TextView
             android:id="@+id/HighPainTolerance"
             android:text="High Pain Tolerance"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow3a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgHighPainTolerance"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/HighPainToleranceOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="None"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/HighPainTolerance1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/HighPainTolerance2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/HighPainTolerance3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
     </TableRow>
     <TableRow
@@ -122,23 +159,31 @@
         android:padding="5dip"
         android:background="#ffd3d3d3">
         <TextView
-            android:id="@+id/Home Ground"
-            android:text="HomeGround"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/HomeGround"
+            android:text="Home Ground"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow4a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgHomeGround"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/HomeGroundOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/HomeGroundOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
     </TableRow>
     <TableRow
@@ -150,21 +195,32 @@
         <TextView
             android:id="@+id/NaturalHardening"
             android:text="Natural Hardening"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow5a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgNaturalHardening"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/NaturalHardeningOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/NaturalHardeningOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -177,21 +233,29 @@
         <TextView
             android:id="@+id/QuickHealer"
             android:text="Quick Healer"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow6a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgQuickHealer"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/QuickHealerOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/QuickHealerOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
     </TableRow>
     <TableRow
@@ -203,21 +267,29 @@
         <TextView
             android:id="@+id/Toughness"
             android:text="Toughness"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow7a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgToughness"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/ToughnessOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/ToughnessOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
     </TableRow>
     <TableRow
@@ -229,31 +301,39 @@
         <TextView
             android:id="@+id/WillToLive"
             android:text="Will To Live"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow8a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgWillToLive"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/WillToLiveOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="None"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/WillToLive1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/WillToLive2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/WillToLive3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -266,21 +346,29 @@
         <TextView
             android:id="@+id/BadLuck"
             android:text="Bad Luck"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow9a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgBadLuck"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/BadLuckOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/BadLuckOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -293,7 +381,20 @@
         <TextView
             android:id="@+id/CodeBlock"
             android:text="Code Block"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow10a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerCodeBlock"
+            android:layout_column="0" />
     </TableRow>
     <TableRow
         android:id="@+id/tableRow11"
@@ -304,7 +405,22 @@
         <TextView
             android:id="@+id/LossOfConfidence"
             android:text="Loss Of Confidence"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow11a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerLossOfConfidence"
+            android:layout_column="0" />
     </TableRow>
     <TableRow
         android:id="@+id/tableRow12"
@@ -315,21 +431,32 @@
         <TextView
             android:id="@+id/LowPainTolerance"
             android:text="Low Pain Tolerance"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow12a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgLowPainTolerance"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/LowPainToleranceOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/LowPainToleranceOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -342,21 +469,32 @@
         <TextView
             android:id="@+id/SensitiveSystem"
             android:text="Sensitive System"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow13a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgSensitiveSystem"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/SensitiveSystemOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/SensitiveSystemOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -369,21 +507,32 @@
         <TextView
             android:id="@+id/SimsenseVertigo"
             android:text="Simsense Vertigo"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow14a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgSimsenseVertigo"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/SimsenseVertigoOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/SimsenseVertigoOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -396,90 +545,31 @@
         <TextView
             android:id="@+id/SlowHealer"
             android:text="Slow Healer"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow15a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgSlowHealer"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/SlowHealerOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/SlowHealerOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
-    </TableRow>
-    <TableRow
-        android:id="@+id/tableRow16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dip"
-        android:background="#ffd3d3d3">
-        <TextView
-            android:id="@+id/Perceptive"
-            android:text="Perceptive"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioButton android:id="@+id/PerceptiveOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="None"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/Perceptive1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/Perceptive2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
-    </TableRow>
-    <TableRow
-        android:id="@+id/tableRow16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="5dip"
-        >
-        <TextView
-            android:id="@+id/SpikeResistance"
-            android:text="Spike Resistance"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioButton android:id="@+id/SpikeResistanceOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="None"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/SpikeResistance1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/SpikeResistance2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/SpikeResistance3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:onClick="onRadioButtonClicked"/>
-        </RadioGroup>
     </TableRow>
     <TableRow
         android:id="@+id/tableRow17"
@@ -488,33 +578,36 @@
         android:padding="5dip"
         android:background="#ffd3d3d3">
         <TextView
-            android:id="@+id/ToughAsNailsPhysical"
-            android:text="Tough As Nails Physical"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/Perceptive"
+            android:text="Perceptive"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow17a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgPerceptive"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/ToughAsNailsPhysicalOff"
+            <RadioButton android:id="@+id/PerceptiveOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="None"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/ToughAsNailsPhysical1"
+                />
+            <RadioButton android:id="@+id/Perceptive1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/ToughAsNailsPhysical2"
+                />
+            <RadioButton android:id="@+id/Perceptive2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/ToughAsNailsPhysical3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
     </TableRow>
     <TableRow
@@ -524,33 +617,44 @@
         android:padding="5dip"
         >
         <TextView
-            android:id="@+id/ToughAsNailsStun"
-            android:text="Tough As Nails Stun"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/SpikeResistance"
+            android:text="Spike Resistance"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow18a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgSpikeResistance"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/ToughAsNailsStunOff"
+            <RadioButton android:id="@+id/SpikeResistanceOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="None"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/ToughAsNailsStun1"
+                />
+            <RadioButton android:id="@+id/SpikeResistance1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/ToughAsNailsStun2"
+                />
+            <RadioButton android:id="@+id/SpikeResistance2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/ToughAsNailsStun3"
+                />
+            <RadioButton android:id="@+id/SpikeResistance3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
     </TableRow>
     <TableRow
@@ -560,25 +664,45 @@
         android:padding="5dip"
         android:background="#ffd3d3d3">
         <TextView
-            android:id="@+id/Asthma"
-            android:text="Asthma"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/ToughAsNailsPhysical"
+            android:text="Tough As Nails Physical"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow19a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgToughAsNailsPhysical"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/AsthmaOn"
+            <RadioButton android:id="@+id/ToughAsNailsPhysicalOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/AsthmaOff"
+                android:text="None"
+                />
+            <RadioButton android:id="@+id/ToughAsNailsPhysical1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="1"
+                />
+            <RadioButton android:id="@+id/ToughAsNailsPhysical2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                />
+            <RadioButton android:id="@+id/ToughAsNailsPhysical3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                />
         </RadioGroup>
-
     </TableRow>
     <TableRow
         android:id="@+id/tableRow20"
@@ -587,25 +711,45 @@
         android:padding="5dip"
         >
         <TextView
-            android:id="@+id/BiPolar"
-            android:text="Bi-Polar"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/ToughAsNailsStun"
+            android:text="Tough As Nails Stun"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow20a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgToughAsNailsStun"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/BiPolarOn"
+            <RadioButton android:id="@+id/ToughAsNailsStunOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/BiPolarOff"
+                android:text="None"
+                />
+            <RadioButton android:id="@+id/ToughAsNailsStun1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="1"
+                />
+            <RadioButton android:id="@+id/ToughAsNailsStun2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                />
+            <RadioButton android:id="@+id/ToughAsNailsStun3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                />
         </RadioGroup>
-
     </TableRow>
     <TableRow
         android:id="@+id/tableRow21"
@@ -614,23 +758,31 @@
         android:padding="5dip"
         android:background="#ffd3d3d3">
         <TextView
-            android:id="@+id/Blind"
-            android:text="Blind"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/Asthma"
+            android:text="Asthma"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow21a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgAsthma"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/BlindOn"
+            <RadioButton android:id="@+id/AsthmaOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/BlindOff"
+                />
+            <RadioButton android:id="@+id/AsthmaOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -641,23 +793,31 @@
         android:padding="5dip"
         >
         <TextView
-            android:id="@+id/ComputerIlliterate"
-            android:text="Computer Illiterate"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/BiPolar"
+            android:text="Bi-Polar"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow22a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgBiPolar"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/ComputerIlliterateOn"
+            <RadioButton android:id="@+id/BiPolarOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/ComputerIlliterateOff"
+                />
+            <RadioButton android:id="@+id/BiPolarOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -668,23 +828,31 @@
         android:padding="5dip"
         android:background="#ffd3d3d3">
         <TextView
-            android:id="@+id/Deaf"
-            android:text="Deaf"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/Blind"
+            android:text="Blind"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow23a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgBlind"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/DeafOn"
+            <RadioButton android:id="@+id/BlindOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/DeafOff"
+                />
+            <RadioButton android:id="@+id/BlindOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -695,23 +863,34 @@
         android:padding="5dip"
         >
         <TextView
-            android:id="@+id/DimmerBulb"
-            android:text="Dimmer Bulb"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/ComputerIlliterate"
+            android:text="Computer Illiterate"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow24a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgComputerIlliterate"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/DimmerBulbOn"
+            <RadioButton android:id="@+id/ComputerIlliterateOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/DimmerBulbOff"
+                />
+            <RadioButton android:id="@+id/ComputerIlliterateOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
 
     </TableRow>
@@ -722,24 +901,33 @@
         android:padding="5dip"
         android:background="#ffd3d3d3">
         <TextView
-            android:id="@+id/Illiterate"
-            android:text="Illiterate"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/Deaf"
+            android:text="Deaf"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow25a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgDeaf"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/IlliterateOn"
+            <RadioButton android:id="@+id/DeafOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/IlliterateOff"
+                />
+            <RadioButton android:id="@+id/DeafOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
+
     </TableRow>
     <TableRow
         android:id="@+id/tableRow26"
@@ -748,29 +936,36 @@
         android:padding="5dip"
         >
         <TextView
-            android:id="@+id/Oblivious"
-            android:text="Oblivious"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/DimmerBulb"
+            android:text="Dimmer Bulb"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow26a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgDimmerBulb"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/ObliviousOff"
+            <RadioButton android:id="@+id/DimmerBulbOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="None"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/Oblivious1"
+                android:text="Yes"
+                />
+            <RadioButton android:id="@+id/DimmerBulbOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
-                android:onClick="onRadioButtonClicked"/>
-            <RadioButton android:id="@+id/Oblivious2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:onClick="onRadioButtonClicked"/>
+                android:text="No"
+                />
         </RadioGroup>
+
     </TableRow>
     <TableRow
         android:id="@+id/tableRow27"
@@ -779,28 +974,112 @@
         android:padding="5dip"
         android:background="#ffd3d3d3">
         <TextView
-            android:id="@+id/PieIesuDomine"
-            android:text="Pie Iesu Domine"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/Illiterate"
+            android:text="Illiterate"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow27a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rgIlliterate"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/IlliterateOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                />
+            <RadioButton android:id="@+id/IlliterateOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                />
+        </RadioGroup>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <TextView
+            android:id="@+id/Oblivious"
+            android:text="Oblivious"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow28a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        >
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rgOblivious"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/ObliviousOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="None"
+                />
+            <RadioButton android:id="@+id/Oblivious1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                />
+            <RadioButton android:id="@+id/Oblivious2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                />
+        </RadioGroup>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
+        <TextView
+            android:id="@+id/PieIesuDomine"
+            android:text="Pie Iesu Domine"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow29a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rgPieIesuDomine"
             android:orientation="horizontal">
             <RadioButton android:id="@+id/PieIesuDomineOn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes"
-                android:onClick="onRadioButtonClicked"/>
+                />
             <RadioButton android:id="@+id/PieIesuDomineOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
-                android:onClick="onRadioButtonClicked"/>
+                />
         </RadioGroup>
     </TableRow>
 
 
-
+spi
 
 </TableLayout>
 </ScrollView>

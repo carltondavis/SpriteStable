@@ -129,9 +129,9 @@
         android:id="@+id/checkBoxRegistered"
         android:checked="false"
         android:layout_gravity="right|top"
-        android:layout_above="@+id/textAttack"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignBottom="@+id/editServices"
+        android:layout_toRightOf="@+id/textServices"
+        android:layout_toEndOf="@+id/textServices" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class QualitiesFragment extends Fragment {
 
@@ -12,7 +14,6 @@ public class QualitiesFragment extends Fragment {
 
 //Todo: Create database to hold these records
 //ID, Name, Rating
-//Todo: UI widgets for each entry
 //Todo: Code to load and save info
 //Todo: Add modifiers for any given die rolls to make these stats generic (MatrixMod, PerceptionMod, HealingMod, etc)
 //Todo: Add code for existing die rolls
@@ -63,11 +64,254 @@ public class QualitiesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_qualities, container, false);
 
-        /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
-        tv.setText(getArguments().getString("msg"));
-*/
+        RadioGroup rgFocusedConcentration = (RadioGroup) v.findViewById(R.id.rgFocusedConcentration);
+        rgFocusedConcentration.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setFocusedConcentration(getValue(checkedId));
+
+            }
+        });
+
+        RadioGroup HighPainTolerance = (RadioGroup) v.findViewById(R.id.rgHighPainTolerance);
+        HighPainTolerance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setHighPainTolerance(getValue(checkedId));
+
+            }
+        });
+        RadioGroup HomeGround = (RadioGroup) v.findViewById(R.id.rgHomeGround);
+        HomeGround.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setHomeGround(getValue(checkedId));
+
+            }
+        });
+        RadioGroup NaturalHardening = (RadioGroup) v.findViewById(R.id.rgNaturalHardening);
+        NaturalHardening.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setNaturalHardening(getValue(checkedId));
+
+            }
+        });
+        RadioGroup QuickHealer = (RadioGroup) v.findViewById(R.id.rgQuickHealer);
+        QuickHealer.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setQuickHealer(getValue(checkedId));
+
+            }
+        });
+        RadioGroup Toughness = (RadioGroup) v.findViewById(R.id.rgToughness);
+        Toughness.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setToughness(getValue(checkedId));
+
+            }
+        });
+        RadioGroup WillToLive = (RadioGroup) v.findViewById(R.id.rgWillToLive);
+        WillToLive.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setWillToLive(getValue(checkedId));
+
+            }
+        });
+        RadioGroup BadLuck = (RadioGroup) v.findViewById(R.id.rgBadLuck);
+        BadLuck.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setBadLuck(getValue(checkedId));
+
+            }
+        });
+        RadioGroup LowPainTolerance = (RadioGroup) v.findViewById(R.id.rgLowPainTolerance);
+        LowPainTolerance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setLowPainTolerance(getValue(checkedId));
+
+            }
+        });
+        RadioGroup SensitiveSystem = (RadioGroup) v.findViewById(R.id.rgSensitiveSystem);
+        SensitiveSystem.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setSensitiveSystem(getValue(checkedId));
+
+            }
+        });
+        RadioGroup SimsenseVertigo = (RadioGroup) v.findViewById(R.id.rgSimsenseVertigo);
+        SimsenseVertigo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setSimsenseVertigo(getValue(checkedId));
+
+            }
+        });
+        RadioGroup SlowHealer = (RadioGroup) v.findViewById(R.id.rgSlowHealer);
+        SlowHealer.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setSlowHealer(getValue(checkedId));
+
+            }
+        });
+        RadioGroup Perceptive = (RadioGroup) v.findViewById(R.id.rgPerceptive);
+        Perceptive.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setPerceptive(getValue(checkedId));
+
+            }
+        });
+        RadioGroup SpikeResistance = (RadioGroup) v.findViewById(R.id.rgSpikeResistance);
+        SpikeResistance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setSpikeResistance(getValue(checkedId));
+
+            }
+        });
+        RadioGroup ToughAsNailsPhysical = (RadioGroup) v.findViewById(R.id.rgToughAsNailsPhysical);
+        ToughAsNailsPhysical.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setToughAsNailsPhysical(getValue(checkedId));
+
+            }
+        });
+        RadioGroup ToughAsNailsStun = (RadioGroup) v.findViewById(R.id.rgToughAsNailsStun);
+        ToughAsNailsStun.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setToughAsNailsStun(getValue(checkedId));
+
+            }
+        });
+        RadioGroup Asthma = (RadioGroup) v.findViewById(R.id.rgAsthma);
+        Asthma.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setAsthma(getValue(checkedId));
+
+            }
+        });
+        RadioGroup BiPolar = (RadioGroup) v.findViewById(R.id.rgBiPolar);
+        BiPolar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setBiPolar(getValue(checkedId));
+
+            }
+        });
+        RadioGroup Blind = (RadioGroup) v.findViewById(R.id.rgBlind);
+        Blind.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setBlind(getValue(checkedId));
+
+            }
+        });
+        RadioGroup ComputerIlliterate = (RadioGroup) v.findViewById(R.id.rgComputerIlliterate);
+        ComputerIlliterate.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setComputerIlliterate(getValue(checkedId));
+
+            }
+        });
+        RadioGroup Deaf = (RadioGroup) v.findViewById(R.id.rgDeaf);
+        Deaf.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setDeaf(getValue(checkedId));
+
+            }
+        });
+        RadioGroup DimmerBulb = (RadioGroup) v.findViewById(R.id.rgDimmerBulb);
+        DimmerBulb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setDimmerBulb(getValue(checkedId));
+
+            }
+        });
+        RadioGroup Illiterate = (RadioGroup) v.findViewById(R.id.rgIlliterate);
+        Illiterate.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setIlliterate(getValue(checkedId));
+
+            }
+        });
+        //TODO Add Radio Group ID's
+        RadioGroup Oblivious = (RadioGroup) v.findViewById(R.id.rgOblivious);
+        Oblivious.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setOblivious(getValue(checkedId));
+
+            }
+        });
+        RadioGroup PieIesuDomine = (RadioGroup) v.findViewById(R.id.rgPieIesuDomine);
+        PieIesuDomine.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setPieIesuDomine(getValue(checkedId));
+
+            }
+        });
+
         return v;
     }
+
+    public Integer getValue(int checkedId) {
+        RadioButton rb=(RadioButton) getActivity().findViewById(checkedId);
+        switch (rb.getText().toString()) {
+            case "No":
+                return 0;
+            case "None":
+                return 0;
+            case "Yes":
+                return 1;
+            default:
+                return Integer.valueOf(rb.getText().toString());
+        }
+    }
+
+
+
+
 
     public static QualitiesFragment newInstance() {
 

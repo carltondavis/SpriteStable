@@ -42,7 +42,7 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
 
     public Database(Context context) {
@@ -121,7 +121,157 @@ public class Database extends SQLiteOpenHelper {
         database.insert(Database.TABLE_STATS, null,
                 values);
 
+        values.put(Database.COLUMN_STAT, "CodeSlinger");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
 
+        values.put(Database.COLUMN_STAT, "FocusedConcentration");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "HighPainTolerance");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "HomeGround");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "NaturalHardening");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "QuickHealer");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Toughness");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "WillToLive");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "BadLuck");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "CodeBlock");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "LossOfConfidence");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "LowPainTolerance");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "SensitiveSystem");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "SimsenseVertigo");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "SlowHealer");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Perceptive");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "SpikeResistance");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "ToughAsNailsPhysical");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "ToughAsNailsStun");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Asthma");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "AsthmaFatigueDamage");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "BiPolar");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "BiPolarCurrent");
+        values.put(Database.COLUMN_VALUE, 6);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Blind");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "ComputerIlliterate");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Deaf");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "DimmerBulb");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Illiterate");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Oblivious");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "PieIesuDomine");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+//TODO:Insert Qualities default values
 
         spritevalues.put(Database.COLUMN_RATING, 1);
         spritevalues.put(Database.COLUMN_TYPE, 1);
