@@ -23,6 +23,18 @@ public class Database extends SQLiteOpenHelper {
             + " text not null, " + COLUMN_VALUE
             + " integer not null"
             + ");";
+    public static final String TABLE_SKILLS = "Skills";
+    public static final String COLUMN_SKILLNAME = "SkillName";
+    public static final String COLUMN_SKILLVALUE = "SkillValue";
+    public static final String COLUMN_SPECIALIZATIONOF = "SpecializationID";
+    private static final String SKILL_DATABASE_CREATE = "create table "
+            + TABLE_SKILLS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_SKILLNAME
+            + " text not null, " + COLUMN_SKILLVALUE
+            + " integer not null, "+ COLUMN_SPECIALIZATIONOF
+            + " integer not null"
+            + ");";
+
     public static final String TABLE_SPRITES = "Sprites";
     public static final String COLUMN_RATING = "Rating";
     public static final String COLUMN_TYPE = "Type";
@@ -42,7 +54,7 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
 
     public Database(Context context) {
@@ -52,9 +64,153 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(STAT_DATABASE_CREATE);
+        database.execSQL(SKILL_DATABASE_CREATE);
         database.execSQL(SPRITE_DATABASE_CREATE);
         ContentValues values = new ContentValues();
         ContentValues spritevalues = new ContentValues();
+
+        values.put(Database.COLUMN_SKILLNAME, "Cybercombat");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Electronic Warfare");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Hacking");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Computer");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Hardware");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Software");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Compiling");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Decompiling");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Registering");
+        values.put(Database.COLUMN_SKILLVALUE, 0);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Courier");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Crack");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Data");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Fault");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Machine");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Courier");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Crack");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Data");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Fault");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Machine");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+        values.put(Database.COLUMN_SKILLNAME, "Courier");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Crack");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Data");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Fault");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
+
+        values.put(Database.COLUMN_SKILLNAME, "Machine");
+        values.put(Database.COLUMN_SKILLVALUE, 1);
+        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
+        database.insert(Database.TABLE_SKILLS, null,
+                values);
 
         values.put(Database.COLUMN_STAT, "Body");
         values.put(Database.COLUMN_VALUE, 1);
@@ -291,6 +447,7 @@ public class Database extends SQLiteOpenHelper {
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPRITES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SKILLS);
         onCreate(db);
     }
 

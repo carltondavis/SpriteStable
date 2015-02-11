@@ -12,11 +12,11 @@ public class QualitiesFragment extends Fragment {
 
 //TODO QUALITIES FRAGMENT:
 
-//Todo: Create database to hold these records
 //ID, Name, Rating
-//Todo: Code to load and save info
+//TODO Add code to Compile to handle qualities
 //Todo: Add modifiers for any given die rolls to make these stats generic (MatrixMod, PerceptionMod, HealingMod, etc)
-//Todo: Add code for existing die rolls
+//Todo: code for drop downs
+//Todo Add onResume to update when restoring
 //Todo list of qualities:
 //Codeslinger: +2 dice a specific matrix action
 //Focused concentration 1-6: May sustain Rating force of without negative penalties
@@ -47,8 +47,6 @@ public class QualitiesFragment extends Fragment {
 //Oblivious 1-2: (1) -2 perception tests, (2) +1 threshold perception tests
 //Pie Iesu Domine: High pain tolerance 1, Always has one box physical damage
 //Noise reduction from equipment
-//TODO Add code to Compile to handle qualities
-//Todo Add onResume to pull from DB when restoring?
     MainActivity Main = (MainActivity)getActivity();
 
 
@@ -63,8 +61,10 @@ public class QualitiesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_qualities, container, false);
+        Main = (MainActivity)getActivity();
 
         RadioGroup rgFocusedConcentration = (RadioGroup) v.findViewById(R.id.rgFocusedConcentration);
+        rgFocusedConcentration.check(rgFocusedConcentration.getChildAt(Main.data.getFocusedConcentration()).getId());
         rgFocusedConcentration.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -75,6 +75,7 @@ public class QualitiesFragment extends Fragment {
         });
 
         RadioGroup HighPainTolerance = (RadioGroup) v.findViewById(R.id.rgHighPainTolerance);
+        HighPainTolerance.check(HighPainTolerance.getChildAt(Main.data.getHighPainTolerance()).getId());
         HighPainTolerance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -84,6 +85,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup HomeGround = (RadioGroup) v.findViewById(R.id.rgHomeGround);
+        HomeGround.check(HomeGround.getChildAt(Main.data.getHomeGround()).getId());
         HomeGround.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -93,6 +95,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup NaturalHardening = (RadioGroup) v.findViewById(R.id.rgNaturalHardening);
+        NaturalHardening.check(NaturalHardening.getChildAt(Main.data.getNaturalHardening()).getId());
         NaturalHardening.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -102,6 +105,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup QuickHealer = (RadioGroup) v.findViewById(R.id.rgQuickHealer);
+        QuickHealer.check(QuickHealer.getChildAt(Main.data.getQuickHealer()).getId());
         QuickHealer.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -111,6 +115,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup Toughness = (RadioGroup) v.findViewById(R.id.rgToughness);
+        Toughness.check(Toughness.getChildAt(Main.data.getToughness()).getId());
         Toughness.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -120,6 +125,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup WillToLive = (RadioGroup) v.findViewById(R.id.rgWillToLive);
+        WillToLive.check(WillToLive.getChildAt(Main.data.getWillToLive()).getId());
         WillToLive.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -129,6 +135,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup BadLuck = (RadioGroup) v.findViewById(R.id.rgBadLuck);
+        BadLuck.check(BadLuck.getChildAt(Main.data.getBadLuck()).getId());
         BadLuck.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -138,6 +145,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup LowPainTolerance = (RadioGroup) v.findViewById(R.id.rgLowPainTolerance);
+        LowPainTolerance.check(LowPainTolerance.getChildAt(Main.data.getLowPainTolerance()).getId());
         LowPainTolerance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -147,6 +155,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup SensitiveSystem = (RadioGroup) v.findViewById(R.id.rgSensitiveSystem);
+        SensitiveSystem.check(SensitiveSystem.getChildAt(Main.data.getSensitiveSystem()).getId());
         SensitiveSystem.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -156,6 +165,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup SimsenseVertigo = (RadioGroup) v.findViewById(R.id.rgSimsenseVertigo);
+        SimsenseVertigo.check(SimsenseVertigo.getChildAt(Main.data.getSimsenseVertigo()).getId());
         SimsenseVertigo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -165,6 +175,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup SlowHealer = (RadioGroup) v.findViewById(R.id.rgSlowHealer);
+        SlowHealer.check(SlowHealer.getChildAt(Main.data.getSlowHealer()).getId());
         SlowHealer.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -174,6 +185,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup Perceptive = (RadioGroup) v.findViewById(R.id.rgPerceptive);
+        Perceptive.check(Perceptive.getChildAt(Main.data.getPerceptive()).getId());
         Perceptive.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -183,6 +195,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup SpikeResistance = (RadioGroup) v.findViewById(R.id.rgSpikeResistance);
+        SpikeResistance.check(SpikeResistance.getChildAt(Main.data.getSpikeResistance()).getId());
         SpikeResistance.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -192,6 +205,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup ToughAsNailsPhysical = (RadioGroup) v.findViewById(R.id.rgToughAsNailsPhysical);
+        ToughAsNailsPhysical.check(ToughAsNailsPhysical.getChildAt(Main.data.getToughAsNailsPhysical()).getId());
         ToughAsNailsPhysical.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -201,6 +215,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup ToughAsNailsStun = (RadioGroup) v.findViewById(R.id.rgToughAsNailsStun);
+        ToughAsNailsStun.check(ToughAsNailsStun.getChildAt(Main.data.getToughAsNailsStun()).getId());
         ToughAsNailsStun.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -210,6 +225,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup Asthma = (RadioGroup) v.findViewById(R.id.rgAsthma);
+        Asthma.check(Asthma.getChildAt(Main.data.getAsthma()).getId());
         Asthma.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -219,6 +235,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup BiPolar = (RadioGroup) v.findViewById(R.id.rgBiPolar);
+        BiPolar.check(BiPolar.getChildAt(Main.data.getBiPolar()).getId());
         BiPolar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -228,6 +245,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup Blind = (RadioGroup) v.findViewById(R.id.rgBlind);
+        Blind.check(Blind.getChildAt(Main.data.getBlind()).getId());
         Blind.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -237,6 +255,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup ComputerIlliterate = (RadioGroup) v.findViewById(R.id.rgComputerIlliterate);
+        ComputerIlliterate.check(ComputerIlliterate.getChildAt(Main.data.getComputerIlliterate()).getId());
         ComputerIlliterate.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -246,6 +265,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup Deaf = (RadioGroup) v.findViewById(R.id.rgDeaf);
+        Deaf.check(Deaf.getChildAt(Main.data.getDeaf()).getId());
         Deaf.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -255,6 +275,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup DimmerBulb = (RadioGroup) v.findViewById(R.id.rgDimmerBulb);
+        DimmerBulb.check(DimmerBulb.getChildAt(Main.data.getDimmerBulb()).getId());
         DimmerBulb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -264,6 +285,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup Illiterate = (RadioGroup) v.findViewById(R.id.rgIlliterate);
+        Illiterate.check(Illiterate.getChildAt(Main.data.getIlliterate()).getId());
         Illiterate.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -274,6 +296,7 @@ public class QualitiesFragment extends Fragment {
         });
         //TODO Add Radio Group ID's
         RadioGroup Oblivious = (RadioGroup) v.findViewById(R.id.rgOblivious);
+        Oblivious.check(Oblivious.getChildAt(Main.data.getOblivious()).getId());
         Oblivious.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -283,6 +306,7 @@ public class QualitiesFragment extends Fragment {
             }
         });
         RadioGroup PieIesuDomine = (RadioGroup) v.findViewById(R.id.rgPieIesuDomine);
+        PieIesuDomine.check(PieIesuDomine.getChildAt(Main.data.getPieIesuDomine()).getId());
         PieIesuDomine.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {

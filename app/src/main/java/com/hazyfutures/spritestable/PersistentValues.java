@@ -32,6 +32,8 @@ public class PersistentValues {
     public int pvActiveSpriteId = 0;
     public List<String> pvSpriteList = new ArrayList<String>();
     List<Sprite> pvSprites = new ArrayList<>();
+    public List<String> pvSkillList = new ArrayList<String>();
+    List<Skills> pvSkills = new ArrayList<>();
     private StatsDataSource datasource;
 
 
@@ -43,7 +45,15 @@ public class PersistentValues {
         SaveSpriteToDB(pvSprites.get(pvActiveSpriteId));
     }
 
+    public void SaveSkillToDB(String SkillName, Integer Value) {
+        datasource.updateSkill(SkillName, Value);
+    }
+
+
     public void SaveSpriteToDB(Sprite SpriteToSave){
+        datasource.updateSprite(SpriteToSave);
+    }
+    public void SaveSkillToDB(Sprite SpriteToSave){
         datasource.updateSprite(SpriteToSave);
     }
 
@@ -98,6 +108,7 @@ public class PersistentValues {
         datasource.updateStat("PieIesuDomine", PieIesuDomine);
 
     }
+
 
     public void RestoreFromDB(Context content) {
 
@@ -279,11 +290,44 @@ public class PersistentValues {
     }
 
 
-    public void UpdateSpriteList(){
-        boolean unregisteredExists=false;
+    public void setSkillValue(String Name, Integer Value){
+        for(Skills skill: pvSkills){
+            if((skill.getSkillName().equals(Name))&&(skill.getSkillSpecializationOf()==-1)) {
+                skill.setSkillValue(Value);
+                break;
+            }
+        }
+    }
+
+    public Integer getSkillValue(String Name){
+        return getSkillValue(Name, "");
+    }
+
+public Integer getSkillValue(String Name, String Specialization){
+    Integer value=0;
+    long ID=0;
+    for(Skills skill: pvSkills){
+        if(skill.getSkillName().equals(Name)) {
+            ID=skill.getId();
+            value= skill.getSkillValue();
+        }
+        if((skill.getSkillSpecializationOf()== ID)&&(skill.getSkillName().equals(Specialization))) {
+            return (value+2);
+        }
+    }
+    for(Skills skill: pvSkills){
+        if((skill.getSkillSpecializationOf()== ID)&&(skill.getSkillName().equals(Specialization))) {
+            return (value+2);
+        }
+    }
+    return value;
+
+}
+    public void UpdateSpriteList() {
+        boolean unregisteredExists = false;
         pvSpriteList.clear();
         List<Sprite> Unnecessary = new ArrayList<>();
-        for(Sprite sprite : pvSprites){
+        for (Sprite sprite : pvSprites) {
 
             //Keep the first unregistered sprite
             //Delete any other unregistered sprites
@@ -291,42 +335,43 @@ public class PersistentValues {
             //If sprite is Registered and Services==0 delete it
             //Add it to the list if it's registered and services>0 or if it's the first unregistered services>0
 
-            if((sprite.getRegistered()==0&&unregisteredExists)||(sprite.getRegistered()==1&&sprite.getServicesOwed()==0)){ //Second or later unregistered item, or all services used
+            if ((sprite.getRegistered() == 0 && unregisteredExists) || (sprite.getRegistered() == 1 && sprite.getServicesOwed() == 0)) { //Second or later unregistered item, or all services used
                 Unnecessary.add(sprite);        //Set up to remove it from the list
-                if(pvSprites.get(pvActiveSpriteId)==sprite){      //If we're deleting the active sprite then aim the sprite pointer at an existing sprite.
-                    if(pvActiveSpriteId>0){pvActiveSpriteId--;}
+                if (pvSprites.get(pvActiveSpriteId) == sprite) {      //If we're deleting the active sprite then aim the sprite pointer at an existing sprite.
+                    if (pvActiveSpriteId > 0) {
+                        pvActiveSpriteId--;
+                    }
                 }
-            }else{
+            } else {
                 String title = String.valueOf("Force " + sprite.getRating() + " " + sprite.getType()) + " with " + sprite.getServicesOwed() + " services";
 
-                if(sprite.getRegistered()==1){
-                    title=title + " Registered";
-                }else{
-                    unregisteredExists=true;
+                if (sprite.getRegistered() == 1) {
+                    title = title + " Registered";
+                } else {
+                    unregisteredExists = true;
                 }
                 pvSpriteList.add(title);
             }
         }
-        for(Sprite deleteSprite : Unnecessary){
+        for (Sprite deleteSprite : Unnecessary) {
             datasource.deleteSprite(deleteSprite);
         }
         pvSprites.removeAll(Unnecessary);
 
-        if(!unregisteredExists){//Creating a new Sprite is an option
-            Sprite newSprite= new Sprite();
+        if (!unregisteredExists) {//Creating a new Sprite is an option
+            Sprite newSprite = new Sprite();
             newSprite.setRating(getCurrentSprite().getRating());
             newSprite.setSpriteType(getCurrentSprite().getType());
             pvSprites.add(newSprite);
             //Populate Sprite List with NEW option
             String title = "NEW SPRITE";
             pvSpriteList.add(title);
-            pvSprites.get(pvSpriteList.size()-1).setId(datasource.insertSprite(pvSprites.get(pvSpriteList.size()-1)));  //Save the new sprite to the DB
+            pvSprites.get(pvSpriteList.size() - 1).setId(datasource.insertSprite(pvSprites.get(pvSpriteList.size() - 1)));  //Save the new sprite to the DB
         }
 
         //SaveAllToDB();
 
     }
-
  /*   public void nextSprite() {
         if (pvActiveSpriteId < (pvSprites.size() - 1)) {
             pvActiveSpriteId++;
@@ -362,6 +407,9 @@ public class PersistentValues {
     //High paint tolerance 1-3: +1 rating boxes of stun/physical before penalties are incurred
     Integer HighPainTolerance=0;
     public Integer getHighPainTolerance(){
+        if(HighPainTolerance==0){
+            return PieIesuDomine;
+        }
         return HighPainTolerance;
     }
     public void setHighPainTolerance(Integer value){

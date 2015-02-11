@@ -95,8 +95,9 @@ public class StatFragment extends Fragment {
     private void UpdateDamage() {
         RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.stunTrack);
         if(stunDamage!=null) {
-            int MaxStun = (int) Math.floor(Main.data.pvWillpower / 2) + 9;
-            int MaxPhysical = (int) Math.floor(Main.data.pvBody / 2) + 9;
+            int MaxStun = (int) Math.floor(Main.data.pvWillpower / 2) + 9 + Main.data.getToughAsNailsStun();
+            int MaxPhysical = (int) Math.floor(Main.data.pvBody / 2) + 9 + Main.data.getToughAsNailsPhysical();
+
             int _overflow = 0;
 
             stunDamage.setClickable(false);
@@ -120,7 +121,7 @@ public class StatFragment extends Fragment {
                 RatingBar overflowDamage = (RatingBar) getActivity().findViewById(R.id.overflowTrack);
                 overflowDamage.setClickable(false);
                 overflowDamage.setEnabled(false);
-                overflowDamage.setNumStars(Main.data.pvBody);
+                overflowDamage.setNumStars(Main.data.pvBody+Main.data.getToughAsNailsPhysical());
                 overflowDamage.setMax(Main.data.pvBody);
 
                 if (Main.data.pvPhysical > MaxPhysical) {
@@ -358,11 +359,11 @@ public class StatFragment extends Fragment {
     }
 
     private boolean IsConscious() {
-        return (Main.data.pvStun < (9 + Math.floor(Main.data.pvWillpower / 2))) && (Main.data.pvPhysical < (9 + Math.floor(Main.data.pvBody / 2)));
+        return (Main.data.pvStun < (Main.data.getToughAsNailsStun()+ 9 + Math.floor(Main.data.pvWillpower / 2))) && (Main.data.pvPhysical < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.pvBody / 2)));
     }
 
     private boolean IsAlive() {
-        return (Main.data.pvPhysical < (9 + Math.floor(Main.data.pvBody / 2)));
+        return (Main.data.pvPhysical < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.pvBody / 2)));
     }
 
     //UpdateUseService Button  Enabled

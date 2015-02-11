@@ -23,6 +23,10 @@ public class StatsDataSource {
     private String[] allStatColumns = {Database.COLUMN_ID,
             Database.COLUMN_STAT,
             Database.COLUMN_VALUE};
+    private String[] allSkillColumns = {Database.COLUMN_ID,
+            Database.COLUMN_SKILLNAME,
+            Database.COLUMN_SKILLVALUE,
+            Database.COLUMN_SPECIALIZATIONOF};
     private String[] allSpriteColumns = {Database.COLUMN_ID,
             Database.COLUMN_OVERWATCHSCORE,
             Database.COLUMN_RATING,
@@ -71,6 +75,13 @@ public class StatsDataSource {
         int val = database.update(Database.TABLE_STATS, value, Database.COLUMN_STAT + " = '" + attribute + "'", null);
        // Log.i("SaveStat: ", attribute + ":" + Value + "Return:" + val);
 
+    }
+
+    public void updateSkill(String SkillName, Integer Value) {
+        ContentValues value = new ContentValues();
+        value.put(Database.COLUMN_VALUE, Value);
+        int val = database.update(Database.TABLE_SKILLS, value, Database.COLUMN_SKILLNAME + " = '" + SkillName + "'", null);
+        // Log.i("SaveStat: ", attribute + ":" + Value + "Return:" + val);
     }
 
     public void deleteSprite(Sprite sprite){
@@ -153,7 +164,6 @@ public class StatsDataSource {
         cursor.close();
         return stats;
     }
-
     private Stat cursorToStat(Cursor cursor) {
         Stat stat = new Stat();
         stat.setId(cursor.getLong(0));
@@ -161,6 +171,33 @@ public class StatsDataSource {
         stat.setValue(cursor.getInt(2));
         return stat;
     }
+
+    private Skills cursorToSkill(Cursor cursor) {
+        Skills skill = new Skills();
+        skill.setId(cursor.getLong(0));
+        skill.setSkillName(cursor.getString(1));
+        skill.setSkillValue(cursor.getInt(2));
+        return skill;
+    }
+
+    public List<Skills> getAllSkills() {
+        List<Skills> skills = new ArrayList<>();
+
+        Cursor cursor = database.query(Database.TABLE_SKILLS,
+                allSkillColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Skills skill = cursorToSkill(cursor);
+            skills.add(skill);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return skills;
+    }
+
+
 
     private Sprite cursorToSprite(Cursor cursor) {
         Sprite sprite = new Sprite();

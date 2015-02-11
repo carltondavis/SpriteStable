@@ -126,24 +126,24 @@ public class CompileFragment extends Fragment {
         RatingBar stunDamage = (RatingBar) v.findViewById(R.id.stunTrack);
         stunDamage.setClickable(false);
         stunDamage.setEnabled(false);
-        stunDamage.setNumStars((int) Math.floor(Main.data.pvWillpower / 2) + 9);
-        stunDamage.setMax((int) Math.floor(Main.data.pvWillpower / 2) + 9);
+        stunDamage.setNumStars((int) Math.floor(Main.data.pvWillpower / 2) + 9 + Main.data.getToughAsNailsStun());
+        stunDamage.setMax((int) Math.floor(Main.data.pvWillpower / 2) + 9 + Main.data.getToughAsNailsStun());
         stunDamage.setRating(Main.data.pvStun);
 
         RatingBar physicalDamage = (RatingBar) v.findViewById(R.id.physicalTrack);
         physicalDamage.setClickable(false);
         physicalDamage.setEnabled(false);
-        physicalDamage.setNumStars((int) Math.floor(Main.data.pvBody / 2) + 9);
-        physicalDamage.setMax((int) Math.floor(Main.data.pvBody / 2) + 9);
+        physicalDamage.setNumStars((int) Math.floor(Main.data.pvBody / 2) + 9 +Main.data.getToughAsNailsPhysical());
+        physicalDamage.setMax((int) Math.floor(Main.data.pvBody / 2) + 9+Main.data.getToughAsNailsPhysical());
 
         RatingBar overflowDamage = (RatingBar) v.findViewById(R.id.overflowTrack);
         overflowDamage.setClickable(false);
         overflowDamage.setEnabled(false);
-        overflowDamage.setNumStars(Main.data.pvBody);
+        overflowDamage.setNumStars(Main.data.pvBody+Main.data.getWillToLive());
         overflowDamage.setMax(Main.data.pvBody);
 
-        if (Main.data.pvPhysical > (int) Math.floor(Main.data.pvBody / 2) + 9) {
-           overflowDamage.setRating(Main.data.pvPhysical - (int) Math.floor(Main.data.pvBody / 2) + 9);
+        if (Main.data.pvPhysical > (int) Math.floor(Main.data.pvBody / 2) + 9+Main.data.getToughAsNailsPhysical()) {
+           overflowDamage.setRating(Main.data.pvPhysical - (int) Math.floor(Main.data.pvBody / 2) + 9+Main.data.getToughAsNailsPhysical());
         }
         physicalDamage.setRating(Main.data.pvPhysical - overflowDamage.getRating());//Don't count overflow when drawing boxes of damage
 
@@ -193,7 +193,7 @@ public class CompileFragment extends Fragment {
             public void onClick(View v) {
 
                 //Healing Roll
-                Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower, false);
+                Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
                 if (Main.data.pvStun < 0) {
                     Main.data.pvStun = 0;
                 }
@@ -230,7 +230,7 @@ public class CompileFragment extends Fragment {
                 //Healing Roll 8 times
                 for (int i = 1; i <= 8; i++) {
                     if (Main.data.pvStun > 0) {
-                        Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower, false);
+                        Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
                         if (Main.data.pvStun < 0) {
                             Main.data.pvStun = 0;
                         }
@@ -266,7 +266,7 @@ public class CompileFragment extends Fragment {
                     //Healing Roll 24 times
                     for (int i = 1; i <= 24; i++) {
                         if (Main.data.pvStun > 0) {
-                            Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower, false);
+                            Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
                             if (Main.data.pvStun < 0) {
                                 Main.data.pvStun = 0;
                             }
@@ -274,10 +274,11 @@ public class CompileFragment extends Fragment {
                     }
                 } else {
                     if (Main.data.pvPhysical > 0) {
-                        Main.data.pvPhysical -= dice.rollDice(Main.data.pvBody * 2, false);
-                        if (Main.data.pvPhysical < 0) {
-                            Main.data.pvPhysical = 0;
+                        Main.data.pvPhysical -= dice.rollDice(Main.data.pvBody * 2+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
+                        if (Main.data.pvPhysical <= 0) {
+                            Main.data.pvPhysical = 0+Main.data.getPieIesuDomine();
                         }
+
                     }
                 }
 
@@ -372,7 +373,12 @@ public class CompileFragment extends Fragment {
                 int SpriteRoll;
                 Main.data.pvConsecutiveRest = 0;
                 //Damage penalties
-                DamagePenalties = (int) (Math.floor(Main.data.pvStun / 3) + Math.floor(Main.data.pvPhysical / 3));
+                int temppenalties = (int) (Math.floor((Main.data.pvStun-Main.data.getHighPainTolerance()) / (3-Main.data.getLowPainTolerance())));
+                if(temppenalties<0){temppenalties=0;}
+                DamagePenalties = (int) Math.floor((Main.data.pvPhysical-Main.data.getHighPainTolerance()) / (3-Main.data.getLowPainTolerance()));
+                if(DamagePenalties<0){DamagePenalties=0;}
+                DamagePenalties+=temppenalties;
+
 
                 //Make Opposed Dice Roll
                 if (Main.data.getCurrentSprite().getServicesOwed() == 0) {//New Sprite, so Compile
@@ -391,7 +397,7 @@ public class CompileFragment extends Fragment {
                             double floorsleepy = Math.floor(((float) sleepycounter - 24) / 3);
                             if (actualsleepy == floorsleepy) {
                                 sleepydamage = (int) Math.floor((sleepycounter - 24) / 3) + 1;
-                                sleepyresist = dice.rollDice(Main.data.pvBody + Main.data.pvWillpower, false);
+                                sleepyresist = dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer())+Main.data.getToughness(), false);
                                 Toast.makeText(v.getContext(), "Resisting " + sleepydamage + "S from fatigue.", Toast.LENGTH_SHORT).show();
                                 if (sleepydamage > sleepyresist) {
                                     Main.data.pvStun += (sleepydamage - sleepyresist);
@@ -434,6 +440,9 @@ public class CompileFragment extends Fragment {
                     if (SpriteRoll < 1) {
                         SpriteRoll = 1;
                     }//Minimum drain, this number is doubled in the next step.
+                    if(Main.data.getSensitiveSystem()==1){
+                        if(dice.rollDice(Main.data.pvWillpower,false)<2){SpriteRoll++;}
+                    }
                     SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.pvResonance + Main.data.pvWillpower, checkDrainKarma.isChecked());
                     if (SpriteRoll < 0) {
                         SpriteRoll = 0;
@@ -582,11 +591,11 @@ public class CompileFragment extends Fragment {
     }
 
     private boolean IsConscious() {
-        return (Main.data.pvStun < (9 + Math.floor(Main.data.pvWillpower / 2))) && (Main.data.pvPhysical < (9 + Math.floor(Main.data.pvBody / 2)));
+        return (Main.data.pvStun < (Main.data.getToughAsNailsStun()+ 9 + Math.floor(Main.data.pvWillpower / 2))) && (Main.data.pvPhysical < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.pvBody / 2)));
     }
 
     private boolean IsAlive() {
-        return (Main.data.pvPhysical < (9 + Math.floor(Main.data.pvBody / 2)));
+        return (Main.data.pvPhysical < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.pvBody / 2)));
     }
 
     //UpdateUseService Button  Enabled
@@ -684,8 +693,8 @@ public class CompileFragment extends Fragment {
     }
 
     private void UpdateDamage(int stun, int physical) {
-        int MaxStun = (int) Math.floor(Main.data.pvWillpower / 2) + 9;
-        int MaxPhysical = (int) Math.floor(Main.data.pvBody / 2) + 9;
+        int MaxStun = (int) Math.floor(Main.data.pvWillpower / 2) + 9 + Main.data.getToughAsNailsStun();
+        int MaxPhysical = (int) Math.floor(Main.data.pvBody / 2) + 9 + Main.data.getToughAsNailsPhysical();
         int _overflow = 0;
         RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.stunTrack);
         stunDamage.setClickable(false);

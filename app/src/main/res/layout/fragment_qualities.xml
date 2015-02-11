@@ -174,15 +174,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgHomeGround"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/HomeGroundOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/HomeGroundOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/HomeGroundOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
     </TableRow>
@@ -211,15 +211,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgNaturalHardening"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/NaturalHardeningOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/NaturalHardeningOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/NaturalHardeningOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -246,15 +246,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgQuickHealer"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/QuickHealerOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/QuickHealerOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/QuickHealerOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
     </TableRow>
@@ -280,15 +280,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgToughness"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/ToughnessOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/ToughnessOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/ToughnessOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
     </TableRow>
@@ -359,15 +359,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgBadLuck"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/BadLuckOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/BadLuckOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/BadLuckOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -447,15 +447,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgLowPainTolerance"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/LowPainToleranceOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/LowPainToleranceOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/LowPainToleranceOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -485,15 +485,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgSensitiveSystem"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/SensitiveSystemOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/SensitiveSystemOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/SensitiveSystemOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -523,15 +523,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgSimsenseVertigo"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/SimsenseVertigoOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/SimsenseVertigoOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/SimsenseVertigoOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -558,15 +558,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgSlowHealer"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/SlowHealerOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/SlowHealerOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/SlowHealerOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -773,15 +773,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgAsthma"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/AsthmaOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/AsthmaOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/AsthmaOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -808,15 +808,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgBiPolar"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/BiPolarOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/BiPolarOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/BiPolarOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -843,15 +843,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgBlind"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/BlindOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/BlindOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/BlindOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -881,15 +881,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgComputerIlliterate"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/ComputerIlliterateOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/ComputerIlliterateOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/ComputerIlliterateOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -916,15 +916,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgDeaf"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/DeafOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/DeafOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/DeafOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -954,15 +954,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgDimmerBulb"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/DimmerBulbOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/DimmerBulbOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/DimmerBulbOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
 
@@ -989,15 +989,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgIlliterate"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/IlliterateOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/IlliterateOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/IlliterateOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
     </TableRow>
@@ -1065,15 +1065,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/rgPieIesuDomine"
             android:orientation="horizontal">
-            <RadioButton android:id="@+id/PieIesuDomineOn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes"
-                />
             <RadioButton android:id="@+id/PieIesuDomineOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No"
+                />
+            <RadioButton android:id="@+id/PieIesuDomineOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
                 />
         </RadioGroup>
     </TableRow>
