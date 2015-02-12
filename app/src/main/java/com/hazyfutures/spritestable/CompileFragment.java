@@ -18,11 +18,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//TODO: Add code to check specializations for skill tests
+//TODO: Check for Insomnia while resting
+//TODO: Sprite multiplying again.  Damnit.
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 //TODO: Add code to check for and handle critical and normal glitches
 //Fancy UI:
-//Todo Fix size of buttons to fit on tiny screens.  Needs to be able to display 22 boxes for an Uber Troll
+
 //Todo Heal after 24 hours consecutive rest
 //Todo karma regen after 8 hours consecutive rest
 //todo test consecutive rest karma reset

@@ -13,6 +13,7 @@ public class QualitiesFragment extends Fragment {
 
 //ID, Name, Rating
 //Todo: code for drop downs
+
 //Codeslinger: +2 dice a specific matrix action
 //Codeblock -2 dice pool on a specific action
 //Bad Luck: d6 when edge used, on a 1 opposite of effect occurs, only happens once per session

@@ -231,7 +231,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Stun"
+                android:text="Stun Damage Taken"
                 android:id="@+id/textStun" />
         </TableRow>
 
@@ -252,7 +252,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Physical"
+                android:text="Physical Damage Taken"
                 android:id="@+id/textPhysical" />
         </TableRow>
         <TableRow
