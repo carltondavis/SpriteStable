@@ -25,9 +25,8 @@ public class StatFragment extends Fragment {
     MultiSelectionSpinner spinnerRegistering;
 //Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
 
-    //TODO: Add widgets for skill specializations
     //Todo: Add code to populate specialization widgets
-    //todo: add code to update specialization widgets
+    //todo: add code to update from specialization widgets
 
 //Todo add multiple character option
 //TODO Test update for each attribute
