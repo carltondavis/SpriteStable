@@ -1,6 +1,6 @@
 package com.hazyfutures.spritestable;
 
-
+//TODO: Add code to pull Text Array of Specialization names for a skill
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -13,17 +13,13 @@ import java.util.List;
 public class PersistentValues {
     Context context;
     public int pvBody = 0;
-    public int pvIntuition = 0;
     public int pvWillpower = 0;
     public int pvLogic = 0;
-    public int pvCharisma = 0;
     public int pvStun = 0;
     public int pvPhysical = 0;
     public int pvKarma = 0;
     public int pvKarmaUsed = 0;
     public int pvResonance = 0;
-    public int pvCompiling = 0;
-    public int pvRegistering = 0;
     public int pvHoursThisSession = 0;
     public int pvSleeplessHours = 0;
     public int pvHoursSinceKarmaRefresh = 0;
@@ -34,6 +30,7 @@ public class PersistentValues {
     List<Sprite> pvSprites = new ArrayList<>();
     public List<String> pvSkillList = new ArrayList<String>();
     List<Skills> pvSkills = new ArrayList<>();
+    List<Specializations> pvSpecializations = new ArrayList<>();
     private StatsDataSource datasource;
 
 
@@ -46,6 +43,7 @@ public class PersistentValues {
     }
 
     public void SaveSkillToDB(String SkillName, Integer Value) {
+        setSkillValue(SkillName, Value);
         datasource.updateSkill(SkillName, Value);
     }
 
@@ -53,8 +51,8 @@ public class PersistentValues {
     public void SaveSpriteToDB(Sprite SpriteToSave){
         datasource.updateSprite(SpriteToSave);
     }
-    public void SaveSkillToDB(Sprite SpriteToSave){
-        datasource.updateSprite(SpriteToSave);
+    public void SaveSkillToDB(String SkillName){
+        datasource.updateSkill(SkillName, getSkillValue(SkillName));
     }
 
 
@@ -64,13 +62,11 @@ public class PersistentValues {
         datasource.updateStat("Karma", pvKarma);
         datasource.updateStat("KarmaUsed", pvKarmaUsed);
         datasource.updateStat("Body", pvBody);
-        datasource.updateStat("Intuition", pvIntuition);
         datasource.updateStat("Willpower", pvWillpower);
         datasource.updateStat("Logic", pvLogic);
-        datasource.updateStat("Charisma", pvCharisma);
         datasource.updateStat("Resonance", pvResonance);
-        datasource.updateStat("Compiling", pvCompiling);
-        datasource.updateStat("Registering", pvRegistering);
+        datasource.updateSkill("Compiling", getSkillValue("Compiling"));
+        datasource.updateSkill("Registering", getSkillValue("Registering"));
         datasource.updateStat("Hours", pvHoursThisSession);
         datasource.updateStat("SleeplessHours", pvSleeplessHours);
         datasource.updateStat("ConsecutiveRest", pvConsecutiveRest);
@@ -79,6 +75,7 @@ public class PersistentValues {
         datasource.updateSprite(pvSprites.get(pvActiveSpriteId));
         datasource.updateStat("CodeSlinger", CodeSlinger);
         datasource.updateStat("FocusedConcentration", FocusedConcentration);
+        datasource.updateStat("Insomnia", Insomnia);
         datasource.updateStat("HighPainTolerance", HighPainTolerance);
         datasource.updateStat("HomeGround", HomeGround);
         datasource.updateStat("NaturalHardening", NaturalHardening);
@@ -117,6 +114,8 @@ public class PersistentValues {
         datasource.open();
         List<Stat> values = datasource.getAllStats();
         pvSprites = datasource.getAllSprites();
+        pvSkills = datasource.getAllSkills();
+        pvSpecializations = datasource.getAllSpecializations();
         pvActiveSpriteId = 0;
 
         String stat;
@@ -131,20 +130,14 @@ public class PersistentValues {
                 case "Willpower":
                     pvWillpower = value;
                     break;
-                case "Intuition":
-                    pvIntuition = value;
-                    break;
                 case "Logic":
                     pvLogic = value;
                     break;
-                case "Charisma":
-                    pvCharisma = value;
-                    break;
                 case "Compiling":
-                    pvCompiling = value;
+                    setSkillValue("Compiling", value);
                     break;
                 case "Registering":
-                    pvRegistering = value;
+                    setSkillValue("Registering", value);
                     break;
                 case "Resonance":
                     pvResonance = value;
@@ -178,6 +171,9 @@ public class PersistentValues {
                     break;
                 case "FocusedConcentration":
                     FocusedConcentration = value;
+                    break;
+                case "Insomnia":
+                    Insomnia = value;
                     break;
                 case "HighPainTolerance":
                     HighPainTolerance = value;
@@ -290,15 +286,6 @@ public class PersistentValues {
     }
 
 
-    public void setSkillValue(String Name, Integer Value){
-        for(Skills skill: pvSkills){
-            if((skill.getSkillName().equals(Name))&&(skill.getSkillSpecializationOf()==-1)) {
-                skill.setSkillValue(Value);
-                break;
-            }
-        }
-    }
-
     public Integer getSkillValue(String Name){
         return getSkillValue(Name, "");
     }
@@ -310,19 +297,75 @@ public Integer getSkillValue(String Name, String Specialization){
         if(skill.getSkillName().equals(Name)) {
             ID=skill.getId();
             value= skill.getSkillValue();
-        }
-        if((skill.getSkillSpecializationOf()== ID)&&(skill.getSkillName().equals(Specialization))) {
-            return (value+2);
+            break;
         }
     }
-    for(Skills skill: pvSkills){
-        if((skill.getSkillSpecializationOf()== ID)&&(skill.getSkillName().equals(Specialization))) {
+    for(Specializations specialization: pvSpecializations){
+        if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().equals(Specialization))) {
             return (value+2);
         }
     }
     return value;
-
 }
+
+    public void setSkillValue(String Name, Integer Value){
+        for(Skills skill: pvSkills){
+            if(skill.getSkillName().equals(Name)) {
+                skill.setSkillValue(Value);
+                break;
+            }
+        }
+    }
+
+    public void setSpecialization(String SkillName, String Specialization, Boolean Exists){
+        Integer value=0;
+        long ID=0;
+        for(Skills skill: pvSkills){
+            if(skill.getSkillName().equals(SkillName)) {
+                ID=skill.getId();
+                break;
+            }
+        }
+        for(Specializations specialization: pvSpecializations){
+            if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().equals(Specialization))) {
+                specialization.setExists(Exists);
+            }
+        }
+    }
+
+    public List<String> getSpecializationList(String SkillName){
+        long ID=0;
+        List<String> SpecList = new ArrayList<>();
+        for(Skills skill: pvSkills){
+            if(skill.getSkillName().equals(SkillName)) {
+                ID=skill.getId();
+                break;
+            }
+        }
+        for(Specializations specialization: pvSpecializations){
+            if((specialization.getLinkedSkill()== ID)) {
+                SpecList.add(specialization.getSpecializationName());
+            }
+        }
+        return SpecList;
+    }
+    public List<Boolean> getSpecializationListExists(String SkillName){
+        long ID=0;
+        List<Boolean> SpecList = new ArrayList<>();
+        for(Skills skill: pvSkills){
+            if(skill.getSkillName().equals(SkillName)) {
+                ID=skill.getId();
+                break;
+            }
+        }
+        for(Specializations specialization: pvSpecializations){
+            if((specialization.getLinkedSkill()== ID)) {
+                SpecList.add(specialization.getExists());
+            }
+        }
+        return SpecList;
+    }
+
     public void UpdateSpriteList() {
         boolean unregisteredExists = false;
         pvSpriteList.clear();
@@ -382,6 +425,8 @@ public Integer getSkillValue(String Name, String Specialization){
 */
 
     //Codeslinger: +2 dice a specific matrix action
+
+    //TODO Decide on standardized ID's for matrix actions
     Integer CodeSlinger=0;
     public Integer getCodeSlinger(){
         return CodeSlinger;
@@ -395,7 +440,36 @@ public Integer getSkillValue(String Name, String Specialization){
         }
         return 0;
     }
-    //TODO Decide on standardized ID's for matrix actions
+    //Codeblock -2 dice pool on a specific action
+    Integer CodeBlock=0;
+    public Integer getCodeBlock(){
+        return CodeBlock;
+    }
+    public void setCodeBlock(Integer value){
+        CodeBlock=value;
+    }
+    public Integer getCodeBlockMod(Integer MatrixAction){
+        if(CodeSlinger==MatrixAction){
+            return -2;
+        }
+        return 0;
+    }
+    //Loss of Confidence:  -2 dice on a skill
+    //TODO: Add List of Skills with ID's
+    Integer LossOfConfidence=0;
+    public Integer getLossOfConfidence(){
+        return LossOfConfidence;
+    }
+    public void setLossOfConfidence(Integer value){
+        LossOfConfidence=value;
+    }
+    public Integer getLossOfConfidenceMod(Integer SkillID){
+        if(LossOfConfidence==SkillID){
+            return -2;
+        }
+        return 0;
+    }
+
 //Focused concentration 1-6: May sustain Rating force of without negative penalties
     Integer FocusedConcentration=0;
     public Integer getFocusedConcentration(){
@@ -403,6 +477,14 @@ public Integer getSkillValue(String Name, String Specialization){
     }
     public void setFocusedConcentration(Integer value){
         FocusedConcentration=value;
+    }
+
+    Integer Insomnia=0;
+    public Integer getInsomnia(){
+        return Insomnia;
+    }
+    public void setInsomnia(Integer value){
+        Insomnia=value;
     }
     //High paint tolerance 1-3: +1 rating boxes of stun/physical before penalties are incurred
     Integer HighPainTolerance=0;
@@ -468,35 +550,6 @@ public Integer getSkillValue(String Name, String Specialization){
         //TODO Roll dice, and include option for bad luck to happen
         return -1;
     }
-    //Codeblock -2 dice pool on a specific action
-    Integer CodeBlock=0;
-    public Integer getCodeBlock(){
-        return CodeBlock;
-    }
-    public void setCodeBlock(Integer value){
-        CodeBlock=value;
-    }
-    public Integer getCodeBlockMod(Integer MatrixAction){
-        if(CodeSlinger==MatrixAction){
-            return -2;
-        }
-        return 0;
-    }
-    //Loss of Confidence:  -2 dice on a skill
-    //TODO: Add List of Skills with ID's
-    Integer LossOfConfidence=0;
-    public Integer getLossOfConfidence(){
-        return LossOfConfidence;
-    }
-    public void setLossOfConfidence(Integer value){
-        LossOfConfidence=value;
-    }
-    public Integer getLossOfConfidenceMod(Integer SkillID){
-        if(LossOfConfidence==SkillID){
-            return -2;
-        }
-        return 0;
-    }
     //Low pain tolerance: Modifier every 2 boxes of damage, not 3
     Integer LowPainTolerance=0;
     public Integer getLowPainTolerance(){
@@ -512,13 +565,6 @@ public Integer getSkillValue(String Name, String Specialization){
     }
     public void setSensitiveSystem(Integer value){
         SensitiveSystem=value;
-    }
-    public Integer getSensitiveSystemMod(Integer Willpower){
-        if(SensitiveSystem>0){
-            //TODO Willpower (2) test
-            return 2;
-        }
-        return 0;
     }
     //Simsense Vertigo: -2 dice all matrix tests
     Integer SimsenseVertigo=0;

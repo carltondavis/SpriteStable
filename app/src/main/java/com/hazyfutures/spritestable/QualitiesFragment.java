@@ -10,15 +10,16 @@ import android.widget.RadioGroup;
 
 public class QualitiesFragment extends Fragment {
 
-//TODO QUALITIES FRAGMENT:
 
 //ID, Name, Rating
-//TODO Add code to Compile to handle qualities
-//Todo: Add modifiers for any given die rolls to make these stats generic (MatrixMod, PerceptionMod, HealingMod, etc)
 //Todo: code for drop downs
-//Todo Add onResume to update when restoring
-//Todo list of qualities:
 //Codeslinger: +2 dice a specific matrix action
+//Codeblock -2 dice pool on a specific action
+//Bad Luck: d6 when edge used, on a 1 opposite of effect occurs, only happens once per session
+//Asthma: Fatigue damage twice as often, 2 boxes fatigue damage=-1 all actions, 4 boxes=further fatigue damage only resisted by willpower, 8 boxes=additional -1 penatly all actions
+//Bi-polar: Once per day at sleep time roll die, 1-2 Depressed, 3-4 Manic, 5-6Stable, Medication available.  Not taking for 12 hours results in roll
+//Results: Manic: -2 logic + intuition rolls, Depressive -2 logic, intuition, Stable no penalties
+
 //Focused concentration 1-6: May sustain Rating force of without negative penalties
 //High paint tolerance 1-3: +1 rating boxes of stun/physical before penalties are incurred
 //Home ground: +2 bonus to matrix tests
@@ -26,8 +27,6 @@ public class QualitiesFragment extends Fragment {
 //Quick Healer: +2 dice pool on healing tests
 //Toughness: +1 die damage resistance tests
 //Will to live 1-3: +Rating in overflow boxes
-//Bad Luck: d6 when edge used, on a 1 opposite of effect occurs, only happens once per session
-//Codeblock -2 dice pool on a specific action
 //Loss of Confidence:  -2 dice on a skill
 //Low pain tolerance: Modifier every 2 boxes of damage, not 3
 //Sensitive system: Willpower(2) test before fading tests, +2 fading if it fails
@@ -36,9 +35,6 @@ public class QualitiesFragment extends Fragment {
 //Perceptive 1-2: +Rating die matrix perception test
 //Spike Resistance 1-3: +rating vs. biofeedback
 //Tough as Nails 1-4 Stun/Physical: +1 box of either stun or physical per rating, up to 3 on either.
-//Asthma: Fatigue damage twice as often, 2 boxes fatigue damage=-1 all actions, 4 boxes=further fatigue damage only resisted by willpower, 8 boxes=additional -1 penatly all actions
-//Bi-polar: Once per day at sleep time roll die, 1-2 Depressed, 3-4 Manic, 5-6Stable, Medication available.  Not taking for 12 hours results in roll
-//Results: Manic: -2 logic + intuition rolls, Depressive -2 logic, intuition, Stable no penalties
 //Blind: -4 perception tests
 //Computer illiterate: -4 all matrix tests
 //Deaf: -2 perception tests
@@ -62,6 +58,17 @@ public class QualitiesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_qualities, container, false);
         Main = (MainActivity)getActivity();
+
+        RadioGroup rgInsomnia = (RadioGroup) v.findViewById(R.id.rgInsomnia);
+        rgInsomnia.check(rgInsomnia.getChildAt(Main.data.getInsomnia()).getId());
+        rgInsomnia.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Main.data.setInsomnia(getValue(checkedId));
+
+            }
+        });
 
         RadioGroup rgFocusedConcentration = (RadioGroup) v.findViewById(R.id.rgFocusedConcentration);
         rgFocusedConcentration.check(rgFocusedConcentration.getChildAt(Main.data.getFocusedConcentration()).getId());
@@ -294,7 +301,6 @@ public class QualitiesFragment extends Fragment {
 
             }
         });
-        //TODO Add Radio Group ID's
         RadioGroup Oblivious = (RadioGroup) v.findViewById(R.id.rgOblivious);
         Oblivious.check(Oblivious.getChildAt(Main.data.getOblivious()).getId());
         Oblivious.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()

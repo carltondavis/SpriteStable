@@ -22,12 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dip"
+
         >
 
         <TextView
             android:id="@+id/CodeSlinger"
             android:text="Code Slinger"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            />
 </TableRow>
     <TableRow
         android:id="@+id/tableRow1a"
@@ -1077,9 +1079,47 @@
                 />
         </RadioGroup>
     </TableRow>
-
-
-spi
+    <TableRow
+        android:id="@+id/tableRow30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
+        <TextView
+            android:id="@+id/Insomnia"
+            android:text="Insomnia"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:width="0dp"/>
+    </TableRow>
+    <TableRow
+        android:id="@+id/tableRow30a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip"
+        android:background="#ffd3d3d3">
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rgInsomnia"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/InsomniaOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                />
+            <RadioButton android:id="@+id/Insomnia1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1" />
+            <RadioButton android:id="@+id/Insomnia2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                />
+        </RadioGroup>
+    </TableRow>
 
 </TableLayout>
 </ScrollView>

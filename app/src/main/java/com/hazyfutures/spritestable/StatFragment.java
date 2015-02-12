@@ -14,9 +14,21 @@ import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StatFragment extends Fragment {
     
     MainActivity Main = (MainActivity)getActivity();
+
+    MultiSelectionSpinner spinnerCompiling;
+    MultiSelectionSpinner spinnerRegistering;
+//Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
+
+    //TODO: Add widgets for skill specializations
+    //Todo: Add code to populate specialization widgets
+    //todo: add code to update specialization widgets
+
 //Todo add multiple character option
 //TODO Test update for each attribute
 //Todo add a Spirit/Mage handler option
@@ -38,14 +50,26 @@ public class StatFragment extends Fragment {
         tv.setText(getArguments().getString("msg"));
 */
 //TODO: Make Stats a scrolling fragment
+        List<String> specs = new ArrayList<String>();
+
+        specs=Main.data.getSpecializationList("Compiling");
+        String[] arrayCompiling = new String[specs.size()];
+        arrayCompiling=specs.toArray(arrayCompiling);
+        spinnerCompiling = (MultiSelectionSpinner) v.findViewById(R.id.spinnerCompiling);
+        spinnerCompiling.setItems(arrayCompiling);
+
+
+        specs=Main.data.getSpecializationList("Registering");
+        String[] arrayRegistering = new String[specs.size()];
+        arrayRegistering=specs.toArray(arrayRegistering);
+        spinnerRegistering = (MultiSelectionSpinner) v.findViewById(R.id.spinnerRegistering);
+        spinnerRegistering.setItems(arrayRegistering);
 
         CreateListener(R.id.editBody, Main.data.pvBody, v);
         CreateListener(R.id.editWillpower, Main.data.pvWillpower , v);
-        CreateListener(R.id.editIntuition, Main.data.pvIntuition, v);
         CreateListener(R.id.editLogic, Main.data.pvLogic, v);
-        CreateListener(R.id.editCharisma, Main.data.pvCharisma, v);
-        CreateListener(R.id.editCompiling, Main.data.pvCompiling, v);
-        CreateListener(R.id.editRegistering, Main.data.pvRegistering, v);
+        CreateListener(R.id.editCompiling, Main.data.getSkillValue("Compiling") , v);
+        CreateListener(R.id.editRegistering, Main.data.getSkillValue("Registering"), v);
         CreateListener(R.id.editResonance, Main.data.pvResonance, v);
         CreateListener(R.id.editStun, Main.data.pvStun, v);
         CreateListener(R.id.editPhysical, Main.data.pvPhysical, v);
@@ -205,12 +229,6 @@ public class StatFragment extends Fragment {
                         UpdateDamage();
                     }
                     break;
-                case R.id.editIntuition:
-                    if(Main.data.pvIntuition != value) {
-                        Main.data.pvIntuition = value;
-                        Main.data.SaveStatToDB("Intuition", value);
-                    }
-                    break;
                 case R.id.editLogic:
                     if(Main.data.pvLogic != value) {
                         Main.data.pvLogic = value;
@@ -219,22 +237,14 @@ public class StatFragment extends Fragment {
                         UpdateCompile();
                     }
                     break;
-                case R.id.editCharisma:
-                    if(Main.data.pvCharisma != value) {
-                        Main.data.pvCharisma = value;
-                        Main.data.SaveStatToDB("Charisma", value);
-                    }
-                    break;
                 case R.id.editCompiling:
-                    if(Main.data.pvCompiling != value) {
-                        Main.data.pvCompiling = value;
-                        Main.data.SaveStatToDB("Compiling", value);
+                    if(Main.data.getSkillValue("Compiling") != value) {
+                        Main.data.SaveSkillToDB("Compiling", value);
                     }
                     break;
                 case R.id.editRegistering:
-                    if(Main.data.pvRegistering != value) {
-                        Main.data.pvRegistering = value;
-                        Main.data.SaveStatToDB("Registering", value);
+                    if(Main.data.getSkillValue("Registering") != value) {
+                        Main.data.SaveSkillToDB("Registering", value);
                     }
                     break;
                 case R.id.editResonance:

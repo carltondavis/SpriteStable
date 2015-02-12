@@ -1,9 +1,3 @@
-//TODO SPRITE FRAGMENT:
-//Todo Add display of sprite stats + abilities for specific sprite listed
-//ToDo Add list of important qualities
-//Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
-//Todo Update Database to handle qualities
-//Todo Update Compile/Register/Rest to account for qualities
 
 package com.hazyfutures.spritestable;
 

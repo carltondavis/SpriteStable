@@ -1,332 +1,342 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="none"
+    android:layout_weight="1"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.hazyfutures.spritestable.StatFragment"
-    >
+    tools:context="com.hazyfutures.spritestable.StatFragment">
 
-    <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editBody"
-            android:width="100dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:isScrollContainer="true"
+        android:shrinkColumns="1"
+        >
 
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:width="100dp"
-            android:id="@+id/editWillpower"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/editLogic"
-            android:layout_alignStart="@+id/editLogic" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:width="100dp"
-            android:ems="10"
-            android:id="@+id/editIntuition"
-            android:layout_below="@+id/editWillpower"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:width="100dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editLogic"
-            android:layout_below="@+id/textWillpower"
-            android:layout_alignLeft="@+id/editRegistering"
-            android:layout_alignStart="@+id/editRegistering" />" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:width="100dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editCharisma"
-            android:layout_below="@+id/editLogic"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:width="100dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editCompiling"
-            android:layout_below="@+id/editCharisma"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:width="100dp"
-            android:id="@+id/editRegistering"
-            android:layout_alignBottom="@+id/textCompiling"
-            android:layout_toRightOf="@+id/textStatResonance"
-            android:layout_toEndOf="@+id/textStatResonance" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:width="100dp"
-            android:id="@+id/editResonance"
-            android:layout_below="@+id/editRegistering"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:width="100dp"
-            android:ems="10"
-            android:id="@+id/editStun"
-            android:layout_below="@+id/editResonance"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:width="100dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editPhysical"
-            android:layout_below="@+id/textStatResonance"
-            android:layout_alignLeft="@+id/editRegistering"
-            android:layout_alignStart="@+id/editRegistering" />
-
-        <TextView
+        <!-- 2 columns -->
+        <TableRow
+            android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Body"
-            android:id="@+id/textBody"
-            android:layout_toRightOf="@+id/editBody"
-            android:layout_alignBottom="@+id/editBody"
-            />
+            android:padding="5dip"
 
-        <TextView
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editBody"
+                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Body"
+                android:id="@+id/textBody"            />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Willpower"
-            android:id="@+id/textWillpower"
-            android:layout_alignBottom="@+id/editWillpower"
-            android:layout_toRightOf="@+id/editWillpower" />
+            android:padding="5dip"
 
-        <TextView
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:width="100dp"
+                android:id="@+id/editWillpower"
+                android:layout_alignParentTop="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Willpower"
+                android:id="@+id/textWillpower"/>
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Intuition"
-            android:id="@+id/textIntuition"
-            android:layout_alignBottom="@+id/editIntuition"
-            android:layout_toRightOf="@+id/editIntuition" />
+            android:padding="5dip"
 
-        <TextView
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editLogic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Logic"
+                android:id="@+id/textLogic"/>
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Logic"
-            android:id="@+id/textLogic"
-            android:layout_alignBottom="@+id/editLogic"
-            android:layout_toRightOf="@+id/editLogic" />
+            android:padding="5dip"
 
-        <TextView
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+
+
+                android:id="@+id/editResonance"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Resonance"
+                android:id="@+id/textStatResonance" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Charisma"
-            android:id="@+id/textCharisma"
-            android:layout_alignBottom="@+id/editCharisma"
-            android:layout_toRightOf="@+id/editCharisma" />
+            android:padding="5dip"
 
-        <TextView
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editKarma" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Karma"
+                android:id="@+id/textKarma"/>
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Compiling"
-            android:id="@+id/textCompiling"
-            android:layout_alignBottom="@+id/editCompiling"
-            android:layout_toRightOf="@+id/editCompiling" />
+            android:padding="5dip"
 
-        <TextView
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editKarmaUsed" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Karma Used"
+                android:id="@+id/textKarmaUsed" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Registering"
-            android:id="@+id/textRegistering"
-            android:layout_alignBottom="@+id/editRegistering"
-            android:layout_toRightOf="@+id/editRegistering" />
+            android:padding="5dip"
 
-        <TextView
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editCompiling" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Compiling"
+                android:id="@+id/textCompiling" />
+
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow7a"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Resonance"
-            android:id="@+id/textStatResonance"
-            android:layout_alignBottom="@+id/editResonance"
-            android:layout_toRightOf="@+id/editResonance" />
+            android:padding="5dip"
 
-        <TextView
+            >
+        <com.hazyfutures.spritestable.MultiSelectionSpinner
+            android:id="@+id/spinnerCompiling"
+            android:layout_width="match_parent"
+            android:layout_span="2"
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Stun"
-            android:id="@+id/textStun"
-            android:layout_alignBottom="@+id/editStun"
-            android:layout_toRightOf="@+id/editStun" />
+            android:padding="5dip"
 
-        <TextView
+            >
+
+
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editRegistering"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Registering"
+                android:id="@+id/textRegistering"/>
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow8a"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Physical"
-            android:id="@+id/textPhysical"
-            android:layout_alignBottom="@+id/editPhysical"
-            android:layout_toRightOf="@+id/editPhysical" />
+            android:padding="5dip"
 
-        <EditText
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editKarma"
-            android:layout_below="@+id/editPhysical"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
+            >
+            <com.hazyfutures.spritestable.MultiSelectionSpinner
+                android:id="@+id/spinnerRegistering"
+                android:layout_width="match_parent"
+                android:layout_span="2"
+                android:layout_height="wrap_content" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Karma"
-            android:id="@+id/textKarma"
-            android:layout_alignBottom="@+id/editKarma"
-            android:layout_toRightOf="@+id/editKarma"
-            android:layout_toEndOf="@+id/editPhysical" />
+            android:padding="5dip"
 
-    <EditText
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editKarmaUsed"
-        android:layout_below="@+id/textPhysical"
-        android:layout_alignLeft="@+id/editPhysical"
-        android:layout_alignStart="@+id/editPhysical" />
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editStun" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Stun"
+                android:id="@+id/textStun" />
+        </TableRow>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Karma Used"
-        android:id="@+id/textKarmaUsed"
-        android:layout_toRightOf="@+id/editKarmaUsed"
-        android:layout_toEndOf="@+id/textBody"
-        android:layout_alignBottom="@+id/editKarmaUsed" />
+        <TableRow
+            android:id="@+id/tableRow10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
 
-    <EditText
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editConsecutiveHoursRested"
-        android:layout_below="@+id/editKarmaUsed"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editBody" />
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editPhysical" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Consecutive Hours Rested"
-        android:id="@+id/textConsecutiveHoursRested"
-        android:layout_alignBottom="@+id/editConsecutiveHoursRested"
-        android:layout_toRightOf="@+id/editConsecutiveHoursRested"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Physical"
+                android:id="@+id/textPhysical" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
 
-    <EditText
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editHoursWithoutSleep"
-        android:layout_below="@+id/editConsecutiveHoursRested"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editBody" />
+            >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Hours Without Sleep"
-        android:id="@+id/textHoursWithoutSleep"
-        android:layout_toRightOf="@+id/editHoursThisSession"
-        android:layout_alignBottom="@+id/editHoursWithoutSleep" />
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editConsecutiveHoursRested" />
 
-    <EditText
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editHoursThisSession"
-        android:layout_below="@+id/editHoursWithoutSleep"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editBody" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Consecutive Hours Rested"
+                android:id="@+id/textConsecutiveHoursRested"   />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Hours This Session"
-        android:id="@+id/textHoursThisSession"
-        android:layout_alignBottom="@+id/editHoursThisSession"
-        android:layout_toRightOf="@+id/editHoursThisSession"
-         />
-    <EditText
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editHoursSinceKarmaRefresh"
-        android:layout_below="@+id/editHoursThisSession"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editBody" />
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editHoursWithoutSleep" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Hours Since Karma Refresh"
-        android:id="@+id/textHoursSinceKarmaRefresh"
-        android:layout_alignBottom="@+id/editHoursSinceKarmaRefresh"
-        android:layout_toRightOf="@+id/editHoursSinceKarmaRefresh"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Sleepless Hours"
+                android:id="@+id/textHoursWithoutSleep" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
 
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editHoursThisSession" />
 
-</RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Hours This Session"
+                android:id="@+id/textHoursThisSession"    />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/editHoursSinceKarmaRefresh"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Hours Since Karma Refresh"
+                android:id="@+id/textHoursSinceKarmaRefresh" />
+
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>

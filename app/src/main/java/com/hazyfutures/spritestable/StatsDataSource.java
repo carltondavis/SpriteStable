@@ -25,8 +25,11 @@ public class StatsDataSource {
             Database.COLUMN_VALUE};
     private String[] allSkillColumns = {Database.COLUMN_ID,
             Database.COLUMN_SKILLNAME,
-            Database.COLUMN_SKILLVALUE,
-            Database.COLUMN_SPECIALIZATIONOF};
+            Database.COLUMN_SKILLVALUE};
+    private String[] allSpecializationColumns = {Database.COLUMN_ID,
+            Database.COLUMN_SPECIALIZATIONNAME,
+            Database.COLUMN_LINKEDSKILL,
+            Database.COLUMN_EXISTS};
     private String[] allSpriteColumns = {Database.COLUMN_ID,
             Database.COLUMN_OVERWATCHSCORE,
             Database.COLUMN_RATING,
@@ -79,9 +82,21 @@ public class StatsDataSource {
 
     public void updateSkill(String SkillName, Integer Value) {
         ContentValues value = new ContentValues();
-        value.put(Database.COLUMN_VALUE, Value);
+        value.put(Database.COLUMN_SKILLVALUE, Value);
         int val = database.update(Database.TABLE_SKILLS, value, Database.COLUMN_SKILLNAME + " = '" + SkillName + "'", null);
         // Log.i("SaveStat: ", attribute + ":" + Value + "Return:" + val);
+    }
+    public void updateSpecialization(String SpecializationName, String SkillName, Integer exists) {
+        String selectQuery = "SELECT " + Database.COLUMN_ID +" FROM "+ Database.TABLE_SKILLS +" WHERE "+ Database.COLUMN_SKILLNAME +"=?";
+        Cursor c = database.rawQuery(selectQuery, new String[] { SkillName });
+        if (c.moveToFirst()) {
+            String skillID =c.getString(c.getColumnIndex(Database.COLUMN_ID));
+            ContentValues value = new ContentValues();
+            value.put(Database.COLUMN_EXISTS, exists);
+            int val = database.update(Database.TABLE_SKILLS, value, Database.COLUMN_LINKEDSKILL + " = '" + skillID + "' and " + Database.COLUMN_SPECIALIZATIONNAME + " = '" + SpecializationName + "'", null);
+        }
+        c.close();
+        // Log.i("SaveSpec: ", SkillName + "/" + SpecializationName + ":" + exists + "Return:" + val);
     }
 
     public void deleteSprite(Sprite sprite){
@@ -90,7 +105,6 @@ public class StatsDataSource {
             int val = database.delete(Database.TABLE_SPRITES, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
                 Log.i("Sprite", "Delete ID:" + sprite.getId());
-                //todo I suspect things aren't actually deleting.
                 database.setTransactionSuccessful();
             }
         } finally {
@@ -180,6 +194,15 @@ public class StatsDataSource {
         return skill;
     }
 
+    private Specializations cursorToSpecialization(Cursor cursor) {
+        Specializations specialization = new Specializations();
+        specialization.setId(cursor.getLong(0));
+        specialization.setSpecializationName(cursor.getString(1));
+        specialization.setLinkedSkill(cursor.getInt(2));
+        specialization.setExists(cursor.getInt(2)==1);
+        return specialization;
+    }
+
     public List<Skills> getAllSkills() {
         List<Skills> skills = new ArrayList<>();
 
@@ -197,7 +220,22 @@ public class StatsDataSource {
         return skills;
     }
 
+    public List<Specializations> getAllSpecializations() {
+        List<Specializations> specializations = new ArrayList<>();
 
+        Cursor cursor = database.query(Database.TABLE_SPECIALIZATIONS,
+                allSpecializationColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Specializations specialization = cursorToSpecialization(cursor);
+            specializations.add(specialization);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return specializations;
+    }
 
     private Sprite cursorToSprite(Cursor cursor) {
         Sprite sprite = new Sprite();

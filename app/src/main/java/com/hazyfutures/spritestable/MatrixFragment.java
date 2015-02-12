@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 public class MatrixFragment extends Fragment {
 //Todo: MATRIX FRAGMENT
+    //Read Sprite rules for assisting
+    //Design UI: Pick actor first or pick Action first?  Then display options below?  Checkboxes to add assistors?
 //Todo: Add Noise rating distance spinner
 //Todo: Add Noise rating static spinner
 //Todo: Add Playing hacking buttons, including manual die pool modifier

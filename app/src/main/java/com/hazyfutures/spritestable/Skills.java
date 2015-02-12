@@ -7,7 +7,6 @@ public class Skills {
     private long id;
     private String SkillName = "None";
     private Integer SkillValue = -1;
-    private Integer SkillSpecializationOf = -1;
 
     public long getId() {
         return id;
@@ -34,15 +33,6 @@ public class Skills {
 
         return this.SkillValue;
     }
-
-    public void setSkillSpecializationOf(Integer Value) {
-        this.SkillSpecializationOf= Value;
-    }
-
-    public Integer getSkillSpecializationOf() {
-        return SkillSpecializationOf;
-    }
-
 
 
 }

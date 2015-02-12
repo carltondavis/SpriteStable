@@ -18,20 +18,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//TODO: Add code to check specializations for skill tests
+//ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
+//TODO: Add code to check for and handle critical and normal glitches
 //Fancy UI:
-//TODO: Redesign page to work with tiny screens
-//TODO FIXED? Something multiplying sprites in list.
+//Todo Fix size of buttons to fit on tiny screens.  Needs to be able to display 22 boxes for an Uber Troll
 //Todo Heal after 24 hours consecutive rest
 //Todo karma regen after 8 hours consecutive rest
 //todo test consecutive rest karma reset
 //ToDo Change Hours to Total Hours.
 //ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
-//ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 //Todo add Toast for disabled buttons explaining why they're disabled
 //Todo Someday Add statistics for rolls to include actual percentage chance of something happening to warnings
 //TODO settings page: dice rolls display, Fatigue rules, fatigue warnings, Penalty popup warning, possible death warning
-//ToDo: Only load from DB when persisted data doesn't exist.
-//Todo: Change DB writing to happen on pause/close.  Load from DB on resume
 //ToDo Add possible Overflow/Death warnings If compiling/registering something, calculate if worst case stun/physical could max out stun or physical chart.  Warn of possibility.
 //ToDo Add automated registering system: Set the amount of time to use, and it runs
 //Create new class to handle all View updates?
@@ -382,7 +381,7 @@ public class CompileFragment extends Fragment {
 
                 //Make Opposed Dice Roll
                 if (Main.data.getCurrentSprite().getServicesOwed() == 0) {//New Sprite, so Compile
-                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.pvCompiling - DamagePenalties), checkSkillKarma.isChecked());
+                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Compiling") - DamagePenalties), checkSkillKarma.isChecked());
                     SpriteRoll = dice.rollDice(Main.data.getCurrentSprite().getRating(), false);
                 } else {//Already has services, so Register
                     Main.data.pvHoursThisSession += Main.data.getCurrentSprite().getRating();  //Registering takes hours
@@ -409,7 +408,7 @@ public class CompileFragment extends Fragment {
                     }
                     Main.data.pvSleeplessHours += Main.data.getCurrentSprite().getRating();
 
-                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.pvRegistering - DamagePenalties), checkSkillKarma.isChecked());
+                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Registering") - DamagePenalties), checkSkillKarma.isChecked());
                     SpriteRoll = dice.rollDice(Main.data.getCurrentSprite().getRating() * 2, false);
 
                 }

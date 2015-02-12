@@ -26,12 +26,21 @@ public class Database extends SQLiteOpenHelper {
     public static final String TABLE_SKILLS = "Skills";
     public static final String COLUMN_SKILLNAME = "SkillName";
     public static final String COLUMN_SKILLVALUE = "SkillValue";
-    public static final String COLUMN_SPECIALIZATIONOF = "SpecializationID";
     private static final String SKILL_DATABASE_CREATE = "create table "
             + TABLE_SKILLS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_SKILLNAME
             + " text not null, " + COLUMN_SKILLVALUE
-            + " integer not null, "+ COLUMN_SPECIALIZATIONOF
+            + " integer not null"
+            + ");";
+    public static final String TABLE_SPECIALIZATIONS = "Specializations";
+    public static final String COLUMN_SPECIALIZATIONNAME = "SpecializationName";
+    public static final String COLUMN_LINKEDSKILL = "LinkedSkill";
+    public static final String COLUMN_EXISTS = "HasSpecialization";
+    private static final String SPECIALIZATION_DATABASE_CREATE = "create table "
+            + TABLE_SPECIALIZATIONS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_SPECIALIZATIONNAME
+            + " text not null, " + COLUMN_LINKEDSKILL
+            + " integer not null, " + COLUMN_EXISTS
             + " integer not null"
             + ");";
 
@@ -54,163 +63,100 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
 
     public Database(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
+
+    public long AddSkill(SQLiteDatabase database, String SkillName){
+        return  AddSkill(database, SkillName, 0);
+    }
+    public long AddSkill(SQLiteDatabase database, String SkillName, Integer value){
+        ContentValues values = new ContentValues();
+        values.put(Database.COLUMN_SKILLNAME, SkillName);
+        values.put(Database.COLUMN_SKILLVALUE, value);
+        return database.insert(Database.TABLE_SKILLS, null,
+                values);
+    }
+    public void AddSpecialization(SQLiteDatabase database, Long LinkedSkill, String SpecializationName){
+        ContentValues values = new ContentValues();
+        values.put(Database.COLUMN_SPECIALIZATIONNAME, SpecializationName);
+        values.put(Database.COLUMN_LINKEDSKILL, LinkedSkill);
+        values.put(Database.COLUMN_EXISTS, 0);
+        database.insert(Database.TABLE_SPECIALIZATIONS, null,
+                values);
+    }
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(STAT_DATABASE_CREATE);
         database.execSQL(SKILL_DATABASE_CREATE);
+        database.execSQL(SPECIALIZATION_DATABASE_CREATE);
         database.execSQL(SPRITE_DATABASE_CREATE);
         ContentValues values = new ContentValues();
         ContentValues spritevalues = new ContentValues();
-
-        values.put(Database.COLUMN_SKILLNAME, "Cybercombat");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Electronic Warfare");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Hacking");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Computer");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Hardware");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Software");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Compiling");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Decompiling");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Registering");
-        values.put(Database.COLUMN_SKILLVALUE, 0);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, -1);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Courier");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Crack");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Data");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Fault");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Machine");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 7);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Courier");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Crack");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Data");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Fault");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Machine");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 8);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-        values.put(Database.COLUMN_SKILLNAME, "Courier");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Crack");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Data");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Fault");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
-
-        values.put(Database.COLUMN_SKILLNAME, "Machine");
-        values.put(Database.COLUMN_SKILLVALUE, 1);
-        values.put(Database.COLUMN_SPECIALIZATIONOF, 9);
-        database.insert(Database.TABLE_SKILLS, null,
-                values);
+        long LinkedSkill=0;
+        LinkedSkill = AddSkill(database, "Cybercombat");
+        AddSpecialization(database, LinkedSkill, "Devices");
+        AddSpecialization(database, LinkedSkill, "Grids");
+        AddSpecialization(database, LinkedSkill, "IC");
+        AddSpecialization(database, LinkedSkill,  "Personas");
+        AddSpecialization(database, LinkedSkill,  "Sprites");
+        LinkedSkill = AddSkill(database, "Electronic Warfare");
+        AddSpecialization(database, LinkedSkill, "Communications");
+        AddSpecialization(database, LinkedSkill, "Encryption");
+        AddSpecialization(database, LinkedSkill, "Jamming");
+        AddSpecialization(database, LinkedSkill,  "Sensor Operations");
+        LinkedSkill = AddSkill(database, "Hacking");
+        AddSpecialization(database, LinkedSkill, "Devices");
+        AddSpecialization(database, LinkedSkill, "Files");
+        AddSpecialization(database, LinkedSkill, "Hosts");
+        AddSpecialization(database, LinkedSkill,  "Personas");
+        LinkedSkill = AddSkill(database, "Computer");
+        LinkedSkill = AddSkill(database,  "Hardware");
+        LinkedSkill = AddSkill(database, "Software");
+        AddSpecialization(database, LinkedSkill, "Data Bombs");
+        AddSpecialization(database, LinkedSkill,  "Cleaner");
+        AddSpecialization(database, LinkedSkill, "Editor");
+        AddSpecialization(database, LinkedSkill, "Static Veil");
+        AddSpecialization(database, LinkedSkill, "Pulse Storm");
+        AddSpecialization(database, LinkedSkill, "Puppeteer");
+        AddSpecialization(database, LinkedSkill, "Resonance Channel");
+        AddSpecialization(database, LinkedSkill, "Resonance Spike");
+        AddSpecialization(database, LinkedSkill, "Resonance Veil");
+        AddSpecialization(database, LinkedSkill, "Static Bomb");
+        AddSpecialization(database, LinkedSkill, "Stitches");
+        AddSpecialization(database, LinkedSkill, "Transcendent Grid");
+        AddSpecialization(database, LinkedSkill,  "Tattletale");
+        AddSpecialization(database, LinkedSkill, "Diffusion of Attack");
+        AddSpecialization(database, LinkedSkill, "Diffusion of Sleaze");
+        AddSpecialization(database, LinkedSkill, "Diffusion of Data Processing");
+        AddSpecialization(database, LinkedSkill, "Diffusion of Firewall");
+        AddSpecialization(database, LinkedSkill, "Infusion of Attack");
+        AddSpecialization(database, LinkedSkill, "Infusion of Sleaze");
+        AddSpecialization(database, LinkedSkill, "Infusion of Data Processing");
+        AddSpecialization(database, LinkedSkill, "Infusion of Firewall");
+        LinkedSkill = AddSkill(database,  "Compiling");
+        AddSpecialization(database, LinkedSkill, "Courier");
+        AddSpecialization(database, LinkedSkill, "Crack");
+        AddSpecialization(database, LinkedSkill, "Data");
+        AddSpecialization(database, LinkedSkill,  "Fault");
+        AddSpecialization(database, LinkedSkill,  "Machine");
+        LinkedSkill = AddSkill(database, "Decompiling");
+        AddSpecialization(database, LinkedSkill, "Courier");
+        AddSpecialization(database, LinkedSkill, "Crack");
+        AddSpecialization(database, LinkedSkill, "Data");
+        AddSpecialization(database, LinkedSkill,  "Fault");
+        AddSpecialization(database, LinkedSkill,  "Machine");
+        LinkedSkill = AddSkill(database,  "Registering");
+        AddSpecialization(database, LinkedSkill, "Courier");
+        AddSpecialization(database, LinkedSkill, "Crack");
+        AddSpecialization(database, LinkedSkill, "Data");
+        AddSpecialization(database, LinkedSkill,  "Fault");
+        AddSpecialization(database, LinkedSkill,  "Machine");
 
         values.put(Database.COLUMN_STAT, "Body");
         values.put(Database.COLUMN_VALUE, 1);
@@ -232,11 +178,23 @@ public class Database extends SQLiteOpenHelper {
         values.put(Database.COLUMN_VALUE, 1);
         database.insert(Database.TABLE_STATS, null,
                 values);
-        values.put(Database.COLUMN_STAT, "Compiling");
+        values.put(Database.COLUMN_STAT, "Agility");
         values.put(Database.COLUMN_VALUE, 1);
         database.insert(Database.TABLE_STATS, null,
                 values);
-        values.put(Database.COLUMN_STAT, "Registering");
+        values.put(Database.COLUMN_STAT, "Strength");
+        values.put(Database.COLUMN_VALUE, 1);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+        values.put(Database.COLUMN_STAT, "Essence");
+        values.put(Database.COLUMN_VALUE, 6);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+        values.put(Database.COLUMN_STAT, "Magic");
+        values.put(Database.COLUMN_VALUE, -1);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+        values.put(Database.COLUMN_STAT, "Reaction");
         values.put(Database.COLUMN_VALUE, 1);
         database.insert(Database.TABLE_STATS, null,
                 values);
@@ -283,6 +241,11 @@ public class Database extends SQLiteOpenHelper {
                 values);
 
         values.put(Database.COLUMN_STAT, "FocusedConcentration");
+        values.put(Database.COLUMN_VALUE, 0);
+        database.insert(Database.TABLE_STATS, null,
+                values);
+
+        values.put(Database.COLUMN_STAT, "Insomnia");
         values.put(Database.COLUMN_VALUE, 0);
         database.insert(Database.TABLE_STATS, null,
                 values);
