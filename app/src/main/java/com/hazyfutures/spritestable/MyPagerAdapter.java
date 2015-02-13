@@ -12,14 +12,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class MyPagerAdapter extends FragmentPagerAdapter{
     // Declare Variables
-    //TODO Declare local variables for persistant data
-    //ToDo Arrange for original instantiation to update display correctly.
-    //Todo make sure that display is updated again each time the page changes (or immediately?)
-
-
     public MyPagerAdapter(FragmentManager fm) {
         super(fm);
-
     }
 
     @Override

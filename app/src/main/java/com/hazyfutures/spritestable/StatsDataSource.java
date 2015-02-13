@@ -93,7 +93,18 @@ public class StatsDataSource {
             String skillID =c.getString(c.getColumnIndex(Database.COLUMN_ID));
             ContentValues value = new ContentValues();
             value.put(Database.COLUMN_EXISTS, exists);
-            int val = database.update(Database.TABLE_SKILLS, value, Database.COLUMN_LINKEDSKILL + " = '" + skillID + "' and " + Database.COLUMN_SPECIALIZATIONNAME + " = '" + SpecializationName + "'", null);
+            database.beginTransaction();
+            try {
+                long  val =  database.update(Database.TABLE_SPECIALIZATIONS, value, Database.COLUMN_LINKEDSKILL + " = '" + skillID + "' and " + Database.COLUMN_SPECIALIZATIONNAME + " = '" + SpecializationName + "'", null);
+                if (val > 0) {
+                    Log.i("Specialization", "Update Spec: " + SpecializationName);
+                    database.setTransactionSuccessful();
+                }else{
+                    Log.i("Specialization", "FAILED UPDATE/INSERT");
+                }
+            } finally {
+                database.endTransaction();
+            }
         }
         c.close();
         // Log.i("SaveSpec: ", SkillName + "/" + SpecializationName + ":" + exists + "Return:" + val);
@@ -199,7 +210,7 @@ public class StatsDataSource {
         specialization.setId(cursor.getLong(0));
         specialization.setSpecializationName(cursor.getString(1));
         specialization.setLinkedSkill(cursor.getInt(2));
-        specialization.setExists(cursor.getInt(2)==1);
+        specialization.setExists(cursor.getInt(3)==1);
         return specialization;
     }
 

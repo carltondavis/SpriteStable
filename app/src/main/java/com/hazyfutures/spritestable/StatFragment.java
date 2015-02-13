@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -17,19 +18,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatFragment extends Fragment {
+public class StatFragment extends Fragment  {
     
     MainActivity Main = (MainActivity)getActivity();
 
     MultiSelectionSpinner spinnerCompiling;
     MultiSelectionSpinner spinnerRegistering;
-//Todo: Add skill specializations  List of Checkboxes under the skill, check for them when compiling/registering
 
-    //Todo: Add code to populate specialization widgets
-    //todo: add code to update from specialization widgets
 
 //Todo add multiple character option
-//TODO Test update for each attribute
 //Todo add a Spirit/Mage handler option
 //Display display;// = new Display(getActivity());
 
@@ -48,21 +45,64 @@ public class StatFragment extends Fragment {
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
 */
-//TODO: Make Stats a scrolling fragment
         List<String> specs = new ArrayList<String>();
-
+        List<String> specsExists = new ArrayList<String>();
         specs=Main.data.getSpecializationList("Compiling");
+        specsExists=Main.data.getSpecializationListExists("Compiling");
         String[] arrayCompiling = new String[specs.size()];
+        String[] arrayCompilingExists = new String[specsExists.size()];
         arrayCompiling=specs.toArray(arrayCompiling);
+        arrayCompilingExists=specsExists.toArray(arrayCompilingExists);
         spinnerCompiling = (MultiSelectionSpinner) v.findViewById(R.id.spinnerCompiling);
         spinnerCompiling.setItems(arrayCompiling);
+        spinnerCompiling.setSelection(arrayCompilingExists);
 
 
         specs=Main.data.getSpecializationList("Registering");
+        specsExists=Main.data.getSpecializationListExists("Registering");
         String[] arrayRegistering = new String[specs.size()];
+        String[] arrayRegisteringExists = new String[specsExists.size()];
         arrayRegistering=specs.toArray(arrayRegistering);
+        arrayRegisteringExists=specsExists.toArray(arrayRegisteringExists);
         spinnerRegistering = (MultiSelectionSpinner) v.findViewById(R.id.spinnerRegistering);
         spinnerRegistering.setItems(arrayRegistering);
+        spinnerRegistering.setSelection(arrayRegisteringExists);
+
+        //Main.data.setSpecialization("Registering", "Courier", true);
+
+        spinnerCompiling.setOnMultiSpinnerListener(
+                new MultiSelectionSpinner.MultiSpinnerListener() {
+                    public void onItemsSelected(List<String> selected) {
+                        //Toast.makeText(getActivity(), selected.toString(), Toast.LENGTH_SHORT).show();
+                        //List<String> selected = spinnerCompiling.getSelectedStrings();
+
+                        List<String> notselected = Main.data.getSpecializationList("Compiling");
+                        notselected.removeAll(selected);
+                        for (String notsel : notselected) {
+                            Main.data.setSpecialization("Compiling", notsel, false);
+                        }
+                        for (String sel : selected) {
+                            Main.data.setSpecialization("Compiling", sel, true);
+                        }
+                    }
+
+                });
+        spinnerRegistering.setOnMultiSpinnerListener(
+                new MultiSelectionSpinner.MultiSpinnerListener() {
+                    public void onItemsSelected(List<String> selected) {
+                        List<String> notselected = Main.data.getSpecializationList("Registering");
+                        notselected.removeAll(selected);
+                        for (String notsel : notselected) {
+                            Main.data.setSpecialization("Registering", notsel, false);
+                        }
+                        for (String sel : selected) {
+                            Main.data.setSpecialization("Registering", sel, true);
+                        }
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
 
         CreateListener(R.id.editBody, Main.data.pvBody, v);
         CreateListener(R.id.editWillpower, Main.data.pvWillpower , v);
@@ -79,10 +119,10 @@ public class StatFragment extends Fragment {
         CreateListener(R.id.editHoursThisSession, Main.data.pvHoursThisSession, v);
         CreateListener(R.id.editHoursSinceKarmaRefresh, Main.data.pvHoursSinceKarmaRefresh, v);
 //        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
+
         return v;
     }
-
-    public static StatFragment newInstance() {
+        public static StatFragment newInstance() {
 
         StatFragment f = new StatFragment();
      /*   Bundle b = new Bundle();

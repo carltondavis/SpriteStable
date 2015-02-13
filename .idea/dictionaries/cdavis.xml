@@ -9,6 +9,8 @@
       <w>hskr</w>
       <w>iesu</w>
       <w>linkedskill</w>
+      <w>notsel</w>
+      <w>notselected</w>
       <w>personas</w>
       <w>physicaltext</w>
       <w>simsense</w>
@@ -24,6 +26,8 @@
       <w>ssprite</w>
       <w>stuntext</w>
       <w>temppenalties</w>
+      <w>tempspecs</w>
+      <w>tempsspecs</w>
     </words>
   </dictionary>
 </component>

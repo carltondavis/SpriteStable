@@ -17,6 +17,7 @@ public class MultiSelectionSpinner extends Spinner implements
         OnMultiChoiceClickListener {
     String[] _items = null;
     boolean[] mSelection = null;
+    private MultiSpinnerListener listener;
 
     ArrayAdapter<String> simple_adapter;
 
@@ -42,6 +43,7 @@ public class MultiSelectionSpinner extends Spinner implements
 
             simple_adapter.clear();
             simple_adapter.add(buildSelectedItemString());
+            listener.onItemsSelected(getSelectedStrings());
         } else {
             throw new IllegalArgumentException(
                     "Argument 'which' is out of bounds.");
@@ -86,6 +88,8 @@ public class MultiSelectionSpinner extends Spinner implements
                 }
             }
         }
+        simple_adapter.clear();
+        simple_adapter.add(buildSelectedItemString());
     }
 
     public void setSelection(List<String> selection) {
@@ -185,4 +189,13 @@ public class MultiSelectionSpinner extends Spinner implements
         }
         return sb.toString();
     }
+    public void setOnMultiSpinnerListener(MultiSpinnerListener listener){
+        this.listener = listener;
+    }
+
+    public interface MultiSpinnerListener {
+        public void onItemsSelected(List<String> SelectedItems);
+
+    }
+
 }

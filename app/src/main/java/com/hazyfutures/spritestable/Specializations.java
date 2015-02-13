@@ -26,8 +26,8 @@ public class Specializations {
             return SpecializationName;
         }
 
-        public Integer getLinkedSkill() {
-            return this.LinkedSkill;
+        public Long getLinkedSkill() {
+            return new Long(this.LinkedSkill);
         }
 
         public void setLinkedSkill(Integer Skill){

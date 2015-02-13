@@ -1,6 +1,5 @@
 package com.hazyfutures.spritestable;
 
-//TODO: Add code to pull Text Array of Specialization names for a skill
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -34,29 +33,46 @@ public class PersistentValues {
     private StatsDataSource datasource;
 
 
-    public void SaveStatToDB(String stat, Integer value) {
-        datasource.updateStat(stat, value);
-    }
 
     public void SaveSpriteToDB() {
         SaveSpriteToDB(pvSprites.get(pvActiveSpriteId));
     }
 
-    public void SaveSkillToDB(String SkillName, Integer Value) {
-        setSkillValue(SkillName, Value);
-        datasource.updateSkill(SkillName, Value);
+    public void SaveAllSpritesToDB() {
+        for(Sprite sprite : pvSprites) {
+            SaveSpriteToDB(sprite);
+        }
     }
+    public void SaveSpriteToDB(Sprite SpriteToSave){datasource.updateSprite(SpriteToSave);}
+    public void SaveSkillToDB(String SkillName){datasource.updateSkill(SkillName, getSkillValue(SkillName));}
+    public void SaveSkillToDB(String name, Integer value){datasource.updateStat(name, value);}
+    public void SaveStatToDB(String name, Integer value){datasource.updateStat(name, value);}
 
-
-    public void SaveSpriteToDB(Sprite SpriteToSave){
-        datasource.updateSprite(SpriteToSave);
-    }
-    public void SaveSkillToDB(String SkillName){
-        datasource.updateSkill(SkillName, getSkillValue(SkillName));
+    public void SaveAllSkillsToDB(){
+        List<Specializations> tempspecs=pvSpecializations;
+        Long ID;
+        String skillName;
+    //    List<Specializations> temp2specs=tempspecs;
+        for(Skills skill: pvSkills){
+                skillName=skill.getSkillName();
+                ID = skill.getId();
+                SaveSkillToDB(skillName, skill.getSkillValue());
+  //              tempspecs=temp2specs;
+                for(Specializations specialization: tempspecs){
+                    if(ID.equals(specialization.getLinkedSkill())) {
+                        datasource.updateSpecialization(specialization.getSpecializationName(), skillName, specialization.getExists() ? 1 : 0);
+                    }
+//                    temp2specs.remove(specialization);
+                }
+        }
     }
 
 
     public void SaveAllToDB() {
+        SaveAllSpritesToDB();
+        SaveAllSkillsToDB();
+//TODO: Make Stats their own object
+
         datasource.updateStat("Stun", pvStun);
         datasource.updateStat("Physical", pvPhysical);
         datasource.updateStat("Karma", pvKarma);
@@ -65,14 +81,12 @@ public class PersistentValues {
         datasource.updateStat("Willpower", pvWillpower);
         datasource.updateStat("Logic", pvLogic);
         datasource.updateStat("Resonance", pvResonance);
-        datasource.updateSkill("Compiling", getSkillValue("Compiling"));
-        datasource.updateSkill("Registering", getSkillValue("Registering"));
         datasource.updateStat("Hours", pvHoursThisSession);
         datasource.updateStat("SleeplessHours", pvSleeplessHours);
         datasource.updateStat("ConsecutiveRest", pvConsecutiveRest);
         datasource.updateStat("ActiveSpriteId", pvActiveSpriteId);
         datasource.updateStat("HoursSinceKarmaRefresh", pvHoursSinceKarmaRefresh);
-        datasource.updateSprite(pvSprites.get(pvActiveSpriteId));
+//TODO: Make Qualities their own object
         datasource.updateStat("CodeSlinger", CodeSlinger);
         datasource.updateStat("FocusedConcentration", FocusedConcentration);
         datasource.updateStat("Insomnia", Insomnia);
@@ -349,18 +363,19 @@ public Integer getSkillValue(String Name, String Specialization){
         }
         return SpecList;
     }
-    public List<Boolean> getSpecializationListExists(String SkillName){
+    public List<String> getSpecializationListExists(String SkillName){
         long ID=0;
-        List<Boolean> SpecList = new ArrayList<>();
+        List<String> SpecList = new ArrayList<>();
         for(Skills skill: pvSkills){
             if(skill.getSkillName().equals(SkillName)) {
                 ID=skill.getId();
                 break;
             }
         }
+
         for(Specializations specialization: pvSpecializations){
-            if((specialization.getLinkedSkill()== ID)) {
-                SpecList.add(specialization.getExists());
+            if((specialization.getLinkedSkill()== ID)&&specialization.getExists()) {
+                SpecList.add(specialization.getSpecializationName());
             }
         }
         return SpecList;
@@ -546,9 +561,15 @@ public Integer getSkillValue(String Name, String Specialization){
     public void setBadLuck(Integer value){
         BadLuck=value;
     }
-    public Integer RollBadLuck(Integer Dice, Integer Edge){
-        //TODO Roll dice, and include option for bad luck to happen
-        return -1;
+    public Boolean DoIHaveBadLuck(){
+        if(BadLuck==1) {
+            Dice die = new Dice();
+            die.rollDice(1, false);
+            if (die.isCriticalGlitch) {
+                return true;
+            }
+        }
+        return false;
     }
     //Low pain tolerance: Modifier every 2 boxes of damage, not 3
     Integer LowPainTolerance=0;

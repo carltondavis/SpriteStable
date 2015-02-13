@@ -19,15 +19,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //TODO: Check for Insomnia while resting
+//TODO: Check for Insomnia while sleeping
+//TODO: Check for Insomnia while healing
+//TODO: Check for Insomnia for every karma regen opportunity
+//TODO: Rest glitches
+//TODO Sleep glitches
+//TODO Heal glitches
+//TODO Drain glitches
+//TODO Compile glitches
+//TODO register glitches
+//TODO: Rest critical glitches
+//TODO Sleep critical glitches
+//TODO Heal critical glitches
+//TODO Drain critical glitches
+//TODO Compile critical Glitches
+//TODO register critical glitches
 //TODO: Sprite multiplying again.  Damnit.
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
-//TODO: Add code to check for and handle critical and normal glitches
 //Fancy UI:
 
-//Todo Heal after 24 hours consecutive rest
 //Todo karma regen after 8 hours consecutive rest
 //todo test consecutive rest karma reset
-//ToDo Change Hours to Total Hours.
 //ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
 //Todo add Toast for disabled buttons explaining why they're disabled
 //Todo Someday Add statistics for rolls to include actual percentage chance of something happening to warnings
@@ -414,7 +426,6 @@ public class CompileFragment extends Fragment {
 
                 }
                 if (Main.data.pvStun < (9 + Math.floor(Main.data.pvWillpower / 2))) {//Only do stuff if they didn't pass out from sleep deprivation before they could finish.  Nothing happens if they did.
-                    //TODO Add a toast here to alert the user that they fell asleep.
                     //Add net successes
                     NetHits -= SpriteRoll;
                     if (NetHits <= 0) {
@@ -465,6 +476,8 @@ public class CompileFragment extends Fragment {
                     //UpdateCompile(container); Handled in UpdateServices
                     // UpdateCompileSpriteList(container); Handled in UpdateServices
 
+                }else{
+                    Toast.makeText(getActivity(),"You passed out due to exhaustion!", Toast.LENGTH_SHORT).show();
                 }
                 if (checkDrainKarma.isChecked()) {
                     Main.data.pvKarmaUsed++;
