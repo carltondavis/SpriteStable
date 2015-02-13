@@ -106,6 +106,7 @@ public class StatFragment extends Fragment  {
 
         CreateListener(R.id.editBody, Main.data.pvBody, v);
         CreateListener(R.id.editWillpower, Main.data.pvWillpower , v);
+        CreateListener(R.id.editIntuition, Main.data.pvIntuition , v);
         CreateListener(R.id.editLogic, Main.data.pvLogic, v);
         CreateListener(R.id.editCompiling, Main.data.getSkillValue("Compiling") , v);
         CreateListener(R.id.editRegistering, Main.data.getSkillValue("Registering"), v);
@@ -266,6 +267,12 @@ public class StatFragment extends Fragment  {
                         //Change stun boxes
                         //Change IsConscious stuff
                         UpdateDamage();
+                    }
+                    break;
+                case R.id.editIntuition:
+                    if(Main.data.pvIntuition != value) {
+                        Main.data.pvIntuition = value;
+                        Main.data.SaveStatToDB("Intuition", value);
                     }
                     break;
                 case R.id.editLogic:

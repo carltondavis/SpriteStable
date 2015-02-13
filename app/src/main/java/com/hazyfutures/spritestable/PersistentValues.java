@@ -10,9 +10,9 @@ import java.util.List;
  * Values that should be set to persist between activities
  */
 public class PersistentValues {
-    Context context;
     public int pvBody = 0;
     public int pvWillpower = 0;
+    public int pvIntuition = 0;
     public int pvLogic = 0;
     public int pvStun = 0;
     public int pvPhysical = 0;
@@ -25,9 +25,9 @@ public class PersistentValues {
     public int pvConsecutiveRest = 0;
 
     public int pvActiveSpriteId = 0;
-    public List<String> pvSpriteList = new ArrayList<String>();
+    public List<String> pvSpriteList = new ArrayList<>();
     List<Sprite> pvSprites = new ArrayList<>();
-    public List<String> pvSkillList = new ArrayList<String>();
+    //public List<String> pvSkillList = new ArrayList<>();
     List<Skills> pvSkills = new ArrayList<>();
     List<Specializations> pvSpecializations = new ArrayList<>();
     private StatsDataSource datasource;
@@ -79,6 +79,7 @@ public class PersistentValues {
         datasource.updateStat("KarmaUsed", pvKarmaUsed);
         datasource.updateStat("Body", pvBody);
         datasource.updateStat("Willpower", pvWillpower);
+        datasource.updateStat("Intuition", pvIntuition);
         datasource.updateStat("Logic", pvLogic);
         datasource.updateStat("Resonance", pvResonance);
         datasource.updateStat("Hours", pvHoursThisSession);
@@ -143,6 +144,9 @@ public class PersistentValues {
                     break;
                 case "Willpower":
                     pvWillpower = value;
+                    break;
+                case "Intuition":
+                    pvIntuition = value;
                     break;
                 case "Logic":
                     pvLogic = value;

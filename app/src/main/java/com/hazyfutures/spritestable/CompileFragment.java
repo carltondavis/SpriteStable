@@ -18,16 +18,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//TODO: Check for Insomnia while resting
-//TODO: Check for Insomnia while sleeping
-//TODO: Check for Insomnia while healing
-//TODO: Check for Insomnia for every karma regen opportunity
-//TODO Drain glitches
-//TODO Compile glitches
-//TODO register glitches
-//TODO Drain critical glitches
-//TODO Compile critical Glitches
-//TODO register critical glitches
+//TODO Drain glitches +2DV?  Maybe.  Let's wait on this.
+//TODO Compile glitches  +2DV?  Maybe.  Let's wait on this.
+//TODO register glitches +2DV?  Maybe.  Let's wait on this.
+//TODO Drain critical glitches +2DV?  Maybe.  Let's wait on this.
+//TODO Compile critical Glitches +2DV?  Maybe.  Let's wait on this.
+//TODO register critical glitches +2DV?  Maybe.  Let's wait on this.
 //TODO: Sprite multiplying again.  Damnit.
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 //Fancy UI:
@@ -199,7 +195,13 @@ public class CompileFragment extends Fragment {
             public void onClick(View v) {
 
                 //Healing Roll
-                Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
+                Boolean Sleepless=false;
+                if(Main.data.getInsomnia()>0){
+                    Sleepless=(4<=dice.rollDice(Main.data.pvWillpower+Main.data.pvIntuition,false));
+                }
+                if(!Sleepless||Main.data.getInsomnia()==1) {
+                    Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower + 2 * (Main.data.getSlowHealer() + Main.data.getQuickHealer()), false);
+                }
                 if (Main.data.pvStun < 0) {
                     Main.data.pvStun = 0;
                 }
@@ -211,6 +213,10 @@ public class CompileFragment extends Fragment {
                 //Add hours
                 //Double time for Glitches
                 int RestTime=1;
+                if(Sleepless&&Main.data.getInsomnia()==1){
+                    RestTime=RestTime*2;
+                }
+
                 if(dice.isGlitch){
                     RestTime=RestTime*2;
                 }
@@ -221,10 +227,13 @@ public class CompileFragment extends Fragment {
                 if (Main.data.pvConsecutiveRest >= 8) {
                     if (Main.data.pvHoursSinceKarmaRefresh >= 24 && Main.data.pvKarmaUsed > 0) {
                         Main.data.pvHoursSinceKarmaRefresh = 0;
-                        Main.data.pvKarmaUsed--;
-                        UpdateStatKarmaUsed();
-                        checkDrainKarma.setEnabled(true);
-                        checkSkillKarma.setEnabled(true);
+                        if(!Sleepless||Main.data.getInsomnia()==1){
+                            Main.data.pvKarmaUsed--;
+                            UpdateStatKarmaUsed();
+
+                            checkDrainKarma.setEnabled(true);
+                            checkSkillKarma.setEnabled(true);
+                        }
                     }
                     Main.data.pvSleeplessHours = 0;
                     Main.data.pvConsecutiveRest = 0;
@@ -241,14 +250,21 @@ public class CompileFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-
+                Boolean Sleepless=false;
+                if(Main.data.getInsomnia()>0){
+                    Sleepless=(4<=dice.rollDice(Main.data.pvWillpower+Main.data.pvIntuition,false));
+                }
                 //Healing Roll 8 times
                 for (int i = 1; i <= 8; i++) {
                     if (Main.data.pvStun > 0) {
-                        Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
+                        if(!Sleepless||Main.data.getInsomnia()==1){
+                            Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
+                            if(Sleepless){i++;}//Sleeping takes twice as long
+                        }
                         if (Main.data.pvStun < 0) {
                             Main.data.pvStun = 0;
                         }
+
                         if(dice.isGlitch) {
                             i++;//Lose an hour of rest, since it takes two hours to heal this batch of damage
                             if (dice.isCriticalGlitch) {
@@ -264,10 +280,12 @@ public class CompileFragment extends Fragment {
                 //If it's been at least 24 hours, refresh karma.
                 if (Main.data.pvHoursSinceKarmaRefresh >= 24 && Main.data.pvKarmaUsed > 0) {
                     Main.data.pvHoursSinceKarmaRefresh = 0;
-                    Main.data.pvKarmaUsed--;
-                    UpdateStatKarmaUsed();
-                    checkDrainKarma.setEnabled(true);
-                    checkSkillKarma.setEnabled(true);
+                    if(!Sleepless||Main.data.getInsomnia()==1) {
+                        Main.data.pvKarmaUsed--;
+                        UpdateStatKarmaUsed();
+                        checkDrainKarma.setEnabled(true);
+                        checkSkillKarma.setEnabled(true);
+                    }
                 }
                 Main.data.pvSleeplessHours = 0;
                 Main.data.pvHoursSinceKarmaRefresh += 8;
@@ -283,15 +301,26 @@ public class CompileFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+                Boolean Sleepless = false;
+                if (Main.data.getInsomnia() > 0) {
+                    Sleepless = (4 <= dice.rollDice(Main.data.pvWillpower + Main.data.pvIntuition, false));
+                }
+
                 if (Main.data.pvStun > 0) {
                     //Healing Roll 24 times
+
                     for (int i = 1; i <= 24; i++) {
                         if (Main.data.pvStun > 0) {
-                            Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
+                            if (!Sleepless || Main.data.getInsomnia() == 1) {
+                                Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower + 2 * (Main.data.getSlowHealer() + Main.data.getQuickHealer()), false);
+                                if (Sleepless) {
+                                    Main.data.pvHoursThisSession += 24;
+                                }//Takes twice as long to heal
+                            }
                             if (Main.data.pvStun < 0) {
                                 Main.data.pvStun = 0;
                             }
-                            if(dice.isGlitch) {
+                            if (dice.isGlitch) {
                                 i++;//Lose an hour of rest, since it takes two hours to heal this batch of damage
                                 Main.data.pvHoursThisSession += 1;
                                 if (dice.isCriticalGlitch) {
@@ -304,40 +333,51 @@ public class CompileFragment extends Fragment {
                     }
                 } else {
                     if (Main.data.pvPhysical > 0) {
-                        Main.data.pvPhysical -= dice.rollDice(Main.data.pvBody * 2+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
-                        if (Main.data.pvPhysical <= 0) {
-                            Main.data.pvPhysical = 0+Main.data.getPieIesuDomine();
-                        }
+                        if (!Sleepless || Main.data.getInsomnia() == 1) {
+                            Main.data.pvPhysical -= dice.rollDice(Main.data.pvBody * 2 + 2 * (Main.data.getSlowHealer() + Main.data.getQuickHealer()), false);
+                            if (Sleepless) {
+                                Main.data.pvHoursThisSession += 24;//Takes twice as long to heal
+                            }
+                            if (Main.data.pvPhysical <= 0) {
+                                Main.data.pvPhysical = 0 + Main.data.getPieIesuDomine();
+                            }
                             if (dice.isCriticalGlitch) {
                                 Main.data.pvPhysical += dice.rollDie(3);
                             }
+                        }
+                        if (dice.isGlitch) {
+                            Main.data.pvHoursThisSession += 24;
+                        }
+                        Main.data.pvHoursThisSession += 24;
                     }
-                    if(dice.isGlitch){Main.data.pvHoursThisSession += 24;}
-                    Main.data.pvHoursThisSession += 24;
-                }
 
 
-                //Add hours
+                    //Add hours
 
-                //If it's been at least 24 hours, refresh karma.
-                if (Main.data.pvHoursSinceKarmaRefresh >= 24 && Main.data.pvKarmaUsed > 0) {
-                    Main.data.pvHoursSinceKarmaRefresh = 0;
-                    Main.data.pvKarmaUsed--;
-                    UpdateStatKarmaUsed();
-                    checkDrainKarma.setEnabled(true);
-                    checkSkillKarma.setEnabled(true);
+                    //If it's been at least 24 hours, refresh karma.
+                    if (Main.data.pvHoursSinceKarmaRefresh >= 24 && Main.data.pvKarmaUsed > 0) {
+                        Main.data.pvHoursSinceKarmaRefresh = 0;
+                        if (!Sleepless || Main.data.getInsomnia() == 1) {
+                            Main.data.pvKarmaUsed--;
+                            UpdateStatKarmaUsed();
+                            checkDrainKarma.setEnabled(true);
+                            checkSkillKarma.setEnabled(true);
+                        }
+                    }
+                    if (Main.data.pvKarmaUsed > 0) {
+                        Main.data.pvHoursSinceKarmaRefresh = 0;
+                        if (!Sleepless || (Main.data.getInsomnia() == 1)) {
+                            Main.data.pvKarmaUsed--;
+                            UpdateStatKarmaUsed();
+                            checkDrainKarma.setEnabled(true);
+                            checkSkillKarma.setEnabled(true);
+                        }
+                    }
+                    Main.data.pvSleeplessHours = 0;
+                    Main.data.pvConsecutiveRest = 0;
+                    valueHours.setText(String.valueOf(Main.data.pvHoursThisSession));
+                    UpdateDamage();
                 }
-                if (Main.data.pvKarmaUsed > 0) {
-                    Main.data.pvHoursSinceKarmaRefresh = 0;
-                    Main.data.pvKarmaUsed--;
-                    UpdateStatKarmaUsed();
-                    checkDrainKarma.setEnabled(true);
-                    checkSkillKarma.setEnabled(true);
-                }
-                Main.data.pvSleeplessHours = 0;
-                Main.data.pvConsecutiveRest = 0;
-                valueHours.setText(String.valueOf(Main.data.pvHoursThisSession));
-                UpdateDamage();
             }
         });
 
@@ -502,11 +542,13 @@ public class CompileFragment extends Fragment {
                     Toast.makeText(getActivity(),"You passed out due to exhaustion!", Toast.LENGTH_SHORT).show();
                 }
                 if (checkDrainKarma.isChecked()) {
+                    //TODo:Badluck And ADD karma dice for pre-edge!
                     Main.data.pvKarmaUsed++;
                     UpdateStatKarmaUsed();
                     checkDrainKarma.setChecked(false);
                 }
                 if (checkSkillKarma.isChecked()) {
+                    //TODo:Badluck  And ADD karma dice for pre-edge!
                     Main.data.pvKarmaUsed++;
                     UpdateStatKarmaUsed();
                     checkSkillKarma.setChecked(false);

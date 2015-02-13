@@ -60,6 +60,28 @@
                 android:id="@+id/textWillpower"/>
         </TableRow>
         <TableRow
+            android:id="@+id/tableRow2b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+
+            >
+            <EditText
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:width="100dp"
+                android:id="@+id/editIntuition"
+                android:layout_alignParentTop="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Intuition"
+                android:id="@+id/textIntuition"/>
+        </TableRow>
+        <TableRow
             android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
