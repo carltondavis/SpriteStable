@@ -46,7 +46,7 @@ public class Dice {
 
         isGlitch = (ones > (Number / 2));
         isCriticalGlitch = isGlitch && (hits == 0);
-        if (Limit > 0 && hits > Limit) {
+        if (Limit > 0 && hits > Limit && !Exploding) {
             hits = Limit;
         }
         return hits;
