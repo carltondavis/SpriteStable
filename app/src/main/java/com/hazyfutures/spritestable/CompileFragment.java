@@ -416,7 +416,7 @@ public class CompileFragment extends Fragment {
 
                 //Make Opposed Dice Roll
                 if (Main.data.getCurrentSprite().getServicesOwed() == 0) {//New Sprite, so Compile
-                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties), checkSkillKarma.isChecked());
+                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties), checkSkillKarma.isChecked(), Main.data.getCurrentSprite().getRating());
                     SpriteRoll = dice.rollDice(Main.data.getCurrentSprite().getRating(), false);
                 } else {//Already has services, so Register
                     Main.data.pvHoursThisSession += Main.data.getCurrentSprite().getRating();  //Registering takes hours
@@ -443,7 +443,7 @@ public class CompileFragment extends Fragment {
                     }
                     Main.data.pvSleeplessHours += Main.data.getCurrentSprite().getRating();
 
-                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties), checkSkillKarma.isChecked());
+                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties), checkSkillKarma.isChecked(), Main.data.getCurrentSprite().getRating());
                     SpriteRoll = dice.rollDice(Main.data.getCurrentSprite().getRating() * 2, false);
 
                 }
