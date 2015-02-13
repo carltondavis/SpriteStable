@@ -22,15 +22,9 @@ import android.widget.Toast;
 //TODO: Check for Insomnia while sleeping
 //TODO: Check for Insomnia while healing
 //TODO: Check for Insomnia for every karma regen opportunity
-//TODO: Rest glitches
-//TODO Sleep glitches
-//TODO Heal glitches
 //TODO Drain glitches
 //TODO Compile glitches
 //TODO register glitches
-//TODO: Rest critical glitches
-//TODO Sleep critical glitches
-//TODO Heal critical glitches
 //TODO Drain critical glitches
 //TODO Compile critical Glitches
 //TODO register critical glitches
@@ -209,12 +203,21 @@ public class CompileFragment extends Fragment {
                 if (Main.data.pvStun < 0) {
                     Main.data.pvStun = 0;
                 }
+                if(dice.isCriticalGlitch){
+                    Main.data.pvStun+=dice.rollDie(3);
+                }
                 UpdateDamage();
 
                 //Add hours
-                Main.data.pvHoursThisSession += 1;
-                Main.data.pvHoursSinceKarmaRefresh += 1;
-                Main.data.pvConsecutiveRest += 1;
+                //Double time for Glitches
+                int RestTime=1;
+                if(dice.isGlitch){
+                    RestTime=RestTime*2;
+                }
+                    Main.data.pvHoursThisSession += RestTime;
+                    Main.data.pvHoursSinceKarmaRefresh += RestTime;
+                    Main.data.pvConsecutiveRest += RestTime;
+
                 if (Main.data.pvConsecutiveRest >= 8) {
                     if (Main.data.pvHoursSinceKarmaRefresh >= 24 && Main.data.pvKarmaUsed > 0) {
                         Main.data.pvHoursSinceKarmaRefresh = 0;
@@ -245,6 +248,12 @@ public class CompileFragment extends Fragment {
                         Main.data.pvStun -= dice.rollDice(Main.data.pvBody + Main.data.pvWillpower+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false);
                         if (Main.data.pvStun < 0) {
                             Main.data.pvStun = 0;
+                        }
+                        if(dice.isGlitch) {
+                            i++;//Lose an hour of rest, since it takes two hours to heal this batch of damage
+                            if (dice.isCriticalGlitch) {
+                                Main.data.pvStun += dice.rollDie(3);
+                            }
                         }
                     }
                 }
@@ -282,7 +291,16 @@ public class CompileFragment extends Fragment {
                             if (Main.data.pvStun < 0) {
                                 Main.data.pvStun = 0;
                             }
+                            if(dice.isGlitch) {
+                                i++;//Lose an hour of rest, since it takes two hours to heal this batch of damage
+                                Main.data.pvHoursThisSession += 1;
+                                if (dice.isCriticalGlitch) {
+                                    Main.data.pvStun += dice.rollDie(3);
+                                }
+                            }
+
                         }
+                        Main.data.pvHoursThisSession += 1;
                     }
                 } else {
                     if (Main.data.pvPhysical > 0) {
@@ -290,13 +308,17 @@ public class CompileFragment extends Fragment {
                         if (Main.data.pvPhysical <= 0) {
                             Main.data.pvPhysical = 0+Main.data.getPieIesuDomine();
                         }
-
+                            if (dice.isCriticalGlitch) {
+                                Main.data.pvPhysical += dice.rollDie(3);
+                            }
                     }
+                    if(dice.isGlitch){Main.data.pvHoursThisSession += 24;}
+                    Main.data.pvHoursThisSession += 24;
                 }
 
 
                 //Add hours
-                Main.data.pvHoursThisSession += 24;
+
                 //If it's been at least 24 hours, refresh karma.
                 if (Main.data.pvHoursSinceKarmaRefresh >= 24 && Main.data.pvKarmaUsed > 0) {
                     Main.data.pvHoursSinceKarmaRefresh = 0;

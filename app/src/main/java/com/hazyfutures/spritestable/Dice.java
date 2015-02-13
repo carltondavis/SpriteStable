@@ -14,7 +14,10 @@ public class Dice {
     public int rollDice(int Number, boolean Exploding) {
         return rollDice(Number, Exploding, -1);
     }
-
+    public int rollDie(int Sides){
+        Random randomGenerator = new Random();
+        return randomGenerator.nextInt(Sides) + 1;
+    }
     public int rollDice(int Number, boolean Exploding, int Limit) {
         int hits = 0;
         int ones = 0;
