@@ -3,17 +3,11 @@ package com.hazyfutures.spritestable;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,33 +18,31 @@ public class SpriteFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+//TODO: Whichever sprite is selected gets set to the stats of whatever sprite was previously selected on this page.
         Main = (MainActivity)getActivity();
-        UpdateSpriteList();
-        UpdateSpritePage();
-        //Toast.makeText(getActivity(), "Stat.onResume()", Toast.LENGTH_SHORT).show();
+    UpdateSpritePage();
     }
 
-
+@Override
+public void onPause() {
+    super.onPause();
+}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sprite, container, false);
-        Main = (MainActivity)getActivity();
+         Main = (MainActivity)getActivity();
 
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
 */
-
-
-
-
-        Spinner spinnerSprites = (Spinner) v.findViewById(R.id.SpriteSpinnerSprites);
+        final Spinner spinnerSprites = (Spinner) v.findViewById(R.id.SpriteSpinnerSprites);
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, Main.data.pvSpriteList);
         adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerSprites.setAdapter(adp1);
 
-        final Spinner spinnerSpriteType = (Spinner) v.findViewById(R.id.SpriteSpinnerType);
+
+     /*   final Spinner spinnerSpriteType = (Spinner) v.findViewById(R.id.SpriteSpinnerType);
         ArrayAdapter<CharSequence> adp2 = ArrayAdapter.createFromResource(v.getContext(), R.array.SpriteTypes, android.R.layout.simple_spinner_item);
         adp2.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerSpriteType.setAdapter(adp2);
@@ -59,29 +51,23 @@ public class SpriteFragment extends Fragment {
 
         final EditText editForce = (EditText) v.findViewById(R.id.editForce);
         editForce.setText(String.valueOf(Main.data.getCurrentSprite().getRating()));
+
         final EditText editServices = (EditText) v.findViewById(R.id.editServices);
         editServices.setText(String.valueOf(Main.data.getCurrentSprite().getServicesOwed()));
+
         final EditText editGOD = (EditText) v.findViewById(R.id.editGod);
         editGOD.setText(String.valueOf(Main.data.getCurrentSprite().getGODScore()));
+
         final EditText editDamage = (EditText) v.findViewById(R.id.editDamage);
         editDamage.setText(String.valueOf(Main.data.getCurrentSprite().getCondition()));
+
         final CheckBox checkRegistered = (CheckBox) v.findViewById(R.id.checkBoxRegistered);
         checkRegistered.setChecked(Main.data.getCurrentSprite().getRegistered()==1);
-
+*/
         // UpdateSpriteList();
 
 
-        checkRegistered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    Main.data.getCurrentSprite().setRegistered(1);
-                } else {
-                    Main.data.getCurrentSprite().setRegistered(0);
-                }
-                UpdateSpriteList();
-            }
-        });
+
 
         spinnerSprites.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -89,12 +75,6 @@ public class SpriteFragment extends Fragment {
                             AdapterView<?> parent, View view, int position, long id) {
                         if (position != Main.data.pvActiveSpriteId) {
                             Main.data.pvActiveSpriteId = position;
-                            editForce.setText(String.valueOf(Main.data.getCurrentSprite().getRating()));
-                            editServices.setText(String.valueOf(Main.data.getCurrentSprite().getServicesOwed()));
-                            editGOD.setText(String.valueOf(Main.data.getCurrentSprite().getGODScore()));
-                            editDamage.setText(String.valueOf(Main.data.getCurrentSprite().getCondition()));
-                            spinnerSpriteType.setSelection(Main.data.getCurrentSprite().getSpriteType() - 1);
-                            checkRegistered.setChecked(Main.data.getCurrentSprite().getRegistered() == 1);
                             // UpdateSpriteList();
                             UpdateSpritePage();
 
@@ -104,17 +84,28 @@ public class SpriteFragment extends Fragment {
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
-
+/*
+        checkRegistered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    //TODO: This is being called when the page loads. If previously it was set true, and you come back to the page with an unregistered sprite it marks it as registered and creates a new one
+               //   Main.data.getCurrentSprite().setRegistered(1);
+                } else {
+               //     Main.data.getCurrentSprite().setRegistered(0);
+                }
+                UpdateSpriteList();
+            }
+        });
 //Sprite Type Picker
         spinnerSpriteType.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(
                             AdapterView<?> parent, View view, int position, long id) {
                         if ((position + 1) != Main.data.getCurrentSprite().getSpriteType()) {
-                            Main.data.getCurrentSprite().setSpriteType(position + 1);
+                 //           Main.data.getCurrentSprite().setSpriteType(position + 1);
                             UpdateSpriteList();
                         }
-                        //UpdateCompileSpriteList(); Causing infinite loop
                     }
 
                     public void onNothingSelected(AdapterView<?> parent) {
@@ -126,11 +117,9 @@ public class SpriteFragment extends Fragment {
                 if (!s.toString().isEmpty()) {
                     Integer newValue = Integer.parseInt(s.toString());
                     if (!newValue.equals(Main.data.getCurrentSprite().getCondition())) {
-                        Main.data.getCurrentSprite().setCondition(newValue);
-                        Main.data.SaveSpriteToDB();
-                        UpdateSpriteList();
-
-                    }
+                //        Main.data.getCurrentSprite().setCondition(newValue);
+//                        UpdateSpriteList();
+                  }
                 }
             }
 
@@ -145,12 +134,8 @@ public class SpriteFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (!s.toString().isEmpty()) {
                     Integer newValue = Integer.parseInt(s.toString());
-                    Log.i("Content ", "after  Force: " + s.toString());
                     if (!newValue.equals(Main.data.getCurrentSprite().getRating())) {
-                        Log.i("Content ", "set    Force: " + s.toString() + "/" + newValue.toString());
-
-                        Main.data.getCurrentSprite().setRating(newValue);
-                        Main.data.SaveSpriteToDB(); //Save the sprite to the DB
+                        //Main.data.getCurrentSprite().setRating(newValue);
                         UpdateSpriteList();
                         UpdateSpritePage();
                     }
@@ -172,8 +157,8 @@ public class SpriteFragment extends Fragment {
                 if (!s.toString().isEmpty()) {
                     Integer newValue = Integer.parseInt(s.toString());
                     if (!newValue.equals(Main.data.getCurrentSprite().getGODScore())) {
-                        Main.data.getCurrentSprite().setGODScore(newValue);
-                        Main.data.SaveSpriteToDB();
+                 //       spinnerSprites.setSelection(Main.data.pvActiveSpriteId);
+                     //   Main.data.getCurrentSprite().setGODScore(newValue);
                         UpdateSpriteList();
 
                     }
@@ -190,15 +175,18 @@ public class SpriteFragment extends Fragment {
         editServices.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (!s.toString().isEmpty()) {
+                    //spinnerSprites.setSelection(Main.data.pvActiveSpriteId);
                     Integer newValue = Integer.parseInt(s.toString());
-                    if (!newValue.equals(Main.data.getCurrentSprite().getServicesOwed())) {
-                        Main.data.getCurrentSprite().setServicesOwed(newValue);
-                        Main.data.SaveSpriteToDB(); //Save the sprite to the DB
-                        UpdateSpriteList();
 
+                        if (!newValue.equals(Main.data.getCurrentSprite().getServicesOwed())) {
+                       //     Main.data.getCurrentSprite().setServicesOwed(newValue);
+                            //Main.data.SaveSpriteToDB(); //Save the sprite to the DB
+
+                            UpdateSpriteList();
+
+                        }
                     }
                 }
-            }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -206,7 +194,8 @@ public class SpriteFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-
+        */
+        UpdateSpritePage();
         return v;
     }
 
@@ -236,7 +225,21 @@ public class SpriteFragment extends Fragment {
 
 
     public void UpdateSpritePage() {
-
+        //Log.i("Sprite", " Update Sprite Page");
+   /*     final EditText evForce = (EditText) getActivity().findViewById(R.id.editForce);
+        final EditText evGod = (EditText) getActivity().findViewById(R.id.editGod);
+        final EditText evService = (EditText) getActivity().findViewById(R.id.editServices);
+        final EditText evDamage = (EditText) getActivity().findViewById(R.id.editDamage);
+        final CheckBox evRegistered = (CheckBox) getActivity().findViewById(R.id.checkBoxRegistered);
+        if(evForce!=null) {
+          //  Log.i("Sprite", " Set Values");
+            evForce.setText(String.valueOf(Main.data.getCurrentSprite().getRating()));
+            evGod.setText(String.valueOf(Main.data.getCurrentSprite().getGODScore()));
+            evService.setText(String.valueOf(Main.data.getCurrentSprite().getServicesOwed()));
+            evDamage.setText(String.valueOf(Main.data.getCurrentSprite().getCondition()));
+            evRegistered.setChecked(Main.data.getCurrentSprite().getRegistered() == 1);
+        }
+*/
         final TextView tvAttack = (TextView) getActivity().findViewById(R.id.textAttack);
         final TextView tvSleaze = (TextView) getActivity().findViewById(R.id.textSleaze);
         final TextView tvDataProcessing = (TextView) getActivity().findViewById(R.id.textDataProcessing);
@@ -246,8 +249,16 @@ public class SpriteFragment extends Fragment {
         final TextView tvResonance = (TextView) getActivity().findViewById(R.id.textSpriteResonance);
         final TextView tvSkills = (TextView) getActivity().findViewById(R.id.textSkills);
         final TextView tvPowers = (TextView) getActivity().findViewById(R.id.textPowers);
-        tvInitiativeDice.setText("4D6");
-        switch (Main.data.getCurrentSprite().getSpriteType()) {
+        final TextView tvGOD = (TextView) getActivity().findViewById(R.id.textGOD);
+        final TextView tvServices = (TextView) getActivity().findViewById(R.id.textServices);
+        final TextView tvDamage = (TextView) getActivity().findViewById(R.id.textDamage);
+        if(tvInitiativeDice!=null){
+            tvInitiativeDice.setText("+4D6");
+            tvGOD.setText("GOD Score: " + Main.data.getCurrentSprite().getGODScore());
+            tvServices.setText("Services: " + (Main.data.getCurrentSprite().getServicesOwed()));
+            tvDamage.setText("Damage: " + (Main.data.getCurrentSprite().getCondition()));
+
+            switch (Main.data.getCurrentSprite().getSpriteType()) {
             case 1://Courier
                 tvAttack.setText("Attack: " + Main.data.getCurrentSprite().getRating());
                 tvSleaze.setText("Sleaze: " + (Main.data.getCurrentSprite().getRating() + 3));
@@ -299,5 +310,5 @@ public class SpriteFragment extends Fragment {
                 tvPowers.setText("Powers: Diagnostics, Gremlins, Stability");
                 break;
         }
-    }
+    }}
 }

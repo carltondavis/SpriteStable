@@ -17,7 +17,7 @@
             android:layout_toRightOf="@+id/textHours"
             android:layout_toEndOf="@+id/textHours" />
         <TextView
-            android:layout_width="45dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Total Hours:"

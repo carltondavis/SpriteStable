@@ -119,11 +119,11 @@ public class Sprite {
         return Registered;
     }
 
-    public void setRegistered(Integer Registered) {
-        if(null==Registered) {
+    public void setRegistered(Integer Reg) {
+        if(null==Reg) {
             Registered = 0;
         }
-        this.Registered = Registered;
+        this.Registered = Reg;
     }
 
     public int getCondition() {

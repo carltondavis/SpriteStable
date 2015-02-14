@@ -456,7 +456,17 @@ public class CompileFragment extends Fragment {
 
                 //Make Opposed Dice Roll
                 if (Main.data.getCurrentSprite().getServicesOwed() == 0) {//New Sprite, so Compile
-                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties), checkSkillKarma.isChecked(), Main.data.getCurrentSprite().getRating());
+                    if(Main.data.DoIHaveBadLuck()&&checkSkillKarma.isChecked()){
+                        NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties -Main.data.pvKarma), false, Main.data.getCurrentSprite().getRating());
+                    }else{
+                        if(checkDrainKarma.isChecked()){
+                            NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties +Main.data.pvKarma), true, Main.data.getCurrentSprite().getRating());
+                        }else{
+                            NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties), false, Main.data.getCurrentSprite().getRating());
+                        }
+
+                    }
+
                     SpriteRoll = dice.rollDice(Main.data.getCurrentSprite().getRating(), false);
                 } else {//Already has services, so Register
                     Main.data.pvHoursThisSession += Main.data.getCurrentSprite().getRating();  //Registering takes hours
@@ -483,7 +493,16 @@ public class CompileFragment extends Fragment {
                     }
                     Main.data.pvSleeplessHours += Main.data.getCurrentSprite().getRating();
 
-                    NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties), checkSkillKarma.isChecked(), Main.data.getCurrentSprite().getRating());
+                    if(Main.data.DoIHaveBadLuck()&&checkSkillKarma.isChecked()){
+                        NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties -Main.data.pvKarma), false, Main.data.getCurrentSprite().getRating());
+                    }else{
+                        if(checkDrainKarma.isChecked()){
+                            NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties +Main.data.pvKarma), true, Main.data.getCurrentSprite().getRating());
+                        }else{
+                            NetHits = dice.rollDice((Main.data.pvResonance + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties), false, Main.data.getCurrentSprite().getRating());
+                        }
+
+                    }
                     SpriteRoll = dice.rollDice(Main.data.getCurrentSprite().getRating() * 2, false);
 
                 }
@@ -516,7 +535,16 @@ public class CompileFragment extends Fragment {
                     if(Main.data.getSensitiveSystem()==1){
                         if(dice.rollDice(Main.data.pvWillpower,false)<2){SpriteRoll++;}
                     }
-                    SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.pvResonance + Main.data.pvWillpower, checkDrainKarma.isChecked());
+                    if(Main.data.DoIHaveBadLuck()&&checkDrainKarma.isChecked()){
+                            SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.pvResonance + Main.data.pvWillpower - Main.data.pvKarma, false);
+                    }else{
+                        if(checkDrainKarma.isChecked()){
+                            SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.pvResonance + Main.data.pvWillpower + Main.data.pvKarma, true);
+                        }else{
+                            SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.pvResonance + Main.data.pvWillpower, false);
+                        }
+
+                    }
                     if (SpriteRoll < 0) {
                         SpriteRoll = 0;
                     }
@@ -542,13 +570,11 @@ public class CompileFragment extends Fragment {
                     Toast.makeText(getActivity(),"You passed out due to exhaustion!", Toast.LENGTH_SHORT).show();
                 }
                 if (checkDrainKarma.isChecked()) {
-                    //TODo:Badluck And ADD karma dice for pre-edge!
                     Main.data.pvKarmaUsed++;
                     UpdateStatKarmaUsed();
                     checkDrainKarma.setChecked(false);
                 }
                 if (checkSkillKarma.isChecked()) {
-                    //TODo:Badluck  And ADD karma dice for pre-edge!
                     Main.data.pvKarmaUsed++;
                     UpdateStatKarmaUsed();
                     checkSkillKarma.setChecked(false);
@@ -701,6 +727,9 @@ public class CompileFragment extends Fragment {
         np.setClickable(enabled);
         np.setValue(Main.data.getCurrentSprite().getRating());
         np.setMaxValue(Main.data.pvResonance * 2);
+
+
+
     }
 
     //Update TypePicker Enabled

@@ -121,6 +121,7 @@ public class StatFragment extends Fragment  {
         CreateListener(R.id.editHoursSinceKarmaRefresh, Main.data.pvHoursSinceKarmaRefresh, v);
 //        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
 
+
         return v;
     }
         public static StatFragment newInstance() {

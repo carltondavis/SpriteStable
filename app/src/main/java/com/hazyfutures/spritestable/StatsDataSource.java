@@ -115,7 +115,7 @@ public class StatsDataSource {
         try {
             int val = database.delete(Database.TABLE_SPRITES, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
-                Log.i("Sprite", "Delete ID:" + sprite.getId());
+//                Log.i("Sprite", "Delete ID:" + sprite.getId());
                 database.setTransactionSuccessful();
             }
         } finally {
@@ -163,7 +163,7 @@ public class StatsDataSource {
         try {
             long  val = database.update(Database.TABLE_SPRITES, value, Database.COLUMN_ID + "=?", new String[]{sprite.getId() + ""});
             if (val > 0) {
-                Log.i("Sprite", "Update ID: " + sprite.getId());
+                //Log.i("Sprite", "Update ID: " + sprite.getId());
                 database.setTransactionSuccessful();
             }else{
                 Log.i("Sprite", "FAILED UPDATE/INSERT");
@@ -259,7 +259,7 @@ public class StatsDataSource {
         sprite.setGODScore(Integer.parseInt(cursor.getString(1)));
         sprite.setCondition(Integer.parseInt(cursor.getString(4)));
 
-        Log.i("Sprite", "Loaded ID: " + sprite.getId());
+        //Log.i("Sprite", "Loaded ID: " + sprite.getId());
         return sprite;
     }
 

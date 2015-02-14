@@ -4,43 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.hazyfutures.spritestable.SpriteFragment"
     >
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="2"
-        android:maxEms="2"
-        android:id="@+id/editServices"
-        android:text="0"
-        android:layout_gravity="left|top"
-        android:layout_below="@+id/editGod"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Force"
-        android:id="@+id/textForce"
-        android:layout_gravity="left|top"
-        android:layout_below="@+id/SpriteSpinnerSprites"
-        android:layout_toRightOf="@+id/editForce"
-        android:layout_toEndOf="@+id/editForce"
-        android:layout_marginTop="38dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="2"
-        android:maxEms="2"
-        android:id="@+id/editDamage"
-        android:text="0"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_below="@+id/editServices"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,25 +12,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Services"
         android:id="@+id/textServices"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_above="@+id/editDamage"
-        android:layout_toRightOf="@+id/editServices"
-        android:layout_toEndOf="@+id/editServices" />
-
-    <EditText
-        android:layout_width="30dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="2"
-        android:maxEms="2"
-        android:id="@+id/editForce"
-        android:text="0"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_alignBottom="@+id/textForce"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editGod"
-        android:layout_alignEnd="@+id/editGod" />
+        android:layout_below="@+id/textGOD"
+        />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -74,10 +24,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Damage"
         android:id="@+id/textDamage"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_alignBottom="@+id/editDamage"
-        android:layout_toRightOf="@+id/editDamage"
-        android:layout_toEndOf="@+id/editDamage" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textServices"
+        />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -88,50 +38,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/SpriteSpinnerType"
-        android:layout_gravity="left|center_vertical"
-        android:layout_alignTop="@+id/editForce"
-        android:layout_toRightOf="@+id/textSpriteResonance"
-        android:layout_toEndOf="@+id/textSpriteResonance" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="GOD Score"
         android:id="@+id/textGOD"
-        android:layout_gravity="left|center_vertical"
-        android:layout_above="@+id/editServices"
-        android:layout_toRightOf="@+id/editGod"
-        android:layout_toEndOf="@+id/editGod" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="2"
-        android:maxEms="4"
-        android:id="@+id/editGod"
-        android:text="0"
-        android:enabled="true"
-        android:layout_gravity="left|center_vertical"
-        android:layout_below="@+id/editForce"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registered"
-        android:id="@+id/checkBoxRegistered"
-        android:checked="false"
-        android:layout_gravity="right|top"
-        android:layout_alignBottom="@+id/editServices"
-        android:layout_toRightOf="@+id/textServices"
-        android:layout_toEndOf="@+id/textServices" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/SpriteSpinnerSprites"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -139,7 +55,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Attack"
         android:id="@+id/textAttack"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/textDamage"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -189,9 +105,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Initiative Dice 4D6"
         android:id="@+id/textInitiativeDice"
-        android:layout_below="@+id/textInitiative"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignTop="@+id/textInitiative"
+        android:layout_toRightOf="@+id/textInitiative"
+        android:layout_toEndOf="@+id/textInitiative" />
 
     <TextView
         android:layout_width="wrap_content"

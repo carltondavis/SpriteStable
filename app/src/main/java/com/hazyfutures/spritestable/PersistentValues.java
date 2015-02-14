@@ -1,6 +1,7 @@
 package com.hazyfutures.spritestable;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -390,7 +391,7 @@ public Integer getSkillValue(String Name, String Specialization){
         pvSpriteList.clear();
         List<Sprite> Unnecessary = new ArrayList<>();
         for (Sprite sprite : pvSprites) {
-
+            Log.i("Sprite", "Process: ID:" + sprite.getId() + " Force " + sprite.getRating() + " " + sprite.getType() + " with " + sprite.getServicesOwed()+ " services " + sprite.getRegistered());
             //Keep the first unregistered sprite
             //Delete any other unregistered sprites
             //If no unregistered sprites found, create a NEW SPRITE
@@ -399,6 +400,7 @@ public Integer getSkillValue(String Name, String Specialization){
 
             if ((sprite.getRegistered() == 0 && unregisteredExists) || (sprite.getRegistered() == 1 && sprite.getServicesOwed() == 0)) { //Second or later unregistered item, or all services used
                 Unnecessary.add(sprite);        //Set up to remove it from the list
+                Log.i("Sprite", "Delete: ID:" + sprite.getId() + " Force " + sprite.getRating() + " " + sprite.getType() + " with " + sprite.getServicesOwed()+ " services " + sprite.getRegistered());
                 if (pvSprites.get(pvActiveSpriteId) == sprite) {      //If we're deleting the active sprite then aim the sprite pointer at an existing sprite.
                     if (pvActiveSpriteId > 0) {
                         pvActiveSpriteId--;
@@ -424,11 +426,12 @@ public Integer getSkillValue(String Name, String Specialization){
             Sprite newSprite = new Sprite();
             newSprite.setRating(getCurrentSprite().getRating());
             newSprite.setSpriteType(getCurrentSprite().getType());
-            pvSprites.add(newSprite);
+
             //Populate Sprite List with NEW option
-            String title = "NEW SPRITE";
+            String title =String.valueOf("Force " + newSprite.getRating() + " " + newSprite.getType()) + " with " + newSprite.getServicesOwed() + " services";
             pvSpriteList.add(title);
-            pvSprites.get(pvSpriteList.size() - 1).setId(datasource.insertSprite(pvSprites.get(pvSpriteList.size() - 1)));  //Save the new sprite to the DB
+            newSprite.setId(datasource.insertSprite(newSprite));  //Save the new sprite to the DB
+            pvSprites.add(newSprite);
         }
 
         //SaveAllToDB();
@@ -565,6 +568,7 @@ public Integer getSkillValue(String Name, String Specialization){
     public void setBadLuck(Integer value){
         BadLuck=value;
     }
+    //TODO: Badluck can only occur once per session. Add a new stat for Bad Luck has Struck!
     public Boolean DoIHaveBadLuck(){
         if(BadLuck==1) {
             Dice die = new Dice();
