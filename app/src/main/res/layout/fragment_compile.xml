@@ -171,9 +171,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/CompileSpinnerSpriteType"
-            android:layout_alignTop="@+id/npSpriteRating"
-            android:layout_toRightOf="@+id/Compile"
-            android:layout_toEndOf="@+id/Compile" />
+            android:layout_below="@+id/DrainKarma"
+            android:layout_toRightOf="@+id/buttonUseService"
+            android:layout_toEndOf="@+id/buttonUseService" />
 
         <NumberPicker
             android:layout_width="wrap_content"

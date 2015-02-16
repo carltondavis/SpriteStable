@@ -12,15 +12,24 @@ import android.util.Log;
  */
 
 public class Database extends SQLiteOpenHelper {
+    public static final String COLUMN_ID = "_id";
 
     public static final String TABLE_STATS = "Stats";
-    public static final String COLUMN_ID = "_id";
     public static final String COLUMN_STAT = "Stat";
     public static final String COLUMN_VALUE = "Value";
     private static final String STAT_DATABASE_CREATE = "create table "
             + TABLE_STATS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_STAT
             + " text not null, " + COLUMN_VALUE
+            + " integer not null"
+            + ");";
+    public static final String TABLE_QUALITIES = "Qualities";
+    public static final String COLUMN_QUALITYNAME = "QualityName";
+    public static final String COLUMN_QUALITYVALUE = "QualityValue";
+    private static final String QUALITY_DATABASE_CREATE = "create table "
+            + TABLE_QUALITIES + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_QUALITYNAME
+            + " text not null, " + COLUMN_QUALITYVALUE
             + " integer not null"
             + ");";
     public static final String TABLE_SKILLS = "Skills";
@@ -63,7 +72,7 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
 
     public Database(Context context) {
@@ -82,6 +91,28 @@ public class Database extends SQLiteOpenHelper {
         return database.insert(Database.TABLE_SKILLS, null,
                 values);
     }
+
+    public long AddQuality(SQLiteDatabase database, String QualityName){
+        return  AddQuality(database, QualityName, 0);
+    }
+    public long AddQuality(SQLiteDatabase database, String QualityName, Integer value){
+        ContentValues values = new ContentValues();
+        values.put(Database.COLUMN_QUALITYNAME, QualityName);
+        values.put(Database.COLUMN_QUALITYVALUE, value);
+        return database.insert(Database.TABLE_QUALITIES, null,
+                values);
+    }
+
+    public long AddStat(SQLiteDatabase database, String StatName){
+        return  AddStat(database, StatName, 1);
+    }
+    public long AddStat(SQLiteDatabase database, String StatName, Integer value){
+        ContentValues values = new ContentValues();
+        values.put(Database.COLUMN_STAT, StatName);
+        values.put(Database.COLUMN_VALUE, value);
+        return database.insert(Database.TABLE_STATS, null,
+                values);
+    }
     public void AddSpecialization(SQLiteDatabase database, Long LinkedSkill, String SpecializationName){
         ContentValues values = new ContentValues();
         values.put(Database.COLUMN_SPECIALIZATIONNAME, SpecializationName);
@@ -93,6 +124,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(STAT_DATABASE_CREATE);
+        database.execSQL(QUALITY_DATABASE_CREATE);
         database.execSQL(SKILL_DATABASE_CREATE);
         database.execSQL(SPECIALIZATION_DATABASE_CREATE);
         database.execSQL(SPRITE_DATABASE_CREATE);
@@ -158,240 +190,56 @@ public class Database extends SQLiteOpenHelper {
         AddSpecialization(database, LinkedSkill,  "Fault");
         AddSpecialization(database, LinkedSkill,  "Machine");
 
-        values.put(Database.COLUMN_STAT, "Body");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Intuition");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Charisma");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Logic");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Willpower");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Agility");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Strength");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Essence");
-        values.put(Database.COLUMN_VALUE, 6);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Magic");
-        values.put(Database.COLUMN_VALUE, -1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Reaction");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Resonance");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Karma");
-        values.put(Database.COLUMN_VALUE, 1);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Stun");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-        values.put(Database.COLUMN_STAT, "Physical");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
+        AddStat(database, "Body");
+        AddStat(database, "Intuition");
+        AddStat(database, "Charisma");
+        AddStat(database, "Logic");
+        AddStat(database, "Willpower");
+        AddStat(database, "Agility");
+        AddStat(database, "Strength");
+        AddStat(database, "Essence", 6);
+        AddStat(database, "Magic", -1);
+        AddStat(database,  "Reaction");
+        AddStat(database,  "Resonance");
+        AddStat(database,  "Karma");
+        AddStat(database, "Stun",0);
+        AddStat(database, "Physical",0);
+        AddStat(database, "HoursThisSession",0);
+        AddStat(database,  "SleeplessHours",0);
+        AddStat(database, "ConsecutiveRest",0);
+        AddStat(database, "HoursSinceKarmaRefresh",0);
 
-        values.put(Database.COLUMN_STAT, "HoursThisSession");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "SleeplessHours");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "ConsecutiveRest");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "HoursSinceKarmaRefresh");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "CodeSlinger");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "FocusedConcentration");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Insomnia");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "HighPainTolerance");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "HomeGround");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "NaturalHardening");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "QuickHealer");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Toughness");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "WillToLive");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "BadLuck");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "CodeBlock");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "LossOfConfidence");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "LowPainTolerance");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "SensitiveSystem");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "SimsenseVertigo");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "SlowHealer");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Perceptive");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "SpikeResistance");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "ToughAsNailsPhysical");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "ToughAsNailsStun");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Asthma");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "AsthmaFatigueDamage");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "BiPolar");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "BiPolarCurrent");
-        values.put(Database.COLUMN_VALUE, 6);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Blind");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "ComputerIlliterate");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Deaf");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "DimmerBulb");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Illiterate");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "Oblivious");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-        values.put(Database.COLUMN_STAT, "PieIesuDomine");
-        values.put(Database.COLUMN_VALUE, 0);
-        database.insert(Database.TABLE_STATS, null,
-                values);
-
-//TODO:Insert Qualities default values
-
+        AddQuality(database,  "CodeSlinger");
+        AddQuality(database,  "FocusedConcentration");
+        AddQuality(database,  "Insomnia");
+        AddQuality(database,  "HighPainTolerance");
+        AddQuality(database,  "HomeGround");
+        AddQuality(database,  "NaturalHardening");
+        AddQuality(database,  "QuickHealer");
+        AddQuality(database,  "Toughness");
+        AddQuality(database,  "WillToLive");
+        AddQuality(database,  "BadLuck");
+        AddQuality(database,  "CodeBlock");
+        AddQuality(database,  "LossOfConfidence");
+        AddQuality(database,  "LowPainTolerance");
+        AddQuality(database,  "SensitiveSystem");
+        AddQuality(database,  "SimsenseVertigo");
+        AddQuality(database,  "SlowHealer");
+        AddQuality(database,  "Perceptive");
+        AddQuality(database,  "SpikeResistance");
+        AddQuality(database,   "ToughAsNailsPhysical");
+        AddQuality(database,  "ToughAsNailsStun");
+        AddQuality(database,   "Asthma");
+        AddQuality(database,  "AsthmaFatigueDamage");
+        AddQuality(database,  "BiPolar");
+        AddQuality(database,   "BiPolarCurrent");
+        AddQuality(database,  "Blind");
+        AddQuality(database,  "ComputerIlliterate");
+        AddQuality(database,   "Deaf");
+        AddQuality(database,   "DimmerBulb");
+        AddQuality(database,   "Illiterate");
+        AddQuality(database,   "Oblivious");
+        AddQuality(database,   "PieIesuDomine");
         spritevalues.put(Database.COLUMN_RATING, 1);
         spritevalues.put(Database.COLUMN_TYPE, 1);
         spritevalues.put(Database.COLUMN_SERVICES, 0);
@@ -400,7 +248,7 @@ public class Database extends SQLiteOpenHelper {
         spritevalues.put(Database.COLUMN_CONDITION, 0);
         database.insert(Database.TABLE_SPRITES, null,
                 spritevalues);
-        Log.i("CreateSprite: ", "V" + spritevalues.get(Database.COLUMN_RATING) + "S" + spritevalues.get(Database.COLUMN_SERVICES) + "T" + spritevalues.get(Database.COLUMN_TYPE) + "R" + spritevalues.get(Database.COLUMN_REGISTERED) + "O" + spritevalues.get(Database.COLUMN_OVERWATCHSCORE) + "C" + spritevalues.get(Database.COLUMN_CONDITION) + "I" + spritevalues.get(Database.COLUMN_ID));
+      //  Log.i("CreateSprite: ", "V" + spritevalues.get(Database.COLUMN_RATING) + "S" + spritevalues.get(Database.COLUMN_SERVICES) + "T" + spritevalues.get(Database.COLUMN_TYPE) + "R" + spritevalues.get(Database.COLUMN_REGISTERED) + "O" + spritevalues.get(Database.COLUMN_OVERWATCHSCORE) + "C" + spritevalues.get(Database.COLUMN_CONDITION) + "I" + spritevalues.get(Database.COLUMN_ID));
     }
 
     @Override
@@ -409,8 +257,10 @@ public class Database extends SQLiteOpenHelper {
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUALITIES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPRITES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SKILLS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPECIALIZATIONS);
         onCreate(db);
     }
 

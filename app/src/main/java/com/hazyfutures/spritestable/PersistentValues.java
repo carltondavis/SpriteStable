@@ -1,7 +1,6 @@
 package com.hazyfutures.spritestable;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * Values that should be set to persist between activities
  */
 public class PersistentValues {
-    public int pvBody = 0;
+/*    public int pvBody = 0;
     public int pvWillpower = 0;
     public int pvIntuition = 0;
     public int pvLogic = 0;
@@ -24,12 +23,16 @@ public class PersistentValues {
     public int pvSleeplessHours = 0;
     public int pvHoursSinceKarmaRefresh = 0;
     public int pvConsecutiveRest = 0;
-
+  */
     public int pvActiveSpriteId = 0;
+
     public List<String> pvSpriteList = new ArrayList<>();
     List<Sprite> pvSprites = new ArrayList<>();
     //public List<String> pvSkillList = new ArrayList<>();
     List<Skills> pvSkills = new ArrayList<>();
+    List<Stats> pvStats = new ArrayList<>();
+    List<Qualities> pvQualities = new ArrayList<>();
+
     List<Specializations> pvSpecializations = new ArrayList<>();
     private StatsDataSource datasource;
 
@@ -45,9 +48,16 @@ public class PersistentValues {
         }
     }
     public void SaveSpriteToDB(Sprite SpriteToSave){datasource.updateSprite(SpriteToSave);}
+
     public void SaveSkillToDB(String SkillName){datasource.updateSkill(SkillName, getSkillValue(SkillName));}
-    public void SaveSkillToDB(String name, Integer value){datasource.updateStat(name, value);}
+    public void SaveSkillToDB(String name, Integer value){datasource.updateSkill(name, value);}
+
+    public void SaveStatToDB(String name){datasource.updateStat(name, getStatValue(name));}
     public void SaveStatToDB(String name, Integer value){datasource.updateStat(name, value);}
+
+    public void SaveQualityToDB(String name){datasource.updateQuality (name, getQualityValue(name));}
+    public void SaveQualityToDB(String name, Integer value){datasource.updateQuality(name, value);}
+
 
     public void SaveAllSkillsToDB(){
         List<Specializations> tempspecs=pvSpecializations;
@@ -67,14 +77,24 @@ public class PersistentValues {
                 }
         }
     }
-
+    public void SaveAllStatsToDB(){
+        for(Stats stat: pvStats){
+            SaveStatToDB(stat.getStatName(), stat.getStatValue());
+        }
+    }
+    public void SaveAllQualitiesToDB(){
+        for(Qualities quality: pvQualities){
+            SaveStatToDB(quality.getQuality(), quality.getValue());
+        }
+    }
 
     public void SaveAllToDB() {
         SaveAllSpritesToDB();
         SaveAllSkillsToDB();
-//TODO: Make Stats their own object
+        SaveAllQualitiesToDB();
+        SaveAllStatsToDB();
 
-        datasource.updateStat("Stun", pvStun);
+       /* datasource.updateStat("Stun", pvStun);
         datasource.updateStat("Physical", pvPhysical);
         datasource.updateStat("Karma", pvKarma);
         datasource.updateStat("KarmaUsed", pvKarmaUsed);
@@ -88,7 +108,9 @@ public class PersistentValues {
         datasource.updateStat("ConsecutiveRest", pvConsecutiveRest);
         datasource.updateStat("ActiveSpriteId", pvActiveSpriteId);
         datasource.updateStat("HoursSinceKarmaRefresh", pvHoursSinceKarmaRefresh);
+        */
 //TODO: Make Qualities their own object
+        /*
         datasource.updateStat("CodeSlinger", CodeSlinger);
         datasource.updateStat("FocusedConcentration", FocusedConcentration);
         datasource.updateStat("Insomnia", Insomnia);
@@ -119,7 +141,7 @@ public class PersistentValues {
         datasource.updateStat("Illiterate", Illiterate);
         datasource.updateStat("Oblivious", Oblivious);
         datasource.updateStat("PieIesuDomine", PieIesuDomine);
-
+*/
     }
 
 
@@ -128,13 +150,15 @@ public class PersistentValues {
 
         datasource = new StatsDataSource(content);
         datasource.open();
-        List<Stat> values = datasource.getAllStats();
+        List<Stats> values = datasource.getAllStats();
         pvSprites = datasource.getAllSprites();
         pvSkills = datasource.getAllSkills();
+        pvQualities = datasource.getAllQualities();
+        pvStats = datasource.getAllStats();
         pvSpecializations = datasource.getAllSpecializations();
         pvActiveSpriteId = 0;
 
-        String stat;
+       /* String stat;
         Integer value;
         for (int i = 0; i < values.size(); ++i) {
             stat = values.get(i).getStat();
@@ -278,7 +302,7 @@ public class PersistentValues {
 
             }
 
-        }
+        }*/
     }
 
     public Sprite getCurrentSprite() {
@@ -336,6 +360,62 @@ public Integer getSkillValue(String Name, String Specialization){
         }
     }
 
+    public Integer getStatValue(String Name){
+        Integer value=0;
+        for(Stats stat: pvStats){
+            if(stat.getStatName().equals(Name)) {
+                value= stat.getStatValue();
+                break;
+            }
+        }
+        return value;
+    }
+
+    public void setStatValue(String Name, Integer Value){
+        for(Stats stat: pvStats){
+            if(stat.getStatName().equals(Name)) {
+                stat.setStatValue(Value);
+                break;
+            }
+        }
+    }
+    public void addStatValue(String Name, Integer Value){
+        for(Stats stat: pvStats){
+            if(stat.getStatName().equals(Name)) {
+                stat.setStatValue(stat.getStatValue()+Value);
+                break;
+            }
+        }
+    }
+    public Integer getQualityValue(String Name){
+        Integer value=0;
+        for(Qualities quality: pvQualities){
+            if(quality.getQuality().equals(Name)) {
+                value= quality.getValue();
+                break;
+            }
+        }
+        return value;
+    }
+
+    public void setQualityValue(String Name, Integer Value){
+        for(Qualities quality: pvQualities){
+            if(quality.getQuality().equals(Name)) {
+                quality.setValue(Value);
+                break;
+            }
+        }
+    }
+    //TODO: Add a build point to level converter for qualities
+    public void setQualityValue(String Name, String Extra, Integer BuildPoints){
+        /*for(Qualities quality: pvQualities){
+            if(quality.getQuality().equals(Name)) {
+                quality.setValue(Value);
+                break;
+            }
+        }*/
+    }
+
     public void setSpecialization(String SkillName, String Specialization, Boolean Exists){
         Integer value=0;
         long ID=0;
@@ -391,7 +471,7 @@ public Integer getSkillValue(String Name, String Specialization){
         pvSpriteList.clear();
         List<Sprite> Unnecessary = new ArrayList<>();
         for (Sprite sprite : pvSprites) {
-            Log.i("Sprite", "Process: ID:" + sprite.getId() + " Force " + sprite.getRating() + " " + sprite.getType() + " with " + sprite.getServicesOwed()+ " services " + sprite.getRegistered());
+        //    Log.i("Sprite", "Process: ID:" + sprite.getId() + " Force " + sprite.getRating() + " " + sprite.getType() + " with " + sprite.getServicesOwed()+ " services " + sprite.getRegistered());
             //Keep the first unregistered sprite
             //Delete any other unregistered sprites
             //If no unregistered sprites found, create a NEW SPRITE
@@ -400,7 +480,7 @@ public Integer getSkillValue(String Name, String Specialization){
 
             if ((sprite.getRegistered() == 0 && unregisteredExists) || (sprite.getRegistered() == 1 && sprite.getServicesOwed() == 0)) { //Second or later unregistered item, or all services used
                 Unnecessary.add(sprite);        //Set up to remove it from the list
-                Log.i("Sprite", "Delete: ID:" + sprite.getId() + " Force " + sprite.getRating() + " " + sprite.getType() + " with " + sprite.getServicesOwed()+ " services " + sprite.getRegistered());
+                //Log.i("Sprite", "Delete: ID:" + sprite.getId() + " Force " + sprite.getRating() + " " + sprite.getType() + " with " + sprite.getServicesOwed()+ " services " + sprite.getRegistered());
                 if (pvSprites.get(pvActiveSpriteId) == sprite) {      //If we're deleting the active sprite then aim the sprite pointer at an existing sprite.
                     if (pvActiveSpriteId > 0) {
                         pvActiveSpriteId--;
@@ -449,6 +529,7 @@ public Integer getSkillValue(String Name, String Specialization){
     //Codeslinger: +2 dice a specific matrix action
 
     //TODO Decide on standardized ID's for matrix actions
+
     Integer CodeSlinger=0;
     public Integer getCodeSlinger(){
         return CodeSlinger;

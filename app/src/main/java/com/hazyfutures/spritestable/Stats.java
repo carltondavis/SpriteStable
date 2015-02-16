@@ -4,9 +4,9 @@ package com.hazyfutures.spritestable;
  * Created by cdavis on 1/17/2015.
  * Character stats
  */
-public class Stat {
+public class Stats {
     private long id;
-    private String Stat = "None";
+    private String StatName = "None";
     private Integer Value = 0;
 
     public long getId() {
@@ -17,19 +17,19 @@ public class Stat {
         this.id = id;
     }
 
-    public String getStat() {
-        return Stat;
+    public String getStatName() {
+        return StatName;
     }
 
-    public void setStat(String Stat) {
-        this.Stat = Stat;
+    public void setStatName(String StatName) {
+        this.StatName = StatName;
     }
 
-    public Integer getValue() {
+    public Integer getStatValue() {
         return Value;
     }
 
-    public void setValue(Integer Value) {
+    public void setStatValue(Integer Value) {
         this.Value = Value;
     }
 

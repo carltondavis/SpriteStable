@@ -25,6 +25,11 @@ public class StatFragment extends Fragment  {
     MultiSelectionSpinner spinnerCompiling;
     MultiSelectionSpinner spinnerRegistering;
 
+//TODO Add Load Chummer File Button
+    //TODO: Pick file
+    //TODO: Clear out existing Character PV values
+    //TODO: Parse data object into PV object
+    //TODO: Convert Quality Build Points into my levels.
 
 //Todo add multiple character option
 //Todo add a Spirit/Mage handler option
@@ -104,22 +109,23 @@ public class StatFragment extends Fragment  {
                     }
                 });
 
-        CreateListener(R.id.editBody, Main.data.pvBody, v);
-        CreateListener(R.id.editWillpower, Main.data.pvWillpower , v);
-        CreateListener(R.id.editIntuition, Main.data.pvIntuition , v);
-        CreateListener(R.id.editLogic, Main.data.pvLogic, v);
+        CreateListener(R.id.editBody, Main.data.getStatValue("Body"), v);
+        CreateListener(R.id.editWillpower, Main.data.getStatValue("Willpower") , v);
+        CreateListener(R.id.editIntuition, Main.data.getStatValue("Intuition") , v);
+        CreateListener(R.id.editLogic, Main.data.getStatValue("Logic"), v);
         CreateListener(R.id.editCompiling, Main.data.getSkillValue("Compiling") , v);
         CreateListener(R.id.editRegistering, Main.data.getSkillValue("Registering"), v);
-        CreateListener(R.id.editResonance, Main.data.pvResonance, v);
-        CreateListener(R.id.editStun, Main.data.pvStun, v);
-        CreateListener(R.id.editPhysical, Main.data.pvPhysical, v);
-        CreateListener(R.id.editKarma, Main.data.pvKarma, v);
-        CreateListener(R.id.editKarmaUsed, Main.data.pvKarmaUsed, v);
-        CreateListener(R.id.editConsecutiveHoursRested, Main.data.pvConsecutiveRest, v);
-        CreateListener(R.id.editHoursWithoutSleep, Main.data.pvSleeplessHours, v);
-        CreateListener(R.id.editHoursThisSession, Main.data.pvHoursThisSession, v);
-        CreateListener(R.id.editHoursSinceKarmaRefresh, Main.data.pvHoursSinceKarmaRefresh, v);
+        CreateListener(R.id.editResonance, Main.data.getStatValue("Resonance"), v);
+        CreateListener(R.id.editStun, Main.data.getStatValue("Stun"), v);
+        CreateListener(R.id.editPhysical, Main.data.getStatValue("Physical"), v);
+        CreateListener(R.id.editKarma, Main.data.getStatValue("Karma"), v);
+        CreateListener(R.id.editKarmaUsed, Main.data.getStatValue("KarmaUsed"), v);
+        CreateListener(R.id.editConsecutiveHoursRested, Main.data.getStatValue("ConsecutiveRest"), v);
+        CreateListener(R.id.editHoursWithoutSleep, Main.data.getStatValue("SleeplessHours"), v);
+        CreateListener(R.id.editHoursThisSession, Main.data.getStatValue("HoursThisSession"), v);
+        CreateListener(R.id.editHoursSinceKarmaRefresh, Main.data.getStatValue("HoursSinceKarmaRefresh"), v);
 //        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
+
 
 
         return v;
@@ -160,39 +166,39 @@ public class StatFragment extends Fragment  {
     private void UpdateDamage() {
         RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.stunTrack);
         if(stunDamage!=null) {
-            int MaxStun = (int) Math.floor(Main.data.pvWillpower / 2) + 9 + Main.data.getToughAsNailsStun();
-            int MaxPhysical = (int) Math.floor(Main.data.pvBody / 2) + 9 + Main.data.getToughAsNailsPhysical();
+            int MaxStun = (int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getToughAsNailsStun();
+            int MaxPhysical = (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 + Main.data.getToughAsNailsPhysical();
 
             int _overflow = 0;
 
             stunDamage.setClickable(false);
             stunDamage.setEnabled(false);
-            if (stunDamage.getRating() != Main.data.pvStun || MaxStun != stunDamage.getMax()) {
+            if (stunDamage.getRating() != Main.data.getStatValue("Stun") || MaxStun != stunDamage.getMax()) {
                 stunDamage.setNumStars(MaxStun);
                 stunDamage.setMax(MaxStun);
-                if (Main.data.pvStun > MaxStun) {//Did we exceed the stun condition monitor?
-                    Main.data.pvPhysical += (int) Math.floor((Main.data.pvStun - MaxStun) / 2);  //(TotalStun - StunMax)/2 rounded down is overflow
-                    Main.data.pvStun = MaxStun;
+                if (Main.data.getStatValue("Stun") > MaxStun) {//Did we exceed the stun condition monitor?
+                    Main.data.addStatValue("Physical" ,(int) Math.floor((Main.data.getStatValue("Stun") - MaxStun) / 2));  //(TotalStun - StunMax)/2 rounded down is overflow
+                    Main.data.setStatValue("Stun", MaxStun);
                 }
-                stunDamage.setRating(Main.data.pvStun);
+                stunDamage.setRating(Main.data.getStatValue("Stun"));
             }
             RatingBar physicalDamage = (RatingBar) getActivity().findViewById(R.id.physicalTrack);
             physicalDamage.setClickable(false);
             physicalDamage.setEnabled(false);
-            if (physicalDamage.getRating() != Main.data.pvPhysical || MaxPhysical != physicalDamage.getMax()) {
+            if (physicalDamage.getRating() != Main.data.getStatValue("Physical") || MaxPhysical != physicalDamage.getMax()) {
                 physicalDamage.setNumStars(MaxPhysical);
                 physicalDamage.setMax(MaxPhysical);
 
                 RatingBar overflowDamage = (RatingBar) getActivity().findViewById(R.id.overflowTrack);
                 overflowDamage.setClickable(false);
                 overflowDamage.setEnabled(false);
-                overflowDamage.setNumStars(Main.data.pvBody+Main.data.getToughAsNailsPhysical());
-                overflowDamage.setMax(Main.data.pvBody);
+                overflowDamage.setNumStars(Main.data.getStatValue("Body")+Main.data.getToughAsNailsPhysical());
+                overflowDamage.setMax(Main.data.getStatValue("Body"));
 
-                if (Main.data.pvPhysical > MaxPhysical) {
-                    _overflow = Main.data.pvPhysical - MaxPhysical;
+                if (Main.data.getStatValue("Physical") > MaxPhysical) {
+                    _overflow = Main.data.getStatValue("Physical") - MaxPhysical;
                 }
-                physicalDamage.setRating(Main.data.pvPhysical - _overflow);//Don't count overflow when drawing boxes of damage
+                physicalDamage.setRating(Main.data.getStatValue("Physical") - _overflow);//Don't count overflow when drawing boxes of damage
                 overflowDamage.setRating(_overflow);
             }
             UpdateCompile();
@@ -209,7 +215,7 @@ public class StatFragment extends Fragment  {
     private void UpdateForcePicker(boolean enabled) {
         NumberPicker np = (NumberPicker) getActivity().findViewById(R.id.npSpriteRating);
         if(np!=null) {
-            np.setMaxValue(Main.data.pvResonance * 2);
+            np.setMaxValue(Main.data.getStatValue("Resonance") * 2);
         }
     }
 
@@ -218,26 +224,26 @@ public class StatFragment extends Fragment  {
         if(checkDrain!=null) {
             CheckBox checkSkill = (CheckBox) getActivity().findViewById(R.id.SkillKarma);
             if (checkDrain.isChecked()) {
-                if (Main.data.pvKarmaUsed < (Main.data.pvKarma - 1)) {
+                if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
                     checkSkill.setEnabled(true);
                 } else {
                     checkSkill.setEnabled(false);
                 }
             } else {
-                if (Main.data.pvKarmaUsed < Main.data.pvKarma) {
+                if (Main.data.getStatValue("KarmaUsed") < Main.data.getStatValue("Karma")) {
                     checkSkill.setEnabled(true);
                 } else {
                     checkSkill.setEnabled(false);
                 }
             }
             if (checkSkill.isChecked()) {
-                if (Main.data.pvKarmaUsed < (Main.data.pvKarma - 1)) {
+                if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
                     checkDrain.setEnabled(true);
                 } else {
                     checkDrain.setEnabled(false);
                 }
             } else {
-                if (Main.data.pvKarmaUsed < (Main.data.pvKarma)) {
+                if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma"))) {
                     checkDrain.setEnabled(true);
                 } else {
                     checkDrain.setEnabled(false);
@@ -245,7 +251,12 @@ public class StatFragment extends Fragment  {
             }
         }
     }
-
+    private void UpdateStat(String name, Integer value) {
+        if (Main.data.getStatValue(name) != value) {
+            Main.data.setStatValue(name, value);
+            Main.data.SaveStatToDB(name, value);
+        }
+    }
     private void UpdateStatsStats(View view) {
         EditText et = (EditText) getActivity().findViewById(view.getId());
         if (!et.getText().toString().isEmpty()) {
@@ -253,36 +264,25 @@ public class StatFragment extends Fragment  {
 
             switch (view.getId()) {
                 case R.id.editBody:
-                    if(Main.data.pvBody != value){
-                    Main.data.pvBody = value;
-                    Main.data.SaveStatToDB("Body", value);
+                    UpdateStat("Body", value);
                     //Change Physical boxes
                     //Change IsDead stuff
                     UpdateDamage();
-                    }
+
                     break;
                 case R.id.editWillpower:
-                    if(Main.data.pvWillpower != value) {
-                        Main.data.pvWillpower = value;
-                        Main.data.SaveStatToDB("Willpower", value);
+                    UpdateStat("Willpower", value);
                         //Change stun boxes
                         //Change IsConscious stuff
                         UpdateDamage();
-                    }
+
                     break;
                 case R.id.editIntuition:
-                    if(Main.data.pvIntuition != value) {
-                        Main.data.pvIntuition = value;
-                        Main.data.SaveStatToDB("Intuition", value);
-                    }
+        UpdateStat("Intuition", value);
                     break;
                 case R.id.editLogic:
-                    if(Main.data.pvLogic != value) {
-                        Main.data.pvLogic = value;
-                        Main.data.SaveStatToDB("Logic", value);
-                        //Change Register button availability
-                        UpdateCompile();
-                    }
+        UpdateStat("Logic", value);
+        UpdateCompile();
                     break;
                 case R.id.editCompiling:
                     if(Main.data.getSkillValue("Compiling") != value) {
@@ -295,74 +295,52 @@ public class StatFragment extends Fragment  {
                     }
                     break;
                 case R.id.editResonance:
-                    if(Main.data.pvResonance != value) {
-                        Main.data.pvResonance = value;
-                        Main.data.SaveStatToDB("Resonance", value);
+        UpdateStat("Resonance", value);
                         //Change max Force spinner
                         UpdateForcePicker();
-                    }
+
                     break;
                 case R.id.editStun:
-                    if(Main.data.pvStun != value) {
-                        Main.data.pvStun = value;
-                        Main.data.SaveStatToDB("Stun", value);
+        UpdateStat("Stun", value);
                         //Change same as willpower + number of boxes
                         UpdateDamage();
-                    }
+
                     break;
                 case R.id.editPhysical:
-                    if(Main.data.pvPhysical != value) {
-                        Main.data.pvPhysical = value;
-
-                        Main.data.SaveStatToDB("Physical", value);
+        UpdateStat("Physical", value);
                         //Change same as body + number of boxes
                         UpdateDamage();
-                    }
+
                     break;
                 case R.id.editKarma:
-                    if(Main.data.pvKarma != value) {
-                        Main.data.pvKarma = value;
-                        Main.data.SaveStatToDB("Karma", value);
+        UpdateStat("Karma", value);
                         //Change checkboxes
                         UpdateCheckBoxes();
-                    }
+
                     break;
                 case R.id.editKarmaUsed:
-                    if(Main.data.pvKarmaUsed != value){
-                    Main.data.pvKarmaUsed = value;
-                    Main.data.SaveStatToDB("KarmaUsed", value);
+        UpdateStat("KarmaUsed", value);
                     //Change checkboxes
                     UpdateCheckBoxes();
-                    }
+
                     break;
                 case R.id.editHoursThisSession:
-                    if(Main.data.pvHoursThisSession != value) {
-                        Main.data.pvHoursThisSession = value;
-                        Main.data.SaveStatToDB("HoursThisSession", value);
+        UpdateStat("HoursThisSession", value);
                         //Change Time
                         TextView tv = (TextView) getActivity().findViewById(R.id.valuesHours);
                         if (tv != null) {
-                            tv.setText(String.valueOf(Main.data.pvHoursThisSession));
+                            tv.setText(String.valueOf(Main.data.getStatValue("HoursThisSession")));
                         }
-                    }
+
                     break;
                 case R.id.editConsecutiveHoursRested:
-                    if(Main.data.pvConsecutiveRest != value) {
-                        Main.data.pvConsecutiveRest = value;
-                        Main.data.SaveStatToDB("ConsecutiveRest", value);
-                    }
+        UpdateStat("ConsecutiveHoursRested", value);
                     break;
                 case R.id.editHoursWithoutSleep:
-                    if(Main.data.pvSleeplessHours != value) {
-                        Main.data.pvSleeplessHours = value;
-                        Main.data.SaveStatToDB("SleeplessHours", value);
-                    }
+        UpdateStat("HoursWithoutSleep", value);
                     break;
                 case R.id.editHoursSinceKarmaRefresh:
-                    if(Main.data.pvHoursSinceKarmaRefresh != value) {
-                        Main.data.pvHoursSinceKarmaRefresh = value;
-                        Main.data.SaveStatToDB("HoursSinceKarmaRefresh", value);
-                    }
+        UpdateStat("HoursSinceKarmaRefresh", value);
                     break;
             }
         }
@@ -381,7 +359,7 @@ public class StatFragment extends Fragment  {
             } else {
                 Compile.setText("Register");
                 //Disable Registration if there are more than LOGIC sprites registered.  Because there's always an unregistered sprite floating around that means the number of sprites-1== number registered
-                if (((Main.data.pvSprites.size()) > Main.data.pvLogic) && Main.data.getCurrentSprite().getRegistered() == 0) { //Also only disable if we're looking at an unregistered sprite.  We can always get more services.
+                if (((Main.data.pvSprites.size()) > Main.data.getStatValue("Logic")) && Main.data.getCurrentSprite().getRegistered() == 0) { //Also only disable if we're looking at an unregistered sprite.  We can always get more services.
                     enabled = false;
                 }
             }
@@ -391,7 +369,7 @@ public class StatFragment extends Fragment  {
     }
     //UpdateRest Button        Enabled
     private void UpdateRest() {
-        UpdateRest((Main.data.pvStun > 0) && IsAlive());
+        UpdateRest((Main.data.getStatValue("Stun") > 0) && IsAlive());
     }
 
     private void UpdateRest(boolean enabled) {
@@ -404,7 +382,7 @@ public class StatFragment extends Fragment  {
 
     //disable heal when stun, re-enable when no-stun and damage, disable when no damage
     private void UpdateHeal() {
-        UpdateHeal((Main.data.pvStun == 0) && (Main.data.pvPhysical > 0) && IsAlive());
+        UpdateHeal((Main.data.getStatValue("Stun") == 0) && (Main.data.getStatValue("Physical") > 0) && IsAlive());
     }
 
     private void UpdateHeal(boolean enabled) {
@@ -416,11 +394,11 @@ public class StatFragment extends Fragment  {
     }
 
     private boolean IsConscious() {
-        return (Main.data.pvStun < (Main.data.getToughAsNailsStun()+ 9 + Math.floor(Main.data.pvWillpower / 2))) && (Main.data.pvPhysical < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.pvBody / 2)));
+        return (Main.data.getStatValue("Stun") < (Main.data.getToughAsNailsStun()+ 9 + Math.floor(Main.data.getStatValue("Willpower") / 2))) && (Main.data.getStatValue("Physical") < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
     }
 
     private boolean IsAlive() {
-        return (Main.data.pvPhysical < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.pvBody / 2)));
+        return (Main.data.getStatValue("Physical") < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
     }
 
     //UpdateUseService Button  Enabled

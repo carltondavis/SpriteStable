@@ -2,6 +2,8 @@
   <dictionary name="cdavis">
     <words>
       <w>actualsleepy</w>
+      <w>argv</w>
+      <w>chummer</w>
       <w>codeslinger</w>
       <w>cybercombat</w>
       <w>domine</w>
@@ -13,6 +15,9 @@
       <w>notselected</w>
       <w>personas</w>
       <w>physicaltext</w>
+      <w>qualityname</w>
+      <w>qualityvalue</w>
+      <w>sdcard</w>
       <w>simsense</w>
       <w>skillid</w>
       <w>skillname</w>
@@ -25,9 +30,11 @@
       <w>specializationof</w>
       <w>ssprite</w>
       <w>stuntext</w>
+      <w>technomancer</w>
       <w>temppenalties</w>
       <w>tempspecs</w>
       <w>tempsspecs</w>
+      <w>totalvalue</w>
     </words>
   </dictionary>
 </component>

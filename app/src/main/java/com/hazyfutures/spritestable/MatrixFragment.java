@@ -11,6 +11,11 @@ public class MatrixFragment extends Fragment {
 //Todo: MATRIX FRAGMENT
     //Read Sprite rules for assisting
     //Design UI: Pick actor first or pick Action first?  Then display options below?  Checkboxes to add assistors?
+    //TODO: Create a Matrix Actions object
+    //TODO: Add a few matrix actions to the db
+    //TODO Programatically add Items to the fragment by pulling actions from a database list
+    //TODO: Figure out how to display sprites assisting and vice-versa
+
 //Todo: Add Noise rating distance spinner
 //Todo: Add Noise rating static spinner
 //Todo: Add Playing hacking buttons, including manual die pool modifier

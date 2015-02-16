@@ -30,6 +30,10 @@ public class StatsDataSource {
             Database.COLUMN_SPECIALIZATIONNAME,
             Database.COLUMN_LINKEDSKILL,
             Database.COLUMN_EXISTS};
+
+    private String[] allQualityColumns = {Database.COLUMN_ID,
+            Database.COLUMN_QUALITYNAME,
+            Database.COLUMN_QUALITYVALUE};
     private String[] allSpriteColumns = {Database.COLUMN_ID,
             Database.COLUMN_OVERWATCHSCORE,
             Database.COLUMN_RATING,
@@ -80,6 +84,14 @@ public class StatsDataSource {
 
     }
 
+    public void updateQuality(String Quality, Integer Value) {
+        ContentValues value = new ContentValues();
+        value.put(Database.COLUMN_QUALITYVALUE, Value);
+        int val = database.update(Database.TABLE_QUALITIES, value, Database.COLUMN_QUALITYNAME + " = '" + Quality + "'", null);
+        // Log.i("SaveStat: ", attribute + ":" + Value + "Return:" + val);
+
+    }
+
     public void updateSkill(String SkillName, Integer Value) {
         ContentValues value = new ContentValues();
         value.put(Database.COLUMN_SKILLVALUE, Value);
@@ -97,7 +109,7 @@ public class StatsDataSource {
             try {
                 long  val =  database.update(Database.TABLE_SPECIALIZATIONS, value, Database.COLUMN_LINKEDSKILL + " = '" + skillID + "' and " + Database.COLUMN_SPECIALIZATIONNAME + " = '" + SpecializationName + "'", null);
                 if (val > 0) {
-                    Log.i("Specialization", "Update Spec: " + SpecializationName);
+              //      Log.i("Specialization", "Update Spec: " + SpecializationName);
                     database.setTransactionSuccessful();
                 }else{
                     Log.i("Specialization", "FAILED UPDATE/INSERT");
@@ -138,10 +150,10 @@ public class StatsDataSource {
             val = database.insert(Database.TABLE_SPRITES, null,value);
                 if(val>0){
                     sprite.setId(val);
-                    Log.i("Sprite", "Insert ID: " + val);
+            //        Log.i("Sprite", "Insert ID: " + val);
                     database.setTransactionSuccessful();
                 }else{
-                    Log.i("Sprite", "FAILED UPDATE/INSERT");
+            //        Log.i("Sprite", "FAILED UPDATE/INSERT");
                 }
 
         } finally {
@@ -173,15 +185,15 @@ public class StatsDataSource {
         }
     }
 
-    public List<Stat> getAllStats() {
-        List<Stat> stats = new ArrayList<>();
+    public List<Stats> getAllStats() {
+        List<Stats> stats = new ArrayList<>();
 
         Cursor cursor = database.query(Database.TABLE_STATS,
                 allStatColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Stat stat = cursorToStat(cursor);
+            Stats stat = cursorToStat(cursor);
             stats.add(stat);
             cursor.moveToNext();
         }
@@ -189,12 +201,36 @@ public class StatsDataSource {
         cursor.close();
         return stats;
     }
-    private Stat cursorToStat(Cursor cursor) {
-        Stat stat = new Stat();
+    public List<Qualities> getAllQualities() {
+        List<Qualities> qualities = new ArrayList<>();
+
+        Cursor cursor = database.query(Database.TABLE_QUALITIES,
+                allQualityColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Qualities quality = cursorToQuality(cursor);
+            qualities.add(quality);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return qualities;
+    }
+    private Stats cursorToStat(Cursor cursor) {
+        Stats stat = new Stats();
         stat.setId(cursor.getLong(0));
-        stat.setStat(cursor.getString(1));
-        stat.setValue(cursor.getInt(2));
+        stat.setStatName(cursor.getString(1));
+        stat.setStatValue(cursor.getInt(2));
         return stat;
+    }
+
+    private Qualities cursorToQuality(Cursor cursor) {
+        Qualities quality = new Qualities();
+        quality.setId(cursor.getLong(0));
+        quality.setQuality(cursor.getString(1));
+        quality.setValue(cursor.getInt(2));
+        return quality;
     }
 
     private Skills cursorToSkill(Cursor cursor) {
@@ -210,7 +246,7 @@ public class StatsDataSource {
         specialization.setId(cursor.getLong(0));
         specialization.setSpecializationName(cursor.getString(1));
         specialization.setLinkedSkill(cursor.getInt(2));
-        specialization.setExists(cursor.getInt(3)==1);
+        specialization.setExists(cursor.getInt(3) == 1);
         return specialization;
     }
 
@@ -281,7 +317,7 @@ public class StatsDataSource {
 
             cursor.moveToNext();
         }
-        Log.i("Sprite", "Loaded " + i + " sprites");
+        //Log.i("Sprite", "Loaded " + i + " sprites");
         // make sure to close the cursor
         cursor.close();
         return sprites;

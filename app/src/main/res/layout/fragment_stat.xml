@@ -6,7 +6,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.hazyfutures.spritestable.StatFragment">
-
     <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
@@ -14,6 +13,7 @@
         android:isScrollContainer="true"
         android:shrinkColumns="1"
         >
+
 
         <!-- 2 columns -->
         <TableRow
