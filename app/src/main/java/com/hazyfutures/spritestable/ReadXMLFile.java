@@ -40,10 +40,11 @@ public class ReadXMLFile {
         try {
             doc = dBuilder.parse(fXmlFile);
             doc.getDocumentElement().normalize();
-//TODO Re-set existing database
             getAttributes(doc, activity);
             getQualities(doc, activity);
             getSkills(doc, activity);
+            getSprites(doc, activity);
+
 
            // return data;
         } catch (SAXException e) {
@@ -74,7 +75,7 @@ public class ReadXMLFile {
                     Main.data.setStatValueShort(eElement.getElementsByTagName("name").item(0).getTextContent(), Integer.valueOf(eElement.getElementsByTagName("totalvalue").item(0).getTextContent()));
                     System.out.println("Attribute : " + eElement.getElementsByTagName("name").item(0).getTextContent());
                     System.out.println("Value : " + eElement.getElementsByTagName("totalvalue").item(0).getTextContent());
-                    //TODO: After qualities are their own object, use SetQuality to handle this.
+
                 }
             }
 
@@ -129,6 +130,44 @@ public class ReadXMLFile {
         }
      //   return data;
     }
+
+    public void getSprites(Document doc, Activity activity) {
+        MainActivity Main = (MainActivity)activity;
+        try {
+
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+            NodeList nList = doc.getElementsByTagName("spirits");
+            NodeList Attributes = nList.item(0).getChildNodes();
+            Sprite sprite = new Sprite();
+            for (int temp = 0; temp < Attributes.getLength(); temp++) {
+
+                Node node = Attributes.item(temp);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) node;
+                    String SpriteType=eElement.getElementsByTagName("name").item(0).getTextContent();
+                    SpriteType=SpriteType.substring(0, SpriteType.length()-7);
+                    sprite.setServicesOwed(Integer.valueOf(eElement.getElementsByTagName("services").item(0).getTextContent()));
+                    sprite.setRating(Integer.valueOf(eElement.getElementsByTagName("force").item(0).getTextContent()));
+                    sprite.setSpriteType(SpriteType);
+                    sprite.setRegistered(1);
+
+
+                    Main.data.SaveNewSpriteToDB(sprite);
+                    System.out.println("Sprite Type : " + SpriteType);
+                    System.out.println("Force : " + eElement.getElementsByTagName("force").item(0).getTextContent());
+                    System.out.println("Services Owed : " + eElement.getElementsByTagName("services").item(0).getTextContent());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //   return data;
+    }
+
 
     public void getQualities(Document doc, Activity activity) {
         MainActivity Main = (MainActivity)activity;

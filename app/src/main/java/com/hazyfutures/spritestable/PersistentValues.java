@@ -49,7 +49,7 @@ public class PersistentValues {
         }
     }
     public void SaveSpriteToDB(Sprite SpriteToSave){datasource.updateSprite(SpriteToSave);}
-
+    public void SaveNewSpriteToDB(Sprite SpriteToInsert){datasource.insertSprite(SpriteToInsert);}
     public void SaveSkillToDB(String SkillName){datasource.updateSkill(SkillName, getSkillValue(SkillName));}
     public void SaveSkillToDB(String name, Integer value){datasource.updateSkill(name, value);}
 
@@ -347,7 +347,6 @@ public Integer getSkillValue(String Name, String Specialization){
         setQualityValueWithBP(Name, "", -1, BuildPoints);
     }
     public void setQualityValueWithBP(String Name, String Extra, Integer LinkedSkill, Integer BuildPoints){
-        //TODO: Qualities don't have normal names.  Need to check for Special Names since this is loading from Chummer.
         Name = Name.toUpperCase().trim();
         for(Qualities quality: pvQualities){
             Boolean gQ = quality.doesQualityChummerExist(Name);
@@ -355,8 +354,7 @@ public Integer getSkillValue(String Name, String Specialization){
                 quality.setExtra(Extra);
                 quality.setLinkedSkill(LinkedSkill);
                 switch (quality.getQuality().toUpperCase()){
-                    //TODO: Standardize name with Chummer
-                    case "CODESLINGER":
+                    case "CODESLINGER"://TODO: Add action that is benefited to DB, and a picker for the Quality page
                         if(BuildPoints>0) {
                             quality.setValue(1);
                         }else{
@@ -421,14 +419,14 @@ public Integer getSkillValue(String Name, String Specialization){
                             quality.setValue(0);
                         }
                         break;
-                    case "CODEBLOCK":
+                    case "CODEBLOCK":  //TODO: Add action that is blocked to DB, and a picker for the Quality page
                         if(BuildPoints<0) {
                             quality.setValue(1);
                         }else{
                             quality.setValue(0);
                         }
                         break;
-                    case "LOSS OF CONFIDENCE":
+                    case "LOSS OF CONFIDENCE"://TODO: Add action that is penalized to DB, and a picker for the Quality page
                         if(BuildPoints<0) {
                             quality.setValue(1);
                         }else{
@@ -551,7 +549,6 @@ public Integer getSkillValue(String Name, String Specialization){
                         }
                         break;
                     default:
-                        //TODO:ALERT ABOUT AN ERROR, MISSING QUALITY
                         Log.i("Quality", "Didn't find: " + Name);
                 }
                 break;

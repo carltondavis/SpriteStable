@@ -681,6 +681,16 @@ private void UpdateRest(boolean enabled) {
         Rest.setEnabled(enabled);
         }
 
+    private void UpdateSleep() {
+        UpdateSleep(IsAlive());
+    }
+
+    private void UpdateSleep(boolean enabled) {
+        Button Sleep = (Button) getActivity().findViewById(R.id.buttonSleep);
+        Sleep.setClickable(enabled);
+        Sleep.setEnabled(enabled);
+    }
+
 //disable heal when stun, re-enable when no-stun and damage, disable when no damage
 private void UpdateHeal() {
         UpdateHeal((Main.data.getStatValue("Stun") == 0) && (Main.data.getStatValue("Physical") > 0) && IsAlive());
@@ -836,6 +846,7 @@ private void UpdateDamage(int stun, int physical) {
         UpdateCompile();
         UpdateUseService();
         UpdateRest();
+        UpdateSleep();
         UpdateHeal();
         EditText stuntext = (EditText) getActivity().findViewById(R.id.editStun);
         if(stuntext!=null){
