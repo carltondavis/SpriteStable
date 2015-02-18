@@ -20,6 +20,9 @@ public class Stats {
     public String getStatName() {
         return StatName;
     }
+    public String getStatNameShort() {
+        return StatName.toUpperCase().substring(0,3);
+    }
 
     public void setStatName(String StatName) {
         this.StatName = StatName;

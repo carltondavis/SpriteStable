@@ -126,24 +126,25 @@ public class CompileFragment extends Fragment {
         RatingBar stunDamage = (RatingBar) v.findViewById(R.id.stunTrack);
         stunDamage.setClickable(false);
         stunDamage.setEnabled(false);
-        stunDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getToughAsNailsStun());
-        stunDamage.setMax((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getToughAsNailsStun());
+    stunDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun"));
+
+        stunDamage.setMax((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun"));
         stunDamage.setRating(Main.data.getStatValue("Stun"));
 
         RatingBar physicalDamage = (RatingBar) v.findViewById(R.id.physicalTrack);
         physicalDamage.setClickable(false);
         physicalDamage.setEnabled(false);
-        physicalDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 +Main.data.getToughAsNailsPhysical());
-        physicalDamage.setMax((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getToughAsNailsPhysical());
+        physicalDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 +Main.data.getQualityValue("Tough as Nails Physical"));
+        physicalDamage.setMax((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical"));
 
         RatingBar overflowDamage = (RatingBar) v.findViewById(R.id.overflowTrack);
         overflowDamage.setClickable(false);
         overflowDamage.setEnabled(false);
-        overflowDamage.setNumStars(Main.data.getStatValue("Body")+Main.data.getWillToLive());
+        overflowDamage.setNumStars(Main.data.getStatValue("Body")+Main.data.getQualityValue("Will to Live"));
         overflowDamage.setMax(Main.data.getStatValue("Body"));
 
-        if (Main.data.getStatValue("Physical") > (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getToughAsNailsPhysical()) {
-            overflowDamage.setRating(Main.data.getStatValue("Physical") - (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getToughAsNailsPhysical());
+        if (Main.data.getStatValue("Physical") > (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical")) {
+            overflowDamage.setRating(Main.data.getStatValue("Physical") - (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical"));
         }
         physicalDamage.setRating(Main.data.getStatValue("Physical") - overflowDamage.getRating());//Don't count overflow when drawing boxes of damage
 
@@ -194,11 +195,11 @@ public void onClick(View v) {
 
         //Healing Roll
         Boolean Sleepless=false;
-        if(Main.data.getInsomnia()>0){
+        if(Main.data.getQualityValue("Insomnia")>0){
         Sleepless=(4<=dice.rollDice(Main.data.getStatValue("Willpower")+Main.data.getStatValue("Intuition"),false));
         }
-        if(!Sleepless||Main.data.getInsomnia()==1) {
-        Main.data.setStatValue("Stun",                     Main.data.getStatValue("Stun") - dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower") + 2 * (Main.data.getSlowHealer() + Main.data.getQuickHealer()), false));
+        if(!Sleepless||Main.data.getQualityValue("Insomnia")==1) {
+        Main.data.setStatValue("Stun",                     Main.data.getStatValue("Stun") - dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower") + 2 * (Main.data.getQualityValue("Quick Healer") *Main.data.getQualityValue("Slow Healer")), false));
         }
         if (Main.data.getStatValue("Stun") < 0) {
         Main.data.setStatValue("Stun" ,0);
@@ -211,7 +212,7 @@ public void onClick(View v) {
         //Add hours
         //Double time for Glitches
         int RestTime=1;
-        if(Sleepless&&Main.data.getInsomnia()==1){
+        if(Sleepless&&Main.data.getQualityValue("Insomnia")==1){
         RestTime=RestTime*2;
         }
 
@@ -249,14 +250,14 @@ public void onClick(View v) {
 @Override
 public void onClick(View v) {
         Boolean Sleepless=false;
-        if(Main.data.getInsomnia()>0){
+        if(Main.data.getQualityValue("Insomnia")>0){
         Sleepless=(4<=dice.rollDice(Main.data.getStatValue("Willpower")+Main.data.getStatValue("Intuition"),false));
         }
         //Healing Roll 8 times
         for (int i = 1; i <= 8; i++) {
         if (Main.data.getStatValue("Stun") > 0) {
-        if(!Sleepless||Main.data.getInsomnia()==1){
-        Main.data.addStatValue("Stun", -1*(dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower")+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer()), false)));
+        if(!Sleepless||Main.data.getQualityValue("Insomnia")==1){
+        Main.data.addStatValue("Stun", -1*(dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower")+2*(Main.data.getQualityValue("Quick Healer")-Main.data.getQualityValue("Slow Healer")), false)));
         if(Sleepless){i++;}//Sleeping takes twice as long
         }
         if (Main.data.getStatValue("Stun") < 0) {
@@ -278,7 +279,7 @@ public void onClick(View v) {
         //If it's been at least 24 hours, refresh karma.
         if (Main.data.getStatValue("HoursSinceKarmaRefresh") >= 24 && Main.data.getStatValue("KarmaUsed") > 0) {
         Main.data.setStatValue("HoursSinceKarmaRefresh", 0);
-        if(!Sleepless||Main.data.getInsomnia()==1) {
+        if(!Sleepless||Main.data.getQualityValue("Insomnia")==1) {
         Main.data.addStatValue("KarmaUsed",-1);
         UpdateStatKarmaUsed();
         checkDrainKarma.setEnabled(true);
@@ -300,7 +301,7 @@ public void onClick(View v) {
 @Override
 public void onClick(View v) {
         Boolean Sleepless = false;
-        if (Main.data.getInsomnia() > 0) {
+        if (Main.data.getQualityValue("Insomnia") > 0) {
         Sleepless = (4 <= dice.rollDice(Main.data.getStatValue("Willpower") + Main.data.getStatValue("Intuition"), false));
         }
 
@@ -309,8 +310,8 @@ public void onClick(View v) {
 
         for (int i = 1; i <= 24; i++) {
         if (Main.data.getStatValue("Stun") > 0) {
-        if (!Sleepless || Main.data.getInsomnia() == 1) {
-        Main.data.addStatValue("Stun", -1*( dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower") + 2 * (Main.data.getSlowHealer() + Main.data.getQuickHealer()), false)));
+        if (!Sleepless || Main.data.getQualityValue("Insomnia") == 1) {
+        Main.data.addStatValue("Stun", -1*( dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower") + 2 * (Main.data.getQualityValue("Slow Healer") + Main.data.getQualityValue("Quick Healer")), false)));
         if (Sleepless) {
         Main.data.addStatValue("HoursThisSession", 24);
         }//Takes twice as long to heal
@@ -331,13 +332,13 @@ public void onClick(View v) {
         }
         } else {
         if (Main.data.getStatValue("Physical") > 0) {
-        if (!Sleepless || Main.data.getInsomnia() == 1) {
-        Main.data.addStatValue("Physical",-1* dice.rollDice(Main.data.getStatValue("Body") * 2 + 2 * (Main.data.getSlowHealer() + Main.data.getQuickHealer()), false));
+        if (!Sleepless || Main.data.getQualityValue("Insomnia") == 1) {
+        Main.data.addStatValue("Physical",-1* dice.rollDice(Main.data.getStatValue("Body") * 2 + 2 * (Main.data.getQualityValue("Quick Healer") - Main.data.getQualityValue("Slow Healer")), false));
         if (Sleepless) {
         Main.data.addStatValue("HoursThisSession", 24);//Takes twice as long to heal
         }
         if (Main.data.getStatValue("Physical") <= 0) {
-        Main.data.setStatValue("Physical", 0 + Main.data.getPieIesuDomine());
+        Main.data.setStatValue("Physical", 0 + Main.data.getQualityValue("Pie Iesu Domine"));
         }
         if (dice.isCriticalGlitch) {
         Main.data.addStatValue("Physical", dice.rollDie(3));
@@ -355,7 +356,7 @@ public void onClick(View v) {
         //If it's been at least 24 hours, refresh karma.
         if (Main.data.getStatValue("HoursSinceKarmaRefresh") >= 24 && Main.data.getStatValue("KarmaUsed") > 0) {
         Main.data.setStatValue("HoursSinceKarmaRefresh", 0);
-        if (!Sleepless || Main.data.getInsomnia() == 1) {
+        if (!Sleepless || Main.data.getQualityValue("Insomnia") == 1) {
         Main.data.addStatValue("KarmaUsed", -1);
         UpdateStatKarmaUsed();
         checkDrainKarma.setEnabled(true);
@@ -364,7 +365,7 @@ public void onClick(View v) {
         }
         if (Main.data.getStatValue("KarmaUsed") > 0) {
         Main.data.setStatValue("HoursSinceKarmaRefresh", 0);
-        if (!Sleepless || (Main.data.getInsomnia() == 1)) {
+        if (!Sleepless || (Main.data.getQualityValue("Insomnia") == 1)) {
                 Main.data.addStatValue("KarmaUsed", -1);
         UpdateStatKarmaUsed();
         checkDrainKarma.setEnabled(true);
@@ -445,9 +446,9 @@ public void onClick(View v) {
         int SpriteRoll;
         Main.data.setStatValue("ConsecutiveRest", 0);
         //Damage penalties
-        int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getHighPainTolerance()) / (3-Main.data.getLowPainTolerance())));
+        int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance"))));
         if(temppenalties<0){temppenalties=0;}
-        DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getHighPainTolerance()) / (3-Main.data.getLowPainTolerance()));
+        DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance")));
         if(DamagePenalties<0){DamagePenalties=0;}
         DamagePenalties+=temppenalties;
 
@@ -479,7 +480,7 @@ public void onClick(View v) {
         double floorsleepy = Math.floor(((float) sleepycounter - 24) / 3);
         if (actualsleepy == floorsleepy) {
         sleepydamage = (int) Math.floor((sleepycounter - 24) / 3) + 1;
-        sleepyresist = dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower")+2*(Main.data.getSlowHealer()+Main.data.getQuickHealer())+Main.data.getToughness(), false);
+        sleepyresist = dice.rollDice(Main.data.getStatValue("Body") + Main.data.getStatValue("Willpower")+2*(Main.data.getQualityValue("Quick Healer")-Main.data.getQualityValue("Slow Healer"))+Main.data.getQualityValue("Toughness"), false);
         Toast.makeText(v.getContext(), "Resisting " + sleepydamage + "S from fatigue.", Toast.LENGTH_SHORT).show();
         if (sleepydamage > sleepyresist) {
         Main.data.addStatValue("Stun", (sleepydamage - sleepyresist));
@@ -530,7 +531,7 @@ public void onClick(View v) {
         if (SpriteRoll < 1) {
         SpriteRoll = 1;
         }//Minimum drain, this number is doubled in the next step.
-        if(Main.data.getSensitiveSystem()==1){
+        if(Main.data.getQualityValue("Sensitive System")==1){
         if(dice.rollDice(Main.data.getStatValue("Willpower"),false)<2){SpriteRoll++;}
         }
         if(Main.data.DoIHaveBadLuck()&&checkDrainKarma.isChecked()){
@@ -692,11 +693,11 @@ private void UpdateHeal(boolean enabled) {
         }
 
 private boolean IsConscious() {
-        return (Main.data.getStatValue("Stun") < (Main.data.getToughAsNailsStun()+ 9 + Math.floor(Main.data.getStatValue("Willpower") / 2))) && (Main.data.getStatValue("Physical") < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
+        return (Main.data.getStatValue("Stun") < (Main.data.getQualityValue("Tough as Nails Stun")+ 9 + Math.floor(Main.data.getStatValue("Willpower") / 2))) && (Main.data.getStatValue("Physical") < (Main.data.getQualityValue("Tough as Nails Physical") + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
         }
 
 private boolean IsAlive() {
-        return (Main.data.getStatValue("Physical") < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
+        return (Main.data.getStatValue("Physical") < (Main.data.getQualityValue("Tough as Nails Physical") + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
         }
 
 //UpdateUseService Button  Enabled
@@ -797,8 +798,8 @@ private void UpdateCheckBoxes() {
         }
 
 private void UpdateDamage(int stun, int physical) {
-        int MaxStun = (int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getToughAsNailsStun();
-        int MaxPhysical = (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 + Main.data.getToughAsNailsPhysical();
+        int MaxStun = (int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun");
+        int MaxPhysical = (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Physical");
         int _overflow = 0;
         RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.stunTrack);
         stunDamage.setClickable(false);

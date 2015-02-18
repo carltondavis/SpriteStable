@@ -322,6 +322,9 @@ public class StatsDataSource {
         cursor.close();
         return sprites;
     }
+    public void ResetDB(){
+        dbHelper.ResetDB();
+    }
 
 }
 

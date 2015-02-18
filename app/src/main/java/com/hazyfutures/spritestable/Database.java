@@ -72,7 +72,7 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
 
     public Database(Context context) {
@@ -209,37 +209,37 @@ public class Database extends SQLiteOpenHelper {
         AddStat(database, "ConsecutiveRest",0);
         AddStat(database, "HoursSinceKarmaRefresh",0);
 
-        AddQuality(database,  "CodeSlinger");
-        AddQuality(database,  "FocusedConcentration");
+        AddQuality(database,  "Codeslinger");
+        AddQuality(database,  "Focused Concentration");
         AddQuality(database,  "Insomnia");
-        AddQuality(database,  "HighPainTolerance");
-        AddQuality(database,  "HomeGround");
-        AddQuality(database,  "NaturalHardening");
-        AddQuality(database,  "QuickHealer");
+        AddQuality(database,  "High Pain Tolerance");
+        AddQuality(database,  "Home Ground");
+        AddQuality(database,  "Natural Hardening");
+        AddQuality(database,  "Quick Healer");
         AddQuality(database,  "Toughness");
-        AddQuality(database,  "WillToLive");
-        AddQuality(database,  "BadLuck");
-        AddQuality(database,  "CodeBlock");
-        AddQuality(database,  "LossOfConfidence");
-        AddQuality(database,  "LowPainTolerance");
-        AddQuality(database,  "SensitiveSystem");
-        AddQuality(database,  "SimsenseVertigo");
-        AddQuality(database,  "SlowHealer");
+        AddQuality(database,  "Will to Live");
+        AddQuality(database,  "Bad Luck");
+        AddQuality(database,  "Codeblock");
+        AddQuality(database,  "Loss of Confidence");
+        AddQuality(database,  "Low Pain Tolerance");
+        AddQuality(database,  "Sensitive System");
+        AddQuality(database,  "Simsense Vertigo");
+        AddQuality(database,  "Slow Healer");
         AddQuality(database,  "Perceptive");
-        AddQuality(database,  "SpikeResistance");
-        AddQuality(database,   "ToughAsNailsPhysical");
-        AddQuality(database,  "ToughAsNailsStun");
+        AddQuality(database,  "Spike Resistance");
+        AddQuality(database,   "Tough as Nails Physical");
+        AddQuality(database,  "Tough as Nails Stun");
         AddQuality(database,   "Asthma");
         AddQuality(database,  "AsthmaFatigueDamage");
         AddQuality(database,  "BiPolar");
         AddQuality(database,   "BiPolarCurrent");
         AddQuality(database,  "Blind");
-        AddQuality(database,  "ComputerIlliterate");
+        AddQuality(database,  "Computer Illiterate");
         AddQuality(database,   "Deaf");
-        AddQuality(database,   "DimmerBulb");
+        AddQuality(database,   "Dimmer Bulb");
         AddQuality(database,   "Illiterate");
         AddQuality(database,   "Oblivious");
-        AddQuality(database,   "PieIesuDomine");
+        AddQuality(database,   "Pie Iesu Domine");
         spritevalues.put(Database.COLUMN_RATING, 1);
         spritevalues.put(Database.COLUMN_TYPE, 1);
         spritevalues.put(Database.COLUMN_SERVICES, 0);
@@ -263,6 +263,15 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPECIALIZATIONS);
         onCreate(db);
     }
+    public void ResetDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUALITIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPRITES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SKILLS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPECIALIZATIONS);
+        onCreate(db);
+    };
 
 }
 

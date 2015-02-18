@@ -53,8 +53,12 @@ public class MainActivity extends FragmentActivity {
                 Log.v("tag" , "File intent detected: " + action + " : " + intent.getDataString() + " : " + intent.getType() + " : " + name);
 
                 ReadXMLFile readXMLFile = new ReadXMLFile();
-                readXMLFile.loadFile(uri.getPath());
+                data.ResetDB(this);
+                data.RestoreFromDB(this);
+                readXMLFile.loadFile(uri.getPath(), this);
                 data.SaveAllToDB();
+                data.RestoreFromDB(this);
+
                 /*
                 InputStream input = null;
                 try {

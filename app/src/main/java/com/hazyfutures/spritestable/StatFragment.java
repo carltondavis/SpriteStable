@@ -166,8 +166,8 @@ public class StatFragment extends Fragment  {
     private void UpdateDamage() {
         RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.stunTrack);
         if(stunDamage!=null) {
-            int MaxStun = (int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getToughAsNailsStun();
-            int MaxPhysical = (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 + Main.data.getToughAsNailsPhysical();
+            int MaxStun = (int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun");
+            int MaxPhysical = (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Physical");
 
             int _overflow = 0;
 
@@ -192,7 +192,7 @@ public class StatFragment extends Fragment  {
                 RatingBar overflowDamage = (RatingBar) getActivity().findViewById(R.id.overflowTrack);
                 overflowDamage.setClickable(false);
                 overflowDamage.setEnabled(false);
-                overflowDamage.setNumStars(Main.data.getStatValue("Body")+Main.data.getToughAsNailsPhysical());
+                overflowDamage.setNumStars(Main.data.getStatValue("Body")+Main.data.getQualityValue("Tough as Nails Physical"));
                 overflowDamage.setMax(Main.data.getStatValue("Body"));
 
                 if (Main.data.getStatValue("Physical") > MaxPhysical) {
@@ -394,11 +394,11 @@ public class StatFragment extends Fragment  {
     }
 
     private boolean IsConscious() {
-        return (Main.data.getStatValue("Stun") < (Main.data.getToughAsNailsStun()+ 9 + Math.floor(Main.data.getStatValue("Willpower") / 2))) && (Main.data.getStatValue("Physical") < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
+        return (Main.data.getStatValue("Stun") < (Main.data.getQualityValue("Tough as Nails Stun")+ 9 + Math.floor(Main.data.getStatValue("Willpower") / 2))) && (Main.data.getStatValue("Physical") < (Main.data.getQualityValue("Tough as Nails Physical") + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
     }
 
     private boolean IsAlive() {
-        return (Main.data.getStatValue("Physical") < (Main.data.getToughAsNailsPhysical() + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
+        return (Main.data.getStatValue("Physical") < (Main.data.getQualityValue("Tough as Nails Physical") + 9 + Math.floor(Main.data.getStatValue("Body") / 2)));
     }
 
     //UpdateUseService Button  Enabled

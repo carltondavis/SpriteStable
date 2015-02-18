@@ -4,6 +4,7 @@ package com.hazyfutures.spritestable;
  * Created by cdavis on 2/15/2015.
  */
 
+import android.app.Activity;
 import android.util.Log;
 
 import org.w3c.dom.Document;
@@ -21,10 +22,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class ReadXMLFile {
 
-    public static PersistentValues loadFile(String FilePath){
+    MainActivity Main;
+    public void loadFile(String FilePath, Activity activity){
+        MainActivity Main = (MainActivity)activity;
         File fXmlFile = new File(FilePath);
-        PersistentValues data = new PersistentValues();
-
+        //PersistentValues data = new PersistentValues();
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
@@ -32,18 +34,18 @@ public class ReadXMLFile {
             dBuilder = dbFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
-            return data;
+            return;// data;
         }
         Document doc = null;
         try {
             doc = dBuilder.parse(fXmlFile);
             doc.getDocumentElement().normalize();
+//TODO Re-set existing database
+            getAttributes(doc, activity);
+            getQualities(doc, activity);
+            getSkills(doc, activity);
 
-            data = getAttributes(doc, data);
-            data = getQualities(doc, data);
-            data = getSkills(doc, data);
-
-            return data;
+           // return data;
         } catch (SAXException e) {
             Log.e("SAXException:", FilePath);
             e.printStackTrace();
@@ -52,10 +54,10 @@ public class ReadXMLFile {
             e.printStackTrace();
         }
 
-        return data;
+        return;// data;
     }
-    public static PersistentValues getAttributes(Document doc, PersistentValues data) {
-
+    public void getAttributes(Document doc, Activity activity) {
+        MainActivity Main = (MainActivity)activity;
     try {
        System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
@@ -69,7 +71,7 @@ public class ReadXMLFile {
 
                     Element eElement = (Element) node;
 
-                    data.setStatValue(eElement.getElementsByTagName("name").item(0).getTextContent(), Integer.valueOf(eElement.getElementsByTagName("totalvalue").item(0).getTextContent()));
+                    Main.data.setStatValueShort(eElement.getElementsByTagName("name").item(0).getTextContent(), Integer.valueOf(eElement.getElementsByTagName("totalvalue").item(0).getTextContent()));
                     System.out.println("Attribute : " + eElement.getElementsByTagName("name").item(0).getTextContent());
                     System.out.println("Value : " + eElement.getElementsByTagName("totalvalue").item(0).getTextContent());
                     //TODO: After qualities are their own object, use SetQuality to handle this.
@@ -79,11 +81,11 @@ public class ReadXMLFile {
     } catch (Exception e) {
         e.printStackTrace();
     }
-        return data;
+    //  return data;
 }
 
-    public static PersistentValues getSkills(Document doc, PersistentValues data) {
-
+    public void getSkills(Document doc, Activity activity) {
+        MainActivity Main = (MainActivity)activity;
         try {
 
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
@@ -97,21 +99,39 @@ public class ReadXMLFile {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eElement = (Element) node;
-                    data.setSkillValue(eElement.getElementsByTagName("name").item(0).getTextContent(), Integer.valueOf(eElement.getElementsByTagName("rating").item(0).getTextContent()));
-                    System.out.println("Skill : " + eElement.getElementsByTagName("name").item(0).getTextContent());
+                    String SkillName=eElement.getElementsByTagName("name").item(0).getTextContent();
+                    Main.data.setSkillValue(SkillName, Integer.valueOf(eElement.getElementsByTagName("rating").item(0).getTextContent()));
+                    System.out.println("Skill : " + SkillName);
                     System.out.println("Rating : " + eElement.getElementsByTagName("rating").item(0).getTextContent());
-                    data.setSkillValue(eElement.getElementsByTagName("name").item(0).getTextContent(),Integer.valueOf(eElement.getElementsByTagName("rating").item(0).getTextContent()));
+
+                    if (node.hasChildNodes()) {
+                       NodeList sList = ((Element) node).getElementsByTagName("skillspecializations");
+
+                        NodeList Specializations =  sList.item(0).getChildNodes();
+                        for (int i = 0; i < Specializations.getLength(); i++) {
+                            Node spec = Specializations.item(i);
+                            if (spec.getNodeType() == Node.ELEMENT_NODE) {
+                                Element sElement = (Element) spec;
+                                System.out.println("Specialization : " +  sElement.getElementsByTagName("name").item(0).getTextContent());
+                                Main.data.setSpecialization(SkillName, sElement.getElementsByTagName("name").item(0).getTextContent(), true);
+                            }
+                        }
+                    }
+
+
+
+
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return data;
+     //   return data;
     }
 
-    public static PersistentValues getQualities(Document doc, PersistentValues data) {
-
+    public void getQualities(Document doc, Activity activity) {
+        MainActivity Main = (MainActivity)activity;
         try {
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
@@ -124,16 +144,16 @@ public class ReadXMLFile {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eElement = (Element) node;
-                    data.setQualityValue(eElement.getElementsByTagName("name").item(0).getTextContent(),eElement.getElementsByTagName("extra").item(0).getTextContent(), Integer.valueOf(eElement.getElementsByTagName("bp").item(0).getTextContent()));
                     System.out.println("Quality : " + eElement.getElementsByTagName("name").item(0).getTextContent());
                     System.out.println("Specifics : " + eElement.getElementsByTagName("extra").item(0).getTextContent());
                     System.out.println("Build Points : " + eElement.getElementsByTagName("bp").item(0).getTextContent());
-                    //TODO: After qualities are their own object, use SetQuality to handle this.
+                    Main.data.setQualityValueWithBP(eElement.getElementsByTagName("name").item(0).getTextContent(), eElement.getElementsByTagName("extra").item(0).getTextContent(), Integer.valueOf(eElement.getElementsByTagName("bp").item(0).getTextContent()));
+
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return data;
+        //return data;
     }
 }
