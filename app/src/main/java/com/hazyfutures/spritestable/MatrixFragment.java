@@ -15,8 +15,6 @@ public class MatrixFragment extends Fragment {
 //Todo: MATRIX FRAGMENT
 
     //TODO:Design UI: Pick actor first or pick Action first?  Then display options below?  Checkboxes to add assistors?
-    //TODO: Create a Matrix Actions object
-    //TODO: Add all matrix actions to the db
     // TODO: Spinner to modify dice used (+/- 20 dice?)
     //TODO: Checkbox for pre-edge
     //TODO: Display for Total hits, Total dice rolled, Glitch status, tap to display all dice rolled as Toast.

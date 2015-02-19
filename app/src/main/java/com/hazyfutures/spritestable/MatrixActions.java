@@ -20,19 +20,19 @@ public class MatrixActions {
         ActionName = actionName;
     }
 
-    public Integer getLinkedSkill() {
+    public String getLinkedSkill() {
         return LinkedSkill;
     }
 
-    public void setLinkedSkill(Integer linkedSkill) {
+    public void setLinkedSkill(String linkedSkill) {
         LinkedSkill = linkedSkill;
     }
 
-    public Integer getLinkedAttribute() {
+    public String getLinkedAttribute() {
         return LinkedAttribute;
     }
 
-    public void setLinkedAttribute(Integer linkedAttribute) {
+    public void setLinkedAttribute(String linkedAttribute) {
         LinkedAttribute = linkedAttribute;
     }
 
@@ -44,11 +44,11 @@ public class MatrixActions {
         MarksRequired = marksRequired;
     }
 
-    public Integer getOpposedAttribute() {
+    public String getOpposedAttribute() {
         return OpposedAttribute;
     }
 
-    public void setOpposedAttribute(Integer opposedAttribute) {
+    public void setOpposedAttribute(String opposedAttribute) {
         OpposedAttribute = opposedAttribute;
     }
 
@@ -60,31 +60,34 @@ public class MatrixActions {
         LimitType = limitType;
     }
 
-    public Boolean getExists() {
-        return Exists;
-    }
 
-    public void setExists(Boolean exists) {
-        Exists = exists;
-    }
-
-    public Integer getOpposedSkill() {
+    public String getOpposedSkill() {
         return OpposedSkill;
     }
 
-    public void setOpposedSkill(Integer opposedSkill) {
+    public void setOpposedSkill(String opposedSkill) {
         OpposedSkill = opposedSkill;
     }
 
     private long id;
     private String ActionName = "";
-    private Integer LinkedSkill = -1;
-    private Integer LinkedAttribute = -1;
+    private String LinkedSkill = "";
+    private String LinkedAttribute = "";
     private Integer MarksRequired = -1;
-    private Integer OpposedAttribute = -1;
-    private Integer OpposedSkill = -1;
+    private String OpposedAttribute = "";
+    private String  OpposedSkill = "";
+
+    public Integer getActionType() {
+        return ActionType;
+    }
+
+    public void setActionType(Integer actionType) {
+        ActionType = actionType;
+    }
+
+    private Integer  ActionType = 0;
     private Integer LimitType = -1;
-    private Boolean Exists = false;
+
 
     public static final Integer ATTACK = 1;
     public static final Integer SLEAZE= 2;

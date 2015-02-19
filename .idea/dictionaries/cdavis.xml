@@ -1,6 +1,8 @@
 <component name="ProjectDictionaryState">
   <dictionary name="cdavis">
     <words>
+      <w>actionname</w>
+      <w>actiontype</w>
       <w>actualsleepy</w>
       <w>argv</w>
       <w>chummer</w>
@@ -11,9 +13,15 @@
       <w>floorsleepy</w>
       <w>hskr</w>
       <w>iesu</w>
+      <w>limittype</w>
+      <w>linkedattribute</w>
       <w>linkedskill</w>
+      <w>marksrequired</w>
+      <w>matrixactions</w>
       <w>notsel</w>
       <w>notselected</w>
+      <w>opposedattribute</w>
+      <w>opposedskill</w>
       <w>personas</w>
       <w>physicaltext</w>
       <w>qualityname</w>

@@ -71,8 +71,33 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null, " + COLUMN_CONDITION
             + " integer not null"
             + ");";
+
+
+    public static final String TABLE_MATRIXACTIONS = "MatrixActions";
+    public static final String COLUMN_ACTIONNAME = "ActionName";
+    public static final String COLUMN_LINKEDATTRIBUTE = "LinkedAttribute";
+    public static final String COLUMN_MARKSREQUIRED = "MarksRequired";
+    public static final String COLUMN_OPPOSEDATTRIBUTE = "OpposedAttribute";
+    public static final String COLUMN_OPPOSEDSKILL = "OpposedSkill";
+    public static final String COLUMN_LIMITTYPE = "LimitType";
+    public static final String COLUMN_ACTIONTYPE = "ActionType";
+    // Database creation sql statement
+    private static final String MATRIXACTIONS_DATABASE_CREATE = "create table "
+            + TABLE_MATRIXACTIONS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_ACTIONNAME
+            + " string not null, " + COLUMN_LINKEDSKILL
+            + " string not null, " + COLUMN_LINKEDATTRIBUTE
+            + " integer not null, " + COLUMN_MARKSREQUIRED
+            + " string not null, " + COLUMN_OPPOSEDATTRIBUTE
+            + " string not null, " + COLUMN_OPPOSEDSKILL
+            + " string not null, " + COLUMN_ACTIONTYPE
+            + " integer not null, " + COLUMN_LIMITTYPE
+            + " integer not null"
+            + ");";
+
+
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
 
     public Database(Context context) {
@@ -121,6 +146,18 @@ public class Database extends SQLiteOpenHelper {
         database.insert(Database.TABLE_SPECIALIZATIONS, null,
                 values);
     }
+    public void AddMatrixActions(SQLiteDatabase database, String ActionName,String LinkedSkill,String LinkedAttribute,Integer MarksRequired,String OpposedAttribute,String OpposedSkill,Integer LimitType,Integer ActionType){
+        ContentValues values = new ContentValues();
+        values.put(Database.COLUMN_ACTIONNAME, ActionName);
+        values.put(Database.COLUMN_LINKEDSKILL, LinkedSkill);
+        values.put(Database.COLUMN_LINKEDATTRIBUTE, LinkedAttribute);
+        values.put(Database.COLUMN_MARKSREQUIRED, MarksRequired);
+        values.put(Database.COLUMN_OPPOSEDATTRIBUTE, OpposedAttribute);
+        values.put(Database.COLUMN_OPPOSEDSKILL, OpposedSkill);
+        values.put(Database.COLUMN_LIMITTYPE, LimitType);
+        values.put(Database.COLUMN_ACTIONTYPE, ActionType);
+        database.insert(Database.TABLE_MATRIXACTIONS,null, values);
+    }
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(STAT_DATABASE_CREATE);
@@ -128,8 +165,42 @@ public class Database extends SQLiteOpenHelper {
         database.execSQL(SKILL_DATABASE_CREATE);
         database.execSQL(SPECIALIZATION_DATABASE_CREATE);
         database.execSQL(SPRITE_DATABASE_CREATE);
+        database.execSQL(MATRIXACTIONS_DATABASE_CREATE);
         ContentValues values = new ContentValues();
         ContentValues spritevalues = new ContentValues();
+
+        AddMatrixActions(database, "BRUTE FORCE", "Cybercombat", "Logic", 0, "Willpower", "Firewall", 1, 2);
+        AddMatrixActions(database, "CHANGE ICON", "", "", 4, "", "", 3, 1);
+        AddMatrixActions(database, "CHECK OVERWATCH SCORE", "Electronic Warfare", "Logic", 0, "6", "", 2, 1);
+        AddMatrixActions(database, "CONTROL DEVICE", "Electronic Warfare", "Intuition", 0, "Intuition", "Firewall", 2, 1);
+        AddMatrixActions(database, "CRACK FILE", "Hacking", "Logic", 1, "Protection Rating", "Protection Rating", 1, 2);
+        AddMatrixActions(database, "CRASH PROGRAM", "Cybercombat", "Logic", 1, "Intuition", "Firewall", 1, 2);
+        AddMatrixActions(database, "DATA SPIKE", "Cybercombat", "Logic", 0, "Intuition", "Firewall", 1, 2);
+        AddMatrixActions(database, "DISARM DATA BOMB", "Software", "Intuition", 0, "Data Bomb Rating", "Data Bomb Rating", 4, 2);
+        AddMatrixActions(database, "EDIT FILE", "Computer", "Logic", 1, "Intuition", "Firewall", 3, 2);
+        AddMatrixActions(database, "ENTER/EXIT HOST", "", "", 1, "", "", 0, 2);
+        AddMatrixActions(database, "ERASE MARK", "Computer", "Logic", 3, "Willpower", "Firewall", 1, 2);
+        AddMatrixActions(database, "ERASE MATRIX SIGNATURE", "Computer", "Resonance", 0, "Signature Rating", "Signature Rating", 1, 2);
+        AddMatrixActions(database, "FORMAT DEVICE", "Computer", "Logic", 3, "Willpower", "Firewall", 2, 2);
+        AddMatrixActions(database, "FULL MATRIX DEFENSE", "", "", 4, "", "", 4,0);
+        AddMatrixActions(database, "GRID HOP", "", "", 0, "", "", 3, 2);
+        AddMatrixActions(database, "HACK ON THE FLY", "Hacking", "Logic", 0, "Intuition", "Firewall", 2, 2);
+        AddMatrixActions(database, "HIDE", "Electronic Warfare", "Intuition", 0, "Intuition", "Data Processing", 2, 2);
+        AddMatrixActions(database, "INVITE MARK", "", "", 4, "", "", 2, 1);
+        AddMatrixActions(database, "JACK OUT", "Hardware", "Willpower", 4, "Logic", "Attack", 4, 1);
+        AddMatrixActions(database, "JAM SIGNALS", "Electronic Warfare", "Logic", 4, "", "", 1, 2);
+        AddMatrixActions(database, "JUMP INTO RIGGED DEVICE", "Electronic Warfare", "Logic", 3, "Willpower", "Firewall", 3, 2);
+        AddMatrixActions(database, "MATRIX PERCEPTION", "Computer", "Intuition", 0, "Logic", "Sleaze", 3, 2);
+        AddMatrixActions(database, "MATRIX SEARCH", "Computer", "Intuition", 0, "", "", 3, 3);
+        AddMatrixActions(database, "REBOOT DEVICE", "Computer", "Logic", 3, "Willpower", "Firewall", 3, 2);
+        AddMatrixActions(database, "SEND MESSAGE", "", "", 1, "", "", 3, 1);
+        AddMatrixActions(database, "SET DATA BOMB", "Software", "Logic", 1, "Device Rating", "Device Rating", 2, 2);
+        AddMatrixActions(database, "SNOOP", "Electronic Warfare", "Intuition", 1, "Logic", "Firewall", 2, 2);
+        AddMatrixActions(database, "SPOOF COMMAND", "Hacking", "Intuition", 1, "Logic", "Firewall", 2, 2);
+        AddMatrixActions(database, "SWITCH INTERFACE MODE", "", "", 4, "", "", 3, 1);
+        AddMatrixActions(database, "TRACE ICON", "Computer", "Intuition", 2, "Willpower", "Sleaze", 3, 2);
+
+
         long LinkedSkill=0;
         LinkedSkill = AddSkill(database, "Cybercombat");
         AddSpecialization(database, LinkedSkill, "Devices");
