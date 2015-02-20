@@ -1,108 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:scrollbars="none"
-    android:layout_weight="1"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.hazyfutures.spritestable.MatrixFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            tools:context="com.hazyfutures.spritestable.MatrixFragment"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-    <TableLayout
-        android:id="@+id/tableMatrix"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:isScrollContainer="true"
-        android:shrinkColumns="1"
-        >
+        <!-- Header aligned to top -->
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#ff00fff8"
+            android:gravity="center"
+            >
 
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/rowHeader0">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Total Hits: "
+                android:id="@+id/textHits"
+                android:layout_alignParentTop="true"
+                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="0"
+                android:id="@+id/textHitsResult"
+                android:layout_toRightOf="@id/textHits"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="/"
+                android:id="@+id/textDiceRolled"
+                android:layout_toRightOf="@id/textHitsResult"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="0"
+                android:id="@+id/textDiceNumber"
+                android:layout_toRightOf="@id/textDiceRolled"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text=" NO Glitch"
+                android:id="@+id/textGlitchStatus"
+                android:layout_gravity="right"
+                android:layout_toRightOf="@id/textDiceNumber"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Die Pool Modifier:"
                 android:id="@+id/textViewDiePool"
-                android:layout_column="1"
-                android:layout_span="4" />
+
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/npDieModifier"
+                android:layout_toLeftOf="@+id/textHitsResult"
+                android:layout_toStartOf="@+id/textHitsResult"
+                android:layout_alignBottom="@+id/npDieModifier" />
 
             <NumberPicker
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/npDieModifier"
-                android:layout_column="2" />
+                android:layout_toRightOf="@+id/textViewDiePool"
+                android:layout_below="@+id/textHits"
+                />
 
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/rowHeader1">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Limit Modifier:"
                 android:id="@+id/textViewLimitMod"
-                android:layout_column="1"
-                android:layout_span="4" />
+                android:layout_alignTop="@+id/npDieModifier"
+                android:layout_toRightOf="@+id/npDieModifier"
+                android:layout_alignBottom="@+id/npDieModifier" />
 
             <NumberPicker
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/npLimitMod"
-                android:layout_column="2"
-                android:baselineAligned="false" />
-        </TableRow>
+                android:baselineAligned="false"
+                android:layout_alignTop="@+id/textViewLimitMod"
+                android:layout_toRightOf="@+id/textViewLimitMod"
+                android:layout_toEndOf="@+id/textViewLimitMod" />
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/rowHeader2">
+        </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Total Hits: "
-                android:id="@+id/textHits"
-                android:layout_column="1" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="0"
-                android:id="@+id/textHitsResult"
-                android:layout_column="2"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="/"
-                android:id="@+id/textDiceRolled"
-                android:layout_column="3"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="0"
-                android:id="@+id/textDiceNumber"
-                android:layout_column="4"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text=" NO Glitch"
-                android:id="@+id/textGlitchStatus"
-                android:layout_column="5"
-                android:layout_gravity="right" />
-        </TableRow>
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="none"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_below="@+id/header"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentBottom="true">
+
+    <TableLayout
+        android:id="@+id/tableMatrix"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
+        android:shrinkColumns="1"
+        >
+
 
     </TableLayout>
 </ScrollView>
+
+
+</RelativeLayout>
+

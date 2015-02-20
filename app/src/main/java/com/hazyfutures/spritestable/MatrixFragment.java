@@ -37,13 +37,23 @@ public class MatrixFragment extends Fragment {
 
 
 
-    //TODO Multicheckbox for Sprites that can assist
-    //TODO: Button to roll assistance (grey itself and checkbox out after doing it, decrement services, add dice and limit to roll)
-    //TODO: Button to roll action
-    //TODO: Remember karma use when character is assisting
+
+    //Todo: Add Playing Spells buttons
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_matrix, container, false);
+        Main = (MainActivity)getActivity();
+        /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
+        tv.setText(getArguments().getString("msg"));
+*/
+        //TODO: Make header not scroll
+        //TODO Multicheckbox for Sprites that can assist
+        //TODO: Button to roll assistance (grey itself and checkbox out after doing it, decrement services, add dice and limit to roll)
+        //TODO: Button to roll action
+        //TODO: Remember karma use when character is assisting
 
 //TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
-    //TODO: One service = Assist Threading = + dice pool by level
+        //TODO: One service = Assist Threading = + dice pool by level
 
 
 //Todo: Add Playing hacking buttons, including manual die pool modifier
@@ -55,24 +65,16 @@ public class MatrixFragment extends Fragment {
 //Todo: Drain for matrix spells
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 //Todo: Update Stats for  karma
-    //Todo: Update Stats for   damage
-    //Todo: Update Stats for time
-    //Todo: add onResume to refresh from DB
-    //TODO: Add option to enable/disable Threads known
-
-    //Todo: Add Playing Spells buttons
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_matrix, container, false);
-        Main = (MainActivity)getActivity();
-        /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
-        tv.setText(getArguments().getString("msg"));
-*/
-        int rowCounter=3;
+        //Todo: Update Stats for   damage
+        //Todo: Update Stats for time
+        //Todo: add onResume to refresh from DB
+        //TODO: Add option to enable/disable Threads known
+        int rowCounter=0;
         for(MatrixActions ma: Main.data.pvMatrixActions){
             TableLayout tableLayout = (TableLayout) v.findViewById(R.id.tableMatrix);
             TableRow newRow = new TableRow(v.getContext());
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            lp.span=5;
             newRow.setLayoutParams(lp);
 
             Button newButton = new Button(v.getContext());
@@ -80,6 +82,7 @@ public class MatrixFragment extends Fragment {
             newButton.setText(ma.getActionName());
 
             newRow.addView(newButton);
+
             tableLayout.addView(newRow, rowCounter);
             rowCounter++;
         }
