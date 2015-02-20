@@ -76,6 +76,8 @@ public class MatrixActions {
     private Integer MarksRequired = -1;
     private String OpposedAttribute = "";
     private String  OpposedSkill = "";
+    private Integer  ActionType = 0;
+    private Integer LimitType = -1;
 
     public Integer getActionType() {
         return ActionType;
@@ -85,8 +87,7 @@ public class MatrixActions {
         ActionType = actionType;
     }
 
-    private Integer  ActionType = 0;
-    private Integer LimitType = -1;
+
 
 
     public static final Integer ATTACK = 1;

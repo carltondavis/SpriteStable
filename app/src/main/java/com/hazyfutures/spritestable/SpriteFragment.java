@@ -42,34 +42,7 @@ public void onPause() {
         spinnerSprites.setAdapter(adp1);
 
 
-     /*   final Spinner spinnerSpriteType = (Spinner) v.findViewById(R.id.SpriteSpinnerType);
-        ArrayAdapter<CharSequence> adp2 = ArrayAdapter.createFromResource(v.getContext(), R.array.SpriteTypes, android.R.layout.simple_spinner_item);
-        adp2.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        spinnerSpriteType.setAdapter(adp2);
-        spinnerSpriteType.setSelection(adp2.getPosition(Main.data.getCurrentSprite().getType()));
-
-
-        final EditText editForce = (EditText) v.findViewById(R.id.editForce);
-        editForce.setText(String.valueOf(Main.data.getCurrentSprite().getRating()));
-
-        final EditText editServices = (EditText) v.findViewById(R.id.editServices);
-        editServices.setText(String.valueOf(Main.data.getCurrentSprite().getServicesOwed()));
-
-        final EditText editGOD = (EditText) v.findViewById(R.id.editGod);
-        editGOD.setText(String.valueOf(Main.data.getCurrentSprite().getGODScore()));
-
-        final EditText editDamage = (EditText) v.findViewById(R.id.editDamage);
-        editDamage.setText(String.valueOf(Main.data.getCurrentSprite().getCondition()));
-
-        final CheckBox checkRegistered = (CheckBox) v.findViewById(R.id.checkBoxRegistered);
-        checkRegistered.setChecked(Main.data.getCurrentSprite().getRegistered()==1);
-*/
-        // UpdateSpriteList();
-
-
-
-
-        spinnerSprites.setOnItemSelectedListener(
+           spinnerSprites.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(
                             AdapterView<?> parent, View view, int position, long id) {
@@ -84,117 +57,7 @@ public void onPause() {
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
-/*
-        checkRegistered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    //TODO: This is being called when the page loads. If previously it was set true, and you come back to the page with an unregistered sprite it marks it as registered and creates a new one
-               //   Main.data.getCurrentSprite().setRegistered(1);
-                } else {
-               //     Main.data.getCurrentSprite().setRegistered(0);
-                }
-                UpdateSpriteList();
-            }
-        });
-//Sprite Type Picker
-        spinnerSpriteType.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(
-                            AdapterView<?> parent, View view, int position, long id) {
-                        if ((position + 1) != Main.data.getCurrentSprite().getSpriteType()) {
-                 //           Main.data.getCurrentSprite().setSpriteType(position + 1);
-                            UpdateSpriteList();
-                        }
-                    }
 
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                });
-
-        editDamage.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
-                    Integer newValue = Integer.parseInt(s.toString());
-                    if (!newValue.equals(Main.data.getCurrentSprite().getCondition())) {
-                //        Main.data.getCurrentSprite().setCondition(newValue);
-//                        UpdateSpriteList();
-                  }
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
-
-        editForce.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
-                    Integer newValue = Integer.parseInt(s.toString());
-                    if (!newValue.equals(Main.data.getCurrentSprite().getRating())) {
-                        //Main.data.getCurrentSprite().setRating(newValue);
-                        UpdateSpriteList();
-                        UpdateSpritePage();
-                    }
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Log.i("Content ", "before Force: " + s.toString() +"/" +String.valueOf(start)+"/" +String.valueOf(after));
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //   Log.i("Content ", "on     Force: " + s.toString() +"/" +String.valueOf(start)+"/" +String.valueOf(before));
-            }
-        });
-
-        editGOD.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-
-                if (!s.toString().isEmpty()) {
-                    Integer newValue = Integer.parseInt(s.toString());
-                    if (!newValue.equals(Main.data.getCurrentSprite().getGODScore())) {
-                 //       spinnerSprites.setSelection(Main.data.pvActiveSpriteId);
-                     //   Main.data.getCurrentSprite().setGODScore(newValue);
-                        UpdateSpriteList();
-
-                    }
-                }
-            }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
-
-        editServices.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
-                    //spinnerSprites.setSelection(Main.data.pvActiveSpriteId);
-                    Integer newValue = Integer.parseInt(s.toString());
-
-                        if (!newValue.equals(Main.data.getCurrentSprite().getServicesOwed())) {
-                       //     Main.data.getCurrentSprite().setServicesOwed(newValue);
-                            //Main.data.SaveSpriteToDB(); //Save the sprite to the DB
-
-                            UpdateSpriteList();
-
-                        }
-                    }
-                }
-
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
-        */
         UpdateSpritePage();
         return v;
     }

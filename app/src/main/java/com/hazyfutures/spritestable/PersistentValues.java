@@ -11,20 +11,7 @@ import java.util.List;
  * Values that should be set to persist between activities
  */
 public class PersistentValues {
-/*    public int pvBody = 0;
-    public int pvWillpower = 0;
-    public int pvIntuition = 0;
-    public int pvLogic = 0;
-    public int pvStun = 0;
-    public int pvPhysical = 0;
-    public int pvKarma = 0;
-    public int pvKarmaUsed = 0;
-    public int pvResonance = 0;
-    public int pvHoursThisSession = 0;
-    public int pvSleeplessHours = 0;
-    public int pvHoursSinceKarmaRefresh = 0;
-    public int pvConsecutiveRest = 0;
-  */
+
     public int pvActiveSpriteId = 0;
 
     public List<String> pvSpriteList = new ArrayList<>();
@@ -33,6 +20,7 @@ public class PersistentValues {
     List<Skills> pvSkills = new ArrayList<>();
     List<Stats> pvStats = new ArrayList<>();
     List<Qualities> pvQualities = new ArrayList<>();
+    List<MatrixActions> pvMatrixActions = new ArrayList<>();
 
     List<Specializations> pvSpecializations = new ArrayList<>();
     private StatsDataSource datasource;
@@ -95,53 +83,7 @@ public class PersistentValues {
         SaveAllQualitiesToDB();
         SaveAllStatsToDB();
 
-       /* datasource.updateStat("Stun", pvStun);
-        datasource.updateStat("Physical", pvPhysical);
-        datasource.updateStat("Karma", pvKarma);
-        datasource.updateStat("KarmaUsed", pvKarmaUsed);
-        datasource.updateStat("Body", pvBody);
-        datasource.updateStat("Willpower", pvWillpower);
-        datasource.updateStat("Intuition", pvIntuition);
-        datasource.updateStat("Logic", pvLogic);
-        datasource.updateStat("Resonance", pvResonance);
-        datasource.updateStat("Hours", pvHoursThisSession);
-        datasource.updateStat("SleeplessHours", pvSleeplessHours);
-        datasource.updateStat("ConsecutiveRest", pvConsecutiveRest);
-        datasource.updateStat("ActiveSpriteId", pvActiveSpriteId);
-        datasource.updateStat("HoursSinceKarmaRefresh", pvHoursSinceKarmaRefresh);
-        */
-        /*
-        datasource.updateStat("CodeSlinger", CodeSlinger);
-        datasource.updateStat("FocusedConcentration", FocusedConcentration);
-        datasource.updateStat("Insomnia", Insomnia);
-        datasource.updateStat("HighPainTolerance", HighPainTolerance);
-        datasource.updateStat("HomeGround", HomeGround);
-        datasource.updateStat("NaturalHardening", NaturalHardening);
-        datasource.updateStat("QuickHealer", QuickHealer);
-        datasource.updateStat("Toughness", Toughness);
-        datasource.updateStat("WillToLive", WillToLive);
-        datasource.updateStat("BadLuck", BadLuck);
-        datasource.updateStat("CodeBlock", CodeBlock);
-        datasource.updateStat("LossOfConfidence", LossOfConfidence);
-        datasource.updateStat("LowPainTolerance", LowPainTolerance);
-        datasource.updateStat("SensitiveSystem", SensitiveSystem);
-        datasource.updateStat("SimsenseVertigo", SimsenseVertigo);
-        datasource.updateStat("SlowHealer", SlowHealer);
-        datasource.updateStat("Perceptive", Perceptive);
-        datasource.updateStat("ToughAsNailsPhysical", ToughAsNailsPhysical);
-        datasource.updateStat("ToughAsNailsStun", ToughAsNailsStun);
-        datasource.updateStat("Asthma", Asthma);
-        datasource.updateStat("AsthmaFatigueDamage", AsthmaFatigueDamage);
-        datasource.updateStat("BiPolar", BiPolar);
-        datasource.updateStat("BiPolarCurrent", BiPolarCurrent);
-        datasource.updateStat("Blind", Blind);
-        datasource.updateStat("ComputerIlliterate", ComputerIlliterate);
-        datasource.updateStat("Deaf", Deaf);
-        datasource.updateStat("DimmerBulb", DimmerBulb);
-        datasource.updateStat("Illiterate", Illiterate);
-        datasource.updateStat("Oblivious", Oblivious);
-        datasource.updateStat("PieIesuDomine", PieIesuDomine);
-*/
+
     }
 
 
@@ -156,64 +98,10 @@ public class PersistentValues {
         pvQualities = datasource.getAllQualities();
         pvStats = datasource.getAllStats();
         pvSpecializations = datasource.getAllSpecializations();
+        pvMatrixActions = datasource.getAllMatrixActions();
         pvActiveSpriteId = 0;
 
-       /* String stat;
-        Integer value;
-        for (int i = 0; i < values.size(); ++i) {
-            stat = values.get(i).getStat();
-            value = values.get(i).getValue();
-            switch (stat) {
-                case "Body":
-                    pvBody = value;
-                    break;
-                case "Willpower":
-                    pvWillpower = value;
-                    break;
-                case "Intuition":
-                    pvIntuition = value;
-                    break;
-                case "Logic":
-                    pvLogic = value;
-                    break;
-                case "Compiling":
-                    setSkillValue("Compiling", value);
-                    break;
-                case "Registering":
-                    setSkillValue("Registering", value);
-                    break;
-                case "Resonance":
-                    pvResonance = value;
-                    break;
-                case "Stun":
-                    pvStun = value;
-                    break;
-                case "Physical":
-                    pvPhysical = value;
-                    break;
-                case "Karma":
-                    pvKarma = value;
-                    break;
-                case "KarmaUsed":
-                    pvKarmaUsed = value;
-                    break;
-                case "HoursThisSession":
-                    pvHoursThisSession = value;
-                    break;
-                case "SleeplessHours":
-                    pvSleeplessHours= value;
-                    break;
-                case "ConsecutiveRest":
-                    pvConsecutiveRest= value;
-                    break;
-                case "HoursSinceKarmaRefresh":
-                    pvConsecutiveRest= value;
-                    break;
 
-
-            }
-
-        }*/
     }
 
     public Sprite getCurrentSprite() {

@@ -31,6 +31,16 @@ public class StatsDataSource {
             Database.COLUMN_LINKEDSKILL,
             Database.COLUMN_EXISTS};
 
+    private String[] allMatrixActionColumns = {Database.COLUMN_ID,
+            Database.COLUMN_ACTIONNAME,
+            Database.COLUMN_LINKEDSKILL,
+            Database.COLUMN_LINKEDATTRIBUTE,
+            Database.COLUMN_MARKSREQUIRED,
+            Database.COLUMN_OPPOSEDATTRIBUTE,
+            Database.COLUMN_OPPOSEDSKILL,
+            Database.COLUMN_LIMITTYPE,
+            Database.COLUMN_ACTIONTYPE};
+
     private String[] allQualityColumns = {Database.COLUMN_ID,
             Database.COLUMN_QUALITYNAME,
             Database.COLUMN_QUALITYVALUE};
@@ -250,6 +260,22 @@ public class StatsDataSource {
         return specialization;
     }
 
+    private MatrixActions cursorToMatrixAction(Cursor cursor) {
+        MatrixActions matrixAction = new MatrixActions();
+        matrixAction.setId(cursor.getLong(0));
+        matrixAction.setActionName(cursor.getString(1));
+        matrixAction.setLinkedSkill(cursor.getString(2));
+        matrixAction.setLinkedAttribute(cursor.getString(3));
+        matrixAction.setMarksRequired(cursor.getInt(4));
+        matrixAction.setOpposedAttribute(cursor.getString(5));
+        matrixAction.setOpposedSkill(cursor.getString(6));
+        matrixAction.setLimitType(cursor.getInt(7));
+        matrixAction.setActionType(cursor.getInt(8));
+        return matrixAction;
+    }
+
+
+
     public List<Skills> getAllSkills() {
         List<Skills> skills = new ArrayList<>();
 
@@ -282,6 +308,23 @@ public class StatsDataSource {
         // make sure to close the cursor
         cursor.close();
         return specializations;
+    }
+
+    public List<MatrixActions> getAllMatrixActions() {
+        List<MatrixActions> matrixActions = new ArrayList<>();
+
+        Cursor cursor = database.query(Database.TABLE_MATRIXACTIONS,
+                allMatrixActionColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            MatrixActions matrixAction = cursorToMatrixAction(cursor);
+            matrixActions.add(matrixAction);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return matrixActions;
     }
 
     private Sprite cursorToSprite(Cursor cursor) {

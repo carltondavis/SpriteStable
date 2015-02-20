@@ -14,16 +14,29 @@ public class MatrixFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
 //Todo: MATRIX FRAGMENT
 
-    //TODO:Design UI: Pick actor first or pick Action first?  Then display options below?  Checkboxes to add assistors?
-    // TODO: Spinner to modify dice used (+/- 20 dice?)
-    //TODO: Checkbox for pre-edge
-    //TODO: Display for Total hits, Total dice rolled, Glitch status, tap to display all dice rolled as Toast.
-//TODO Dynamic radio button for list of potential actors
+//TODO:Design UI: Pick actor first or pick Action first?  Then display options below?  Checkboxes to add assistors?
+// TODO: Spinner to modify dice used (+/- 20 dice?)
+//TODO: Checkbox for pre-edge
 
-    //TODO Programatically add Items to the fragment by pulling actions from a database list that the current actor can take
-    //TODO: Button with Action Name
-    // TODO: Text with total dice,
-    //TODO Editable text box for limit
+//TODO: Display for Total hits, Total dice rolled, Glitch status, tap to display all dice rolled as Toast.
+//TODO Dynamic radio button for list of potential actors
+//TODO Programmatically add Items to the fragment by pulling actions from a database list that the current actor can take
+//TODO: Button with Action Name
+
+    // Die modifier spinner, Limit Modifier Spinner
+
+    // Action Name, Total Dice, Total/Total/Total assisting dice, Limit(Assisted Limit),
+    // Opposed dice, Marks Needed, Action Type,
+    // Dropdown of lead actor default to character Multi-dropdown of valid assistors
+    //Roll Assist button
+    //Auto calculate Total dice and Assistant dice based on totals/limits
+    //Expend services checkbox, default to checked
+
+    //Two rows per action?
+    //Spinner to pick action?
+
+
+
     //TODO Multicheckbox for Sprites that can assist
     //TODO: Button to roll assistance (grey itself and checkbox out after doing it, decrement services, add dice and limit to roll)
     //TODO: Button to roll action
@@ -55,16 +68,23 @@ public class MatrixFragment extends Fragment {
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
 */
-        TableLayout tableLayout = (TableLayout) v.findViewById(R.id.tableMatrix);
-        TableRow newRow = new TableRow(v.getContext());
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-        newRow.setLayoutParams(lp);
+        int rowCounter=3;
+        for(MatrixActions ma: Main.data.pvMatrixActions){
+            TableLayout tableLayout = (TableLayout) v.findViewById(R.id.tableMatrix);
+            TableRow newRow = new TableRow(v.getContext());
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            newRow.setLayoutParams(lp);
 
-        Button newButton = new Button(v.getContext());
+            Button newButton = new Button(v.getContext());
 
-        newButton.setText("hi");
-        newRow.addView(newButton);
-        tableLayout.addView(newRow, 0);
+            newButton.setText(ma.getActionName());
+
+            newRow.addView(newButton);
+            tableLayout.addView(newRow, rowCounter);
+            rowCounter++;
+        }
+
+
 
         return v;
     }
