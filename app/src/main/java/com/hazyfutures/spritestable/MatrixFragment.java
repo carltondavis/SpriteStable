@@ -46,17 +46,18 @@ public class MatrixFragment extends Fragment {
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
 */
-        //TODO: Make header not scroll
-        //TODO Multicheckbox for Sprites that can assist
-        //TODO: Button to roll assistance (grey itself and checkbox out after doing it, decrement services, add dice and limit to roll)
-        //TODO: Button to roll action
+        //TODO: Finish Header:
+        //TODO Spinner for active person
+        //TODO: pop-up for NumberPicker selection to edit value field?
+        //TODO: Perhaps reuse this on all number entry options?
+        //TODO Pre-edge checkbox
+        //TODO Post-edge button
         //TODO: Remember karma use when character is assisting
 
 //TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
         //TODO: One service = Assist Threading = + dice pool by level
 
 
-//Todo: Add Playing hacking buttons, including manual die pool modifier
 //Todo: Design convenient widget for picking sprites to assist or vice versa (Dropdown, Player Action/Sprite Action)
 //Todo: Add code to calculate dice pools for each button including penalties, and
 //Todo: add code to calculate dice pools for assistance rolls
@@ -65,7 +66,7 @@ public class MatrixFragment extends Fragment {
 //Todo: Drain for matrix spells
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 //Todo: Update Stats for  karma
-        //Todo: Update Stats for   damage
+        //Todo: Update Stats for damage
         //Todo: Update Stats for time
         //Todo: add onResume to refresh from DB
         //TODO: Add option to enable/disable Threads known
@@ -77,13 +78,31 @@ public class MatrixFragment extends Fragment {
             lp.span=5;
             newRow.setLayoutParams(lp);
 
-            Button newButton = new Button(v.getContext());
 
-            newButton.setText(ma.getActionName());
+            //TODO: Button to roll action  Needs listener to call dice rolling function
+            Button btnAction = new Button(v.getContext(), null, android.R.attr.buttonStyleSmall);
+            btnAction.setText(ma.getActionName());
+            btnAction.setHeight(75);
+            btnAction.setWidth(150);
+            btnAction.setTextSize(10);
+            btnAction.setMaxLines(2);
 
-            newRow.addView(newButton);
+
+
+            //TODO: Button to roll assistance (grey itself and checkbox out after doing it, decrement services, add dice and limit to roll)
+            Button btnAssist= new Button(v.getContext());
+            btnAssist.setText("Roll Assist");
+
+            //TODO Multicheckbox for Sprites that can assist, list all assistance options
+            MultiSelectionSpinner msSprites = new MultiSelectionSpinner(v.getContext());
+
+
+            newRow.addView(btnAction);
+            newRow.addView(msSprites);
+            newRow.addView(btnAssist);
 
             tableLayout.addView(newRow, rowCounter);
+            //btnAction.setLayoutParams(new TableRow.LayoutParams(150, 75));
             rowCounter++;
         }
 
@@ -91,6 +110,8 @@ public class MatrixFragment extends Fragment {
 
         return v;
     }
+
+    //TODO: Dice rolling function that accepts MatrixAction object + Sprite object list for assistance
 
     public static MatrixFragment newInstance() {
 
