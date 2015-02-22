@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 
 public class MatrixFragment extends Fragment {
@@ -87,19 +88,27 @@ public class MatrixFragment extends Fragment {
             btnAction.setTextSize(10);
             btnAction.setMaxLines(2);
 
-
+//todo text for number of dice
 
             //TODO: Button to roll assistance (grey itself and checkbox out after doing it, decrement services, add dice and limit to roll)
             Button btnAssist= new Button(v.getContext());
             btnAssist.setText("Roll Assist");
+//after hit, roll dice, add hits to dice, bump limit, remove button
+
 
             //TODO Multicheckbox for Sprites that can assist, list all assistance options
             MultiSelectionSpinner msSprites = new MultiSelectionSpinner(v.getContext());
-
-
+//add sum of assistance dice to assist button
+//todo function to grab possible assisting sprites/character
+            int assistdice=0;
+            btnAssist.setText("Roll "+ assistdice +" to Assist");
+            //todo text for opposing dice
+            TextView oppdice = new TextView(v.getContext());
+            oppdice.setText(ma.getOpposedAttribute() + "+" + ma.getOpposedSkill());
             newRow.addView(btnAction);
             newRow.addView(msSprites);
             newRow.addView(btnAssist);
+            newRow.addView(oppdice);
 
             tableLayout.addView(newRow, rowCounter);
             //btnAction.setLayoutParams(new TableRow.LayoutParams(150, 75));
