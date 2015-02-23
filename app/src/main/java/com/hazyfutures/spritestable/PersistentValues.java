@@ -136,14 +136,14 @@ public Integer getSkillValue(String Name, String Specialization){
     Integer value=0;
     long ID=0;
     for(Skills skill: pvSkills){
-        if(skill.getSkillName().equals(Name)) {
+        if(skill.getSkillName().toUpperCase().equals(Name.toUpperCase())) {
             ID=skill.getId();
             value= skill.getSkillValue();
             break;
         }
     }
     for(Specializations specialization: pvSpecializations){
-        if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().equals(Specialization))) {
+        if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().toUpperCase().equals(Specialization.toUpperCase()))) {
             return (value+2);
         }
     }
