@@ -1,4 +1,4 @@
-package com.hazyfutures.spritestable;
+package com.dasixes.spritestable;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package com.hazyfutures.spritestable;
+package com.dasixes.spritestable;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

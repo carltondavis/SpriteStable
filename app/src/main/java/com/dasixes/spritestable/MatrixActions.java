@@ -1,4 +1,4 @@
-package com.hazyfutures.spritestable;
+package com.dasixes.spritestable;
 
 /**
  * Created by cdavis on 2/15/2015.

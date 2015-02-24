@@ -1,4 +1,4 @@
-package com.hazyfutures.spritestable;
+package com.dasixes.spritestable;
 
 import android.app.AlertDialog;
 import android.content.Context;

@@ -5,7 +5,7 @@
     android:layout_weight="1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.hazyfutures.spritestable.StatFragment">
+    tools:context="com.dasixes.spritestable.StatFragment">
     <TableLayout
         android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
@@ -195,7 +195,7 @@
             android:padding="5dip"
 
             >
-        <com.hazyfutures.spritestable.MultiSelectionSpinner
+        <com.dasixes.spritestable.MultiSelectionSpinner
             android:id="@+id/spinnerCompiling"
             android:layout_width="match_parent"
             android:layout_span="2"
@@ -231,7 +231,7 @@
             android:padding="5dip"
 
             >
-            <com.hazyfutures.spritestable.MultiSelectionSpinner
+            <com.dasixes.spritestable.MultiSelectionSpinner
                 android:id="@+id/spinnerRegistering"
                 android:layout_width="match_parent"
                 android:layout_span="2"
