@@ -65,17 +65,16 @@ public class MatrixFragment extends Fragment {
         //TODO: One service = Assist Threading = + dice pool by level
 
 
-//Todo: Design convenient widget for picking sprites to assist or vice versa (Dropdown, Player Action/Sprite Action)
-//Todo: Add code to calculate dice pools for each button including penalties, and
+//Todo: Design convenient widget for current Skill Leader for actions
+//Todo: Grey out/disable actions that leader can't take
+//Todo: Calculate penalties for each action from Qualites and spinner
+//Todo: Calculate limits for rolls, add in [] to Skill button
 //Todo: add code to calculate dice pools for assistance rolls
 //Todo: Roll dice button, determine final pool button (assistance), and list manual die rolls
-//Todo: Calculate limits for rolls
-//Todo: Drain for matrix spells
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
-//Todo: Update Stats for  karma
-        //TODO: Fix alternating background color
-        //Todo: Update Stats for damage
-        //Todo: Update Stats for time
+//Todo: Update Stats for  karma when used
+        //Todo: Add box for current damage, so it can be changed on the fly
+        //Todo: Update Stats for time so it can be changed on the fly (increment 15  minutes?)
         //Todo: add onResume to refresh from DB
         //TODO: Add option to enable/disable Threads known
         boolean rowColor = false;
@@ -168,16 +167,41 @@ public class MatrixFragment extends Fragment {
 
             linearLayout.addView(newRow3);
 
-
             rowColor=!rowColor;
+
         }
 
 
 
         return v;
     }
+//todo function to get limit for action
+    public int getLimit(MatrixActions ma){
+        switch(ma.getLimitType()){
+            case 1:
+                return Main.data.getStatValue("Charisma");
+
+            case 2:
+                return Main.data.getStatValue("Intuition");
+
+            case 3:
+                return Main.data.getStatValue("Logic");
+
+            case 4:
+                return Main.data.getStatValue("Willpower");
+
+        }
+return 0;
+    }
 
     //TODO: Dice rolling function that accepts MatrixAction object + Sprite object list for assistance
+public int rollAction(MatrixActions ma, ArrayList<Sprite> sl){
+ Dice dice = new Dice();
+   return dice.rollDice(Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName())+ Main.data.getStatValue(ma.getLinkedSkill()),false, getLimit(ma));
+
+
+
+}
 
     public static MatrixFragment newInstance() {
 

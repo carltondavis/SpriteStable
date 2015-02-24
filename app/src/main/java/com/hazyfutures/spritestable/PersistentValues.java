@@ -152,7 +152,7 @@ public Integer getSkillValue(String Name, String Specialization){
 
     public void setSkillValue(String Name, Integer Value){
         for(Skills skill: pvSkills){
-            if(skill.getSkillName().equals(Name)) {
+            if(skill.getSkillName().toUpperCase().equals(Name.toUpperCase())) {
                 skill.setSkillValue(Value);
                 break;
             }
@@ -162,7 +162,7 @@ public Integer getSkillValue(String Name, String Specialization){
     public Integer getStatValue(String Name){
         Integer value=0;
         for(Stats stat: pvStats){
-            if(stat.getStatName().equals(Name)) {
+            if(stat.getStatName().toUpperCase().equals(Name.toUpperCase())) {
                 value= stat.getStatValue();
                 break;
             }
@@ -449,13 +449,13 @@ public Integer getSkillValue(String Name, String Specialization){
         Integer value=0;
         long ID=0;
         for(Skills skill: pvSkills){
-            if(skill.getSkillName().equals(SkillName)) {
+            if(skill.getSkillName().toUpperCase().equals(SkillName.toUpperCase())) {
                 ID=skill.getId();
                 break;
             }
         }
         for(Specializations specialization: pvSpecializations){
-            if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().equals(Specialization))) {
+            if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().toUpperCase().equals(Specialization.toUpperCase()))) {
                 specialization.setExists(Exists);
             }
         }

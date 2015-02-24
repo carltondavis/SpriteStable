@@ -107,14 +107,15 @@ public class ReadXMLFile {
 
                     if (node.hasChildNodes()) {
                        NodeList sList = ((Element) node).getElementsByTagName("skillspecializations");
-
-                        NodeList Specializations =  sList.item(0).getChildNodes();
-                        for (int i = 0; i < Specializations.getLength(); i++) {
-                            Node spec = Specializations.item(i);
-                            if (spec.getNodeType() == Node.ELEMENT_NODE) {
-                                Element sElement = (Element) spec;
-                                System.out.println("Specialization : " +  sElement.getElementsByTagName("name").item(0).getTextContent());
-                                Main.data.setSpecialization(SkillName, sElement.getElementsByTagName("name").item(0).getTextContent(), true);
+                        if(sList.getLength()>0) {
+                            NodeList Specializations = sList.item(0).getChildNodes();
+                            for (int i = 0; i < Specializations.getLength(); i++) {
+                                Node spec = Specializations.item(i);
+                                if (spec.getNodeType() == Node.ELEMENT_NODE) {
+                                    Element sElement = (Element) spec;
+                                    System.out.println("Specialization : " + sElement.getElementsByTagName("name").item(0).getTextContent());
+                                    Main.data.setSpecialization(SkillName, sElement.getElementsByTagName("name").item(0).getTextContent(), true);
+                                }
                             }
                         }
                     }
