@@ -108,10 +108,28 @@
                 android:id="@+id/spLeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/npDieModifier"
+                android:layout_above="@+id/textAssistance"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Assistants:"
+                android:id="@+id/textAssistance"
+                android:layout_above="@+id/spAssistance"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <com.dasixes.spritestable.MultiSelectionSpinner
+                android:id="@+id/spAssistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/npDieModifier"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
         </RelativeLayout>
 
 <ScrollView

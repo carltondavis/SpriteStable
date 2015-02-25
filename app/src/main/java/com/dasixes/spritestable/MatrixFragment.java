@@ -21,6 +21,7 @@ public class MatrixFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
 
 
+
     // Die modifier spinner, Limit Modifier Spinner
 
     // Action Name, Total Dice, Total/Total/Total assisting dice, Limit(Assisted Limit),
@@ -34,22 +35,46 @@ public class MatrixFragment extends Fragment {
     //Spinner to pick action?
 
 
+public void UpdateActions(List<String> activeAssistants){
 
+}
 public void UpdateLeader(boolean isTechnomancer){
     //TODO: Update Available actions depending on active sprite/technomancer
     //TODO: Update dice pools for matrix actions.
     //Todo: Calculate penalties for each action from Qualites and spinner
+    Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
+    MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
+
+    //Remove selected Leader
+    List<String> assistants= new ArrayList<String>(Main.data.pvSpriteList);
+    if(!isTechnomancer){
+        assistants.add("Technomancer");
+        assistants.remove(spLeader.getSelectedItem());
+    }
+    String[] arrayAssistance = new String[Main.data.pvSpriteList.size()];
+    arrayAssistance=assistants.toArray(arrayAssistance);
+    spAssistance.setItems(arrayAssistance);
+
 //Todo: Calculate limits for rolls, add in [] to Skill button
 
 }
+
+    public int getAssistantDice(MatrixActions ma, List<String> assistants){
+        //TODO: Calculate Assistant dice
+        return 0;
+    }
+
+    public void rollAssistance(MatrixActions ma, List<String> assistants){
+        //TODO: Roll dice
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_matrix, container, false);
         Main = (MainActivity)getActivity();
-        /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
-        tv.setText(getArguments().getString("msg"));
-*/
+
+
         //TODO: Finish Header:
         //TODO Populate Spinner for active person
         //TODO: pop-up for NumberPicker selection to edit value field?
@@ -64,19 +89,20 @@ public void UpdateLeader(boolean isTechnomancer){
 
 //Todo: Design convenient widget for current Skill Leader for actions
         Spinner spLeader = (Spinner) v.findViewById(R.id.spLeader);
-        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, Main.data.pvSpriteList);
+        MultiSelectionSpinner spAssistance = (MultiSelectionSpinner) v.findViewById(R.id.spAssistance);
+        List<String> aa =  new ArrayList<String>(Main.data.pvSpriteList);
+        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, aa);
         adp1.add("Technomancer");
         adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spLeader.setAdapter(adp1);
-
 
         spLeader.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(
                             AdapterView<?> parent, View view, int position, long id) {
-                        if(position==Main.data.pvSprites.size()){//It's the Technomancer
+                        if (position == Main.data.pvSprites.size()) {//It's the Technomancer
                             UpdateLeader(true);
-                        }else {
+                        } else {
                             if (position != Main.data.pvActiveSpriteId) {
                                 Main.data.pvActiveSpriteId = position;
                                 // UpdateLeaderSkills and Active Actions();
@@ -88,6 +114,29 @@ public void UpdateLeader(boolean isTechnomancer){
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
+
+
+
+
+        //Remove selected Leader
+        String[] arrayAssistance = new String[Main.data.pvSpriteList.size()+1];
+        List<String> assistants = new ArrayList<String>(Main.data.pvSpriteList);
+        assistants.add("Technomancer");
+        assistants.remove(spLeader.getSelectedItem());
+        arrayAssistance=assistants.toArray(arrayAssistance);
+        spAssistance.setItems(arrayAssistance);
+        spAssistance.setOnMultiSpinnerListener(
+                new MultiSelectionSpinner.MultiSpinnerListener() {
+                    public void onItemsSelected(List<String> selected) {
+                        List<String> selectedAssistants = selected;
+                        UpdateActions(selectedAssistants);
+                        //TODO: Update assistance dice
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+
 // TODO: Spinner to modify dice used (+/- 20 dice?)
 //TODO: Checkbox for pre-edge
 //Todo: add code to calculate dice pools for assistance rolls
@@ -100,6 +149,8 @@ public void UpdateLeader(boolean isTechnomancer){
         //TODO: Add option to enable/disable Threads known
         boolean rowColor = false;
         int bgColor;
+
+
         for(MatrixActions ma: Main.data.pvMatrixActions){
             if(rowColor){
                 bgColor=0xffd3d3d3;
@@ -132,15 +183,22 @@ public void UpdateLeader(boolean isTechnomancer){
             btnAssist.setWidth(100);
             btnAssist.setTextSize(8);
             btnAssist.setMaxLines(2);
-            int assistdice=0;
-            btnAssist.setText("Roll "+ assistdice +" to Assist");
+
+            btnAssist.setText("Roll "+ getAssistantDice(ma, assistants) +" to Assist");
             newRow.addView(btnAssist);
+            final MatrixActions action=ma;
+            final List<String> ActionAssistants=new ArrayList<String>(assistants);
+            btnAssist.setOnClickListener(new View.OnClickListener() {
+
+                                             @Override
+                                             public void onClick(View v) {
+                                                rollAssistance(action,  ActionAssistants);
+                                             }
+                                         });
 
 //after hit, roll dice, add hits to dice, bump limit, remove button
 
 //add sum of assistance dice to assist button
-//todo function to grab possible assisting sprites/character
-            //todo text for opposing dice
             TextView oppdice = new TextView(v.getContext());
             if(ma.getOpposedAttribute().isEmpty()){
                 oppdice.setText("No Opposed Roll");
@@ -164,29 +222,7 @@ public void UpdateLeader(boolean isTechnomancer){
 
             linearLayout.addView(newRow);
 
-//Second Row
-            LinearLayout newRow3 = new LinearLayout(v.getContext());
-            newRow3.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            newRow3.setOrientation(LinearLayout.HORIZONTAL);
-            newRow3.setBackgroundColor(bgColor);
 
-
-            //TODO Multicheckbox for Sprites that can assist, list all assistance options
-            MultiSelectionSpinner msSprites = new MultiSelectionSpinner(v.getContext());
-            List<String> assists = new ArrayList<String>();
-            for(Sprite sprite : Main.data.pvSprites){
-                //TODO: If sprite can assist on this action
-                assists.add("F" + sprite.getRating() + " " + sprite.getType() +" w/ " + sprite.getServicesOwed());
-            }
-
-            String[] arraySprites = new String[assists.size()];
-            arraySprites=assists.toArray(arraySprites);
-            msSprites.setItems(arraySprites);
-
-            //msSprites.setSelection(arraySprites);
-            newRow3.addView(msSprites);
-
-            linearLayout.addView(newRow3);
 
             rowColor=!rowColor;
 
