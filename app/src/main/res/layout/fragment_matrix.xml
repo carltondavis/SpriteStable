@@ -12,7 +12,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:background="#ff00fff8"
-            android:gravity="center"
             >
 
 
@@ -30,7 +29,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="0"
                 android:id="@+id/textHitsResult"
-                android:layout_toRightOf="@id/textHits"
+                android:layout_below="@id/textHits"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -38,6 +37,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="/"
                 android:id="@+id/textDiceRolled"
+                android:layout_alignBottom="@id/textHitsResult"
                 android:layout_toRightOf="@id/textHitsResult"
                 />
             <TextView
@@ -46,48 +46,44 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="0"
                 android:id="@+id/textDiceNumber"
+                android:layout_alignBottom="@id/textHitsResult"
                 android:layout_toRightOf="@id/textDiceRolled"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text=" NO Glitch"
+                android:text="NO Glitch"
                 android:id="@+id/textGlitchStatus"
-                android:layout_gravity="right"
-                android:layout_toRightOf="@id/textDiceNumber"/>
+                android:layout_below="@+id/textHitsResult"
+                android:layout_alignParentLeft="true"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Die Pool Modifier:"
                 android:id="@+id/textViewDiePool"
-
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_alignTop="@+id/npDieModifier"
-                android:layout_toLeftOf="@+id/textHitsResult"
-                android:layout_toStartOf="@+id/textHitsResult"
+                android:layout_toLeftOf="@+id/npDieModifier"
                 android:layout_alignBottom="@+id/npDieModifier" />
 
             <NumberPicker
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/npDieModifier"
-                android:layout_toRightOf="@+id/textViewDiePool"
-                android:layout_below="@+id/textHits"
+                android:layout_toLeftOf="@+id/textViewLimitMod"
                 />
 
 
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Limit Modifier:"
                 android:id="@+id/textViewLimitMod"
                 android:layout_alignTop="@+id/npDieModifier"
-                android:layout_toRightOf="@+id/npDieModifier"
+                android:layout_toLeftOf="@+id/npLimitMod"
                 android:layout_alignBottom="@+id/npDieModifier" />
 
             <NumberPicker
@@ -96,8 +92,25 @@
                 android:id="@+id/npLimitMod"
                 android:baselineAligned="false"
                 android:layout_alignTop="@+id/textViewLimitMod"
-                android:layout_toRightOf="@+id/textViewLimitMod"
-                android:layout_toEndOf="@+id/textViewLimitMod" />
+                android:layout_alignParentRight="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Leader:"
+                android:id="@+id/textLeader"
+                android:layout_above="@+id/spLeader"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <Spinner
+                android:id="@+id/spLeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/npDieModifier"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 

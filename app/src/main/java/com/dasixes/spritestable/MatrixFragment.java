@@ -6,8 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,16 +19,7 @@ import java.util.List;
 
 public class MatrixFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
-//Todo: MATRIX FRAGMENT
 
-//TODO:Design UI: Pick actor first or pick Action first?  Then display options below?  Checkboxes to add assistors?
-// TODO: Spinner to modify dice used (+/- 20 dice?)
-//TODO: Checkbox for pre-edge
-
-//TODO: Display for Total hits, Total dice rolled, Glitch status, tap to display all dice rolled as Toast.
-//TODO Dynamic radio button for list of potential actors
-//TODO Programmatically add Items to the fragment by pulling actions from a database list that the current actor can take
-//TODO: Button with Action Name
 
     // Die modifier spinner, Limit Modifier Spinner
 
@@ -41,8 +35,14 @@ public class MatrixFragment extends Fragment {
 
 
 
+public void UpdateLeader(boolean isTechnomancer){
+    //TODO: Update Available actions depending on active sprite/technomancer
+    //TODO: Update dice pools for matrix actions.
+    //Todo: Calculate penalties for each action from Qualites and spinner
+//Todo: Calculate limits for rolls, add in [] to Skill button
 
-    //Todo: Add Playing Spells buttons
+}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_matrix, container, false);
@@ -51,7 +51,7 @@ public class MatrixFragment extends Fragment {
         tv.setText(getArguments().getString("msg"));
 */
         //TODO: Finish Header:
-        //TODO Spinner for active person
+        //TODO Populate Spinner for active person
         //TODO: pop-up for NumberPicker selection to edit value field?
         //TODO: Perhaps reuse this on all number entry options?
         //TODO Pre-edge checkbox
@@ -63,9 +63,33 @@ public class MatrixFragment extends Fragment {
 
 
 //Todo: Design convenient widget for current Skill Leader for actions
-//Todo: Grey out/disable actions that leader can't take
-//Todo: Calculate penalties for each action from Qualites and spinner
-//Todo: Calculate limits for rolls, add in [] to Skill button
+        Spinner spLeader = (Spinner) v.findViewById(R.id.spLeader);
+        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, Main.data.pvSpriteList);
+        adp1.add("Technomancer");
+        adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spLeader.setAdapter(adp1);
+
+
+        spLeader.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                        if(position==Main.data.pvSprites.size()){//It's the Technomancer
+                            UpdateLeader(true);
+                        }else {
+                            if (position != Main.data.pvActiveSpriteId) {
+                                Main.data.pvActiveSpriteId = position;
+                                // UpdateLeaderSkills and Active Actions();
+                                UpdateLeader(false);
+                            }
+                        }
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                });
+// TODO: Spinner to modify dice used (+/- 20 dice?)
+//TODO: Checkbox for pre-edge
 //Todo: add code to calculate dice pools for assistance rolls
 //Todo: Roll dice button, determine final pool button (assistance), and list manual die rolls
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
