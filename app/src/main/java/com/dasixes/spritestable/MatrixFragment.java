@@ -64,6 +64,8 @@ public void UpdateAssistance(){
 
 
     for(MatrixActions ma :Main.data.pvMatrixActions){
+
+
         assistantDice="";
         //Loop through assistants for each action
         for(Sprite assistantSprite: activeAssistants){
@@ -91,6 +93,12 @@ public void UpdateAssistance(){
         LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
         Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
         btnAssist.setText("Roll " + assistantDice +" to assist.");
+        btnAssist.setTextColor(Color.BLACK);
+        btnAssist.setClickable(true);
+
+        Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistDiceBonus(0);
+        Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistLimitBonus(0);
+
     }
 }
     public int GetLimit(int limitType){
@@ -346,8 +354,10 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 }
 
     public void rollAssistance(MatrixActions ma){
-        int assistDiceBonus= ma.getAssistDiceBonus();
-        int assistLimitBonus=ma.getAssistLimitBonus();
+        int assistDiceBonus=0 ;
+        ma.setAssistDiceBonus(0);
+        int assistLimitBonus=0;
+        ma.setAssistLimitBonus(0);
         Dice dice = new Dice();
 
 
@@ -425,6 +435,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
             LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
             Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
+            UpdateAssistance(); //Reset all the other assistance buttons
             btnAssist.setText("Bonus: (+" + assistDiceBonus+ ")[+"+assistLimitBonus+"]");
             btnAssist.setTextColor(Color.RED);
             btnAssist.setClickable(false);
@@ -436,22 +447,66 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
 
     public void rollAction(MatrixActions ma){
-        //Todo: Calculate penalties for each action from Qualities and Spinner
-        //Todo: include Die pool modifier for rolls from spinner
-        //Todo: include limit modifier for rolls from spinner
-        //Todo include dice and limit mods from any assistance
-        //Todo roll dice
-        //TODO: Remember karma use when character is leading
-        //todo update results
-        //todo reset assistance button (enable, change text)
-        LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
-        LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
-        Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
-        btnAssist.setClickable(true);
-        btnAssist.setTextColor(Color.BLACK);
-        UpdateAssistance();
-
         Dice dice = new Dice();
+        int result=0;
+        Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
+            LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
+            LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
+            Button btnAction = (Button) currentRow.findViewWithTag("Action" + ma.getActionName());
+            Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
+        //Reset assistant buttons
+            UpdateAssistance();
+
+            int actionDice;
+            int actionLimit;
+        boolean useKarma=false;
+            if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1){//Technomancer
+                actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
+                actionLimit=GetLimit(ma.getLimitType());
+                //Todo: Calculate penalties for each action from Qualities and Spinner
+                //TODO: Remember karma use when character is leading
+
+            }else{
+                int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
+                int spriteRating = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
+                actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
+                actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
+            }
+        //Todo: include Die pool modifier for rolls from spinner
+        actionDice+=Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistDiceBonus();
+
+
+        //Todo include dice and limit mods from any assistance
+        if(Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistLimitBonus()>0){
+            actionLimit+=Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistLimitBonus();
+        }
+//Todo: include limit modifier for rolls from spinner
+
+        if(actionDice<0){ //TODO Autofail, set to zeroes and no glitch
+                actionDice=0;
+                result=0;
+            }else {
+                result = dice.rollDice(actionDice,useKarma, actionLimit);
+                //todo update results
+            }
+        TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
+        TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
+        TextView glitchText = (TextView) getActivity().findViewById(R.id.textGlitchStatus);
+        hitsText.setText(String.valueOf(result));
+        diceText.setText(String.valueOf(actionDice));
+        if(dice.isCriticalGlitch){
+            glitchText.setText("CRITICAL GLITCH");
+            glitchText.setTextColor(Color.RED);
+        }else {
+            if (dice.isGlitch) {
+                glitchText.setText("GLITCH");
+                glitchText.setTextColor(Color.RED);
+            } else {
+                glitchText.setText("NO Glitch");
+                glitchText.setTextColor(Color.BLACK);
+            }
+        }
+
         return;// dice.rollDice(Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName())+ Main.data.getStatValue(ma.getLinkedSkill()),false, getLimit(ma));
 
 
