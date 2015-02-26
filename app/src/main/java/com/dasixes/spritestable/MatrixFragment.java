@@ -3,6 +3,7 @@ package com.dasixes.spritestable;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//TODO: Leader/Assistant dropdown interactions are wonky
+//TODO: Assistant dice not always updating correctly.  Maybe holdover of previously selected assistants when leader changes?
 public class MatrixFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
 
@@ -36,8 +38,44 @@ public class MatrixFragment extends Fragment {
     //Spinner to pick action?
 
 
-public void UpdateActions(List<String> activeAssistants){
+public void UpdateAssistance(List<Sprite> activeAssistants, boolean includeTechnomancer){
+    //Todo: Calculate penalties for each action from Qualities and spinner
+    //Loop through all actions
+    String assistantDice = "";
+    int actionLimit=0;
+    int actionDice=0;
+    int spriteType=0;
+    int spriteRating =0;
 
+    for(MatrixActions ma :Main.data.pvMatrixActions){
+        assistantDice="";
+        //Loop through assistants for each action
+        for(Sprite assistantSprite: activeAssistants){
+            spriteType = assistantSprite.getSpriteType();
+            spriteRating = assistantSprite.getSpriteType();
+            actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
+            actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
+            if(actionDice>=1){//Only add if it can help
+                if(assistantDice.length()>1){
+                    assistantDice+=", ";
+                }
+                assistantDice+="("+actionDice+")["+actionLimit+"]";
+            }
+        }
+        if(includeTechnomancer){
+            if(assistantDice.length()>1){
+                assistantDice+=", ";
+            }
+            actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
+            actionLimit=GetLimit(ma.getLimitType());
+            assistantDice+="("+actionDice+")["+actionLimit+"]";
+        }
+        if(assistantDice.length()==0){assistantDice="nothing";};
+        LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
+        LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
+        Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
+        btnAssist.setText("Roll " + assistantDice +" to assist.");
+    }
 }
     public int GetLimit(int limitType){
         switch (limitType){
@@ -114,7 +152,7 @@ public void UpdateActions(List<String> activeAssistants){
         return spriteRating;
     }
 public void UpdateLeader(boolean isTechnomancer){
-    //Todo: Calculate penalties for each action from Qualites and spinner
+    //Todo: Calculate penalties for each action from Qualities and spinner
     Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
     MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
 
@@ -154,16 +192,15 @@ public void UpdateLeader(boolean isTechnomancer){
                 currentRow.setVisibility(View.VISIBLE);
             }
         }
-        btnAction.setText(ma.getActionName() + " (" + actiondice +") [" + actionLimit + "]");
+        if(actiondice==0){
+            btnAction.setText(ma.getActionName() + " No Roll");
+        }else {
+            btnAction.setText(ma.getActionName() + " (" + actiondice + ")[" + actionLimit + "]");
+        }
     }
     String[] arrayAssistance = new String[Main.data.pvSpriteList.size()];
     arrayAssistance=assistants.toArray(arrayAssistance);
     spAssistance.setItems(arrayAssistance);
-
-//Todo: Calculate limits for rolls, add in [] to Skill button
-    //newRow.getChildCount()
-    //newRow.getChildAt(i)
-
 
 }
 
@@ -291,17 +328,21 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
     }
 
 }
-    public int getAssistantDice(MatrixActions ma, List<String> assistants){
+    public int getAssistantDice(MatrixActions ma, List<Integer> assistants){
         //TODO: Calculate Assistant dice
         //newRow.getChildCount()
         //newRow.getChildAt(i)
+        String DiceTotal="";
+      //  for(String assistant: assistants) {
+
+           // DiceTotal+= GetSpriteActionDice(ma, assistant);
+      //  }
         return 0;
     }
 
-    public void rollAssistance(MatrixActions ma, List<String> assistants){
+    public void rollAssistance(MatrixActions ma){
         //TODO: Roll dice
         //Update Limits, Update ActionDice
-
     }
 
     @Override
@@ -320,8 +361,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         //TODO: One service = Assist Threading = + dice pool by level
 
 
-        Spinner spLeader = (Spinner) v.findViewById(R.id.spLeader);
-        MultiSelectionSpinner spAssistance = (MultiSelectionSpinner) v.findViewById(R.id.spAssistance);
+        final Spinner spLeader = (Spinner) v.findViewById(R.id.spLeader);
+        final MultiSelectionSpinner spAssistance = (MultiSelectionSpinner) v.findViewById(R.id.spAssistance);
         List<String> aa =  new ArrayList<String>(Main.data.pvSpriteList);
         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, aa);
         adp1.add("Technomancer");
@@ -339,6 +380,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                             if (position != Main.data.pvActiveSpriteId) {
                                 Main.data.pvActiveSpriteId = position;
                                 // UpdateLeaderSkills and Active Actions();
+                                List<Integer> listAssistants=new ArrayList<Integer>(spAssistance.getSelectedIndicies());
                                 UpdateLeader(false);
                             }
                         }
@@ -361,8 +403,23 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         spAssistance.setOnMultiSpinnerListener(
                 new MultiSelectionSpinner.MultiSpinnerListener() {
                     public void onItemsSelected(List<String> selected) {
-                        List<String> selectedAssistants = selected;
-                        UpdateActions(selectedAssistants);
+
+                        List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
+                        List<Sprite> selectedAssistants= new ArrayList<Sprite>();
+                        boolean includeTechnomancer=false;
+                        if(spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size()) {//It's the technomancer
+
+                        }else {//Add the technomancer, remove the leader
+                            if(spLeader.getSelectedItemPosition()!=tempSelectedAssistants.size()) {
+                                tempSelectedAssistants.remove(spLeader.getSelectedItemPosition());
+                            }
+                            includeTechnomancer=true;
+                        }
+                        for(int i: spAssistance.getSelectedIndicies()){
+                            selectedAssistants.add(tempSelectedAssistants.get(i));
+                        }
+                        UpdateAssistance(selectedAssistants, includeTechnomancer);
+
                         //TODO: Update assistance dice
                     }
 
@@ -441,16 +498,21 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             newRow.setBackgroundColor(bgColor);
 
 
+            DisplayMetrics dm = new DisplayMetrics();
+            getActivity().getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int width = dm.widthPixels ;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width/4,150);
 
             //TODO: Button to roll action  Needs listener to call dice rolling function
             Button btnAction = new Button(v.getContext(), null, android.R.attr.buttonStyleSmall);
             int actiondice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
             btnAction.setText(ma.getActionName() + " ("+ actiondice +")");
             btnAction.setTag("Action" + ma.getActionName());
-            btnAction.setHeight(75);
-            btnAction.setWidth(125);
+            //btnAction.setHeight(75);
+            //btnAction.setWidth(150);
             btnAction.setTextSize(8);
             btnAction.setMaxLines(3);
+            btnAction.setLayoutParams(params);
             newRow.addView(btnAction);
 
 //todo text for number of dice
@@ -458,21 +520,20 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             //TODO: Button to roll assistance (grey itself and checkbox out after doing it, decrement services, add dice and limit to roll)
             Button btnAssist= new Button(v.getContext(), null, android.R.attr.buttonStyleSmall);
             btnAssist.setTag("Assist" + ma.getActionName());
-            btnAssist.setHeight(75);
-            btnAssist.setWidth(100);
+            //btnAssist.setHeight(75);
+            //btnAssist.setWidth(150);
+            btnAssist.setLayoutParams(params);
             btnAssist.setTextSize(8);
-            btnAssist.setMaxLines(2);
-
-            btnAssist.setText("Roll "+ getAssistantDice(ma, assistants) +" to Assist");
+            btnAssist.setMaxLines(3);
+            List<Integer> listAssistants  =new ArrayList<Integer>(spAssistance.getSelectedIndicies());
 
             newRow.addView(btnAssist);
             final MatrixActions action=ma;
-            final List<String> ActionAssistants=new ArrayList<String>(assistants);
             btnAssist.setOnClickListener(new View.OnClickListener() {
 
                                              @Override
                                              public void onClick(View v) {
-                                                rollAssistance(action,  ActionAssistants);
+                                                rollAssistance(action);
                                              }
                                          });
 
