@@ -78,16 +78,26 @@ public class MatrixActions {
     private String  OpposedSkill = "";
     private Integer  ActionType = 0;
     private Integer LimitType = -1;
+    private Integer AssistDiceBonus=0;
 
-    public Integer getRowId() {
-        return RowId;
+    public Integer getAssistDiceBonus() {
+        return AssistDiceBonus;
     }
 
-    public void setRowId(Integer rowId) {
-        RowId = rowId;
+    public void setAssistDiceBonus(Integer assistDice) {
+        AssistDiceBonus = assistDice;
     }
 
-    private Integer RowId=0;
+    public Integer getAssistLimitBonus() {
+        return AssistLimitBonus;
+    }
+
+    public void setAssistLimitBonus(Integer assistLimit) {
+        AssistLimitBonus = assistLimit;
+    }
+
+    private Integer AssistLimitBonus=0;
+
 
     public Integer getActionType() {
         return ActionType;

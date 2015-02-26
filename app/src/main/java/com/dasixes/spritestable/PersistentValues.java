@@ -147,6 +147,7 @@ public Integer getSkillValue(String Name, String Specialization){
             return (value+2);
         }
     }
+    //TODO: Handle qualities that modify skills
     return value;
 }
 
