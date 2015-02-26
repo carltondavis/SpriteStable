@@ -79,6 +79,16 @@ public class MatrixActions {
     private Integer  ActionType = 0;
     private Integer LimitType = -1;
 
+    public Integer getRowId() {
+        return RowId;
+    }
+
+    public void setRowId(Integer rowId) {
+        RowId = rowId;
+    }
+
+    private Integer RowId=0;
+
     public Integer getActionType() {
         return ActionType;
     }
