@@ -2,6 +2,7 @@ package com.dasixes.spritestable;
 //TODO: HouseRule: Track matrix action usage, sort by frequency
 //TODO: Assist button is wonky when page first loads and no assistants are chosen, acts like techonmancer is assisting?
 //TODO: Nobody can default on Electronic Warfare, Hardware, or Software
+//TODO: Used Karma isn't updating correctly
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

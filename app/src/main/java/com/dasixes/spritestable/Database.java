@@ -97,7 +97,7 @@ public class Database extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
 
 
     public Database(Context context) {
@@ -273,6 +273,7 @@ public class Database extends SQLiteOpenHelper {
         AddStat(database,  "Reaction");
         AddStat(database,  "Resonance");
         AddStat(database,  "Karma");
+        AddStat(database,  "KarmaUsed",0);
         AddStat(database, "Stun",0);
         AddStat(database, "Physical",0);
         AddStat(database, "HoursThisSession",0);
