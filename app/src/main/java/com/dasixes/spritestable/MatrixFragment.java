@@ -437,7 +437,11 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
             Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
             UpdateAssistance(); //Reset all the other assistance buttons
-            btnAssist.setText("Bonus: (+" + assistDiceBonus+ ")[+"+assistLimitBonus+"]");
+            if(assistLimitBonus==-1){
+                btnAssist.setText("Bonus: (+" + assistDiceBonus + ")[GLITCH]");
+            }else {
+                btnAssist.setText("Bonus: (+" + assistDiceBonus + ")[+" + assistLimitBonus + "]");
+            }
             btnAssist.setTextColor(Color.RED);
             btnAssist.setClickable(false);
         //TODO: Disable Assist button, change text to reflect increased dice and limit (+4)[+2]
@@ -455,10 +459,6 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         Dice dice = new Dice();
         int result=0;
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
-            LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
-            LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
-            Button btnAction = (Button) currentRow.findViewWithTag("Action" + ma.getActionName());
-            Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
         //Reset assistant buttons
             UpdateAssistance();
 
