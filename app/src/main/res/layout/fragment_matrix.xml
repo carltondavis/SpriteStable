@@ -58,6 +58,7 @@
                 android:layout_below="@+id/textHitsResult"
                 android:layout_alignParentLeft="true"/>
 
+
             <TextView
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
@@ -130,6 +131,32 @@
                 android:layout_alignBottom="@+id/npDieModifier"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"/>
+
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Push the Limit"
+                android:id="@+id/CheckKarma"
+
+                android:checked="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+
+                android:layout_below="@+id/spAssistance" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Second&#10;Chance"
+                android:textSize="8dp"
+                android:enabled="false"
+                android:visibility="invisible"
+                android:maxLines="2"
+                android:id="@+id/SecondChance"
+                android:layout_toRightOf="@+id/CheckKarma"
+                android:layout_alignBottom="@+id/CheckKarma" />
         </RelativeLayout>
 
 <ScrollView

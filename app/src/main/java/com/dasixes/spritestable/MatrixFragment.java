@@ -1,5 +1,7 @@
 package com.dasixes.spritestable;
-
+//TODO: HouseRule: Track matrix action usage, sort by frequency
+//TODO: Assist button is wonky when page first loads and no assistants are chosen, acts like techonmancer is assisting?
+//TODO: Nobody can default on Electronic Warfare, Hardware, or Software
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
@@ -40,6 +43,13 @@ public void UpdateAssistance(){
     //Loop through all actions
     Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
     MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
+    CheckBox checkKarma = (CheckBox) getActivity().findViewById(R.id.CheckKarma);
+    Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
+
+    checkKarma.setChecked(false);
+
+
+
 
     List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
     List<Sprite> activeAssistants= new ArrayList<Sprite>();
@@ -364,6 +374,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
+        CheckBox checkKarma = (CheckBox) getActivity().findViewById(R.id.CheckKarma);
 
         List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
         List<Sprite> activeAssistants= new ArrayList<Sprite>();
@@ -429,6 +440,21 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                     }
                 }
                 assistDiceBonus+=result;
+               /* if(checkKarma.isChecked()){
+                    Main.data.addStatValue("KarmaUsed", 1);
+                    checkKarma.setChecked(false);
+                }
+                if(Main.data.getStatValue("KarmaUsed")>=Main.data.getStatValue("Karma")){
+                    secondChance.setEnabled(false);
+                    secondChance.setVisibility(View.INVISIBLE);
+                    checkKarma.setEnabled(false);
+                }else{
+                    secondChance.setEnabled(true);
+                    secondChance.setVisibility(View.VISIBLE);
+                    checkKarma.setEnabled(true);
+                }*/
+
+
 
             }
             if(assistantDice.length()==0){assistantDice="nothing";};
@@ -443,7 +469,6 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             }
             btnAssist.setTextColor(Color.RED);
             btnAssist.setClickable(false);
-        //TODO: Disable Assist button, change text to reflect increased dice and limit (+4)[+2]
 
         Main.data.setMatrixActionAssistDice(ma.getActionName(), assistDiceBonus);
         Main.data.setMatrixActionAssistLimit(ma.getActionName(), assistLimitBonus);
@@ -457,7 +482,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
     public void rollAction(MatrixActions ma){
         NumberPicker npDieModifier= (NumberPicker) getActivity().findViewById(R.id.npDieModifier);
         NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
-//TODO: Limit modifier doesn't work when limit reduced below 1
+        CheckBox checkKarma = (CheckBox) getActivity().findViewById(R.id.CheckKarma);
+        Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
 
         Dice dice = new Dice();
         int result=0;
@@ -473,14 +499,25 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
                 //Todo: Calculate penalties for each action from Qualities
                 //TODO: Remember karma use when character is leading
-
+                if(checkKarma.isChecked()){
+                    Main.data.addStatValue("KarmaUsed", 1);
+                    checkKarma.setChecked(false);
+                }
+                if(Main.data.getStatValue("KarmaUsed")>=Main.data.getStatValue("Karma")){
+                    secondChance.setEnabled(false);
+                    secondChance.setVisibility(View.INVISIBLE);
+                    checkKarma.setEnabled(false);
+                }else{
+                    secondChance.setEnabled(true);
+                    secondChance.setVisibility(View.VISIBLE);
+                    checkKarma.setEnabled(true);
+                }
             }else{
                 int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
                 int spriteRating = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
                 actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
                 actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
             }
-        //TODO: Assistance dice and limits aren't persisting.
 
         actionDice+=Main.data.getMatrixActionAssistDice(ma.getActionName());
 
@@ -490,15 +527,13 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         if(Main.data.getMatrixActionAssistLimit(ma.getActionName())>0){
             actionLimit+=Main.data.getMatrixActionAssistLimit(ma.getActionName());
         }
-//Todo: include limit modifier for rolls from spinner
         actionDice+= npDieModifier.getValue()-20;
         actionLimit+= npLimitModifier.getValue()-10;
-        if(actionDice<0){ //TODO Autofail, set to zeroes and no glitch
+        if(actionDice<0){
                 actionDice=0;
                 result=0;
             }else {
-                result = dice.rollDice(actionDice,useKarma, actionLimit);
-                //todo update results
+                result = dice.rollDice(actionDice,checkKarma.isChecked(), actionLimit);
             }
         TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
         TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
@@ -525,6 +560,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_matrix, container, false);
         Main = (MainActivity)getActivity();
 
@@ -540,6 +576,30 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 //TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
         //TODO: One service = Assist Threading = + dice pool by level
 
+        final Button secondChance = (Button) v.findViewById(R.id.SecondChance);
+        final CheckBox checkKarma = (CheckBox) v.findViewById(R.id.CheckKarma);
+        secondChance.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Dice dice = new Dice();
+                //TODO: Store limit somewhere for second chance option
+                TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
+                TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
+                //Re-roll failures
+                //TODO: Re-roll failures for technomancer assistant
+                //TODO: Re-roll failures for sprite assistant
+                int newDice = Integer.valueOf( diceText.getText().toString()) - Integer.valueOf( hitsText.getText().toString());
+                int result = dice.rollDice(newDice,false);
+                hitsText.setText(String.valueOf(result + Integer.valueOf( hitsText.getText().toString()) ));
+                Main.data.addStatValue("KarmaUsed",1);
+                secondChance.setVisibility(View.INVISIBLE);
+                secondChance.setEnabled(false);
+                if(Main.data.getStatValue("KarmaUsed")>=Main.data.getStatValue("Karma")){
+                    checkKarma.setEnabled(false);
+                }
+            }
+        });
 
         final Spinner spLeader = (Spinner) v.findViewById(R.id.spLeader);
         final MultiSelectionSpinner spAssistance = (MultiSelectionSpinner) v.findViewById(R.id.spAssistance);
@@ -630,18 +690,15 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         npLimitMod.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                //TODO: Update Limit mod for Technomancer
                 int myNewValue = newVal+ minLimitValue;
             }
         });
 
 //TODO: Checkbox for pre-edge
-//Todo: add code to calculate dice pools for assistance rolls
 //Todo: Update Stats for  karma when used
         //Todo: Add box for current damage, so it can be changed on the fly
         //Todo: Update Stats for time so it can be changed on the fly (increment 15  minutes?)
         //Todo: add onResume to refresh from DB
-        //TODO: Add option to enable/disable Threads known
         boolean rowColor = false;
         int bgColor;
 
@@ -729,26 +786,11 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
             rowColor=!rowColor;
         }
+        spLeader.setSelection(0);
+        spLeader.setSelection(spLeader.getCount()-1);
         return v;
     }
-//todo function to get limit for action
-    public int getLimit(MatrixActions ma){
-        switch(ma.getLimitType()){
-            case 1:
-                return Main.data.getStatValue("Charisma");
 
-            case 2:
-                return Main.data.getStatValue("Intuition");
-
-            case 3:
-                return Main.data.getStatValue("Logic");
-
-            case 4:
-                return Main.data.getStatValue("Willpower");
-
-        }
-return 0;
-    }
 
 
 
