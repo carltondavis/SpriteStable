@@ -12,7 +12,7 @@ public class Dice {
     public String rawResult = "";
 
     public int rollDice(int Number, boolean Exploding) {
-        return rollDice(Number, Exploding, -1);
+        return rollDice(Number, Exploding, Number);
     }
     public int rollDie(int Sides){
         Random randomGenerator = new Random();
@@ -46,7 +46,7 @@ public class Dice {
 
         isGlitch = (ones > (Number / 2));
         isCriticalGlitch = isGlitch && (hits == 0);
-        if (Limit > 0 && hits > Limit && !Exploding) {
+        if (hits > Limit && !Exploding) {
             hits = Limit;
         }
         return hits;
