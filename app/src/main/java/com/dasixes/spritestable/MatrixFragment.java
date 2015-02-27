@@ -95,9 +95,8 @@ public void UpdateAssistance(){
         btnAssist.setText("Roll " + assistantDice +" to assist.");
         btnAssist.setTextColor(Color.BLACK);
         btnAssist.setClickable(true);
-
-        Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistDiceBonus(0);
-        Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistLimitBonus(0);
+        Main.data.setMatrixActionAssistDice(ma.getActionName(), 0);
+        Main.data.setMatrixActionAssistLimit(ma.getActionName(), 0);
 
     }
 }
@@ -445,8 +444,12 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             btnAssist.setTextColor(Color.RED);
             btnAssist.setClickable(false);
         //TODO: Disable Assist button, change text to reflect increased dice and limit (+4)[+2]
-        Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistDiceBonus(assistDiceBonus);
-        Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistLimitBonus(assistLimitBonus);
+
+        Main.data.setMatrixActionAssistDice(ma.getActionName(), assistDiceBonus);
+        Main.data.setMatrixActionAssistLimit(ma.getActionName(), assistLimitBonus);
+
+        //Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistDiceBonus(assistDiceBonus);
+        //Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistLimitBonus(assistLimitBonus);
         return;
     }
 
@@ -460,7 +463,6 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         int result=0;
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         //Reset assistant buttons
-            UpdateAssistance();
 
             int actionDice;
             int actionLimit;
@@ -480,11 +482,13 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             }
         //TODO: Assistance dice and limits aren't persisting.
 
-        actionDice+=Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistDiceBonus();
+        actionDice+=Main.data.getMatrixActionAssistDice(ma.getActionName());
 
 
-        if(Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistLimitBonus()>0){
-            actionLimit+=Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistLimitBonus();
+
+
+        if(Main.data.getMatrixActionAssistLimit(ma.getActionName())>0){
+            actionLimit+=Main.data.getMatrixActionAssistLimit(ma.getActionName());
         }
 //Todo: include limit modifier for rolls from spinner
         actionDice+= npDieModifier.getValue()-20;
@@ -513,8 +517,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 glitchText.setTextColor(Color.BLACK);
             }
         }
-
-        return;// dice.rollDice(Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName())+ Main.data.getStatValue(ma.getLinkedSkill()),false, getLimit(ma));
+        UpdateAssistance();
+        return;
 
 
     }

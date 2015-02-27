@@ -180,6 +180,46 @@ public Integer getSkillValue(String Name, String Specialization){
         }
     }
 
+    public Integer getMatrixActionAssistDice(String Name){
+        Integer value=0;
+        for(MatrixActions ma: pvMatrixActions){
+            if(ma.getActionName().toUpperCase().equals(Name.toUpperCase())) {
+                value= ma.getAssistDiceBonus();
+                break;
+            }
+        }
+        return value;
+    }
+
+    public void setMatrixActionAssistDice(String Name, Integer Value){
+        for(MatrixActions ma: pvMatrixActions){
+            if(ma.getActionName().toUpperCase().equals(Name.toUpperCase())) {
+                ma.setAssistDiceBonus(Value);
+                break;
+            }
+        }
+    }
+
+    public Integer getMatrixActionAssistLimit(String Name){
+        Integer value=0;
+        for(MatrixActions ma: pvMatrixActions){
+            if(ma.getActionName().toUpperCase().equals(Name.toUpperCase())) {
+                value= ma.getAssistLimitBonus();
+                break;
+            }
+        }
+        return value;
+    }
+
+    public void setMatrixActionAssistLimit(String Name, Integer Value){
+        for(MatrixActions ma: pvMatrixActions){
+            if(ma.getActionName().toUpperCase().equals(Name.toUpperCase())) {
+                ma.setAssistLimitBonus(Value);
+                break;
+            }
+        }
+    }
+
     public void setStatValue(String Name, Integer Value){
         for(Stats stat: pvStats){
             if(stat.getStatName().equals(Name)) {
