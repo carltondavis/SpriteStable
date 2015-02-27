@@ -361,7 +361,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         Dice dice = new Dice();
 
 
-
+        NumberPicker npDieModifier= (NumberPicker) getActivity().findViewById(R.id.npDieModifier);
+        NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
 
@@ -396,9 +397,9 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
                 actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
                 if(actionDice>=1){//Only add if it can help
-                    //Todo: include Die pool modifier for rolls from spinner
-                    //Todo: include limit modifier for rolls from spinner
-                    result = dice.rollDice(Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName())+ Main.data.getStatValue(ma.getLinkedSkill()),false, getLimit(ma));
+                    actionLimit+= npLimitModifier.getValue()-10;
+                    actionDice+=npDieModifier.getValue()-20;
+                    result = dice.rollDice(actionDice,false, actionLimit);
                     if(result>0&& !dice.isGlitch && assistLimitBonus!=-1) {
                     assistLimitBonus++;
                     }else {
@@ -418,9 +419,9 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 assistantDice+="("+actionDice+")["+actionLimit+"]";
                 //TODO: Remember karma use when character is assisting
                 //Todo: Calculate penalties for each action from Qualities
-                //Todo: include Die pool modifier for rolls from spinner
-                //Todo: include limit modifier for rolls from spinner
-                result = dice.rollDice(Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName())+ Main.data.getStatValue(ma.getLinkedSkill()),false, getLimit(ma));
+                actionDice+= npDieModifier.getValue()-20;
+                actionLimit+= npLimitModifier.getValue()-10;
+                result = dice.rollDice(actionDice,false, actionLimit);
                 if(result>0&& !dice.isGlitch && assistLimitBonus!=-1) {
                     assistLimitBonus++;
                 }else {
@@ -447,6 +448,10 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
 
     public void rollAction(MatrixActions ma){
+        NumberPicker npDieModifier= (NumberPicker) getActivity().findViewById(R.id.npDieModifier);
+        NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
+//TODO: Limit modifier doesn't work when limit reduced below 1
+
         Dice dice = new Dice();
         int result=0;
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
@@ -463,7 +468,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1){//Technomancer
                 actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
                 actionLimit=GetLimit(ma.getLimitType());
-                //Todo: Calculate penalties for each action from Qualities and Spinner
+
+                //Todo: Calculate penalties for each action from Qualities
                 //TODO: Remember karma use when character is leading
 
             }else{
@@ -472,16 +478,17 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
                 actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
             }
-        //Todo: include Die pool modifier for rolls from spinner
+        //TODO: Assistance dice and limits aren't persisting.
+
         actionDice+=Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistDiceBonus();
 
 
-        //Todo include dice and limit mods from any assistance
         if(Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistLimitBonus()>0){
             actionLimit+=Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).getAssistLimitBonus();
         }
 //Todo: include limit modifier for rolls from spinner
-
+        actionDice+= npDieModifier.getValue()-20;
+        actionLimit+= npLimitModifier.getValue()-10;
         if(actionDice<0){ //TODO Autofail, set to zeroes and no glitch
                 actionDice=0;
                 result=0;
