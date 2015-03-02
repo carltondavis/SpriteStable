@@ -133,7 +133,7 @@ public class PersistentValues {
     }
 
 public Integer getSkillValue(String Name, String Specialization){
-    Integer value=0;
+    Integer value=-1;
     long ID=0;
     for(Skills skill: pvSkills){
         if(skill.getSkillName().toUpperCase().equals(Name.toUpperCase())) {
@@ -158,6 +158,21 @@ public Integer getSkillValue(String Name, String Specialization){
                 break;
             }
         }
+    }
+
+    public Integer getDice(String stat, String skill, String action){
+        Integer value=getSkillValue(skill, action);
+        if(value==-1) {
+            String noDefault[]={"Electronic Warfare", "Hardware", "Software"};
+            int size = noDefault.length;
+            for (int i = 0; i < size; i++) {
+                if (noDefault[i].equalsIgnoreCase(skill)) {
+                    return 0;
+                }
+            }
+        }
+
+        return value+getStatValue(stat);
     }
 
     public Integer getStatValue(String Name){

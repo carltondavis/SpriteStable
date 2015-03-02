@@ -1,7 +1,5 @@
 package com.dasixes.spritestable;
 //TODO: HouseRule: Track matrix action usage, sort by frequency
-//TODO: Assist button is wonky when page first loads and no assistants are chosen, acts like techonmancer is assisting?
-//TODO: Nobody can default on Electronic Warfare, Hardware, or Software
 //TODO: Used Edge isn't updating correctly
 //TODO: Add Hot-Sim checkbox, +2 to technomancer rolls when checked
 
@@ -57,16 +55,22 @@ public void UpdateAssistance(){
     List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
     List<Sprite> activeAssistants= new ArrayList<Sprite>();
     boolean includeTechnomancer=false;
-    if(spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size()) {//It's the technomancer
+  /*  if(spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size()) {//Lead by technomancer
 
     }else {//Add the technomancer, remove the leader
-        if(spLeader.getSelectedItemPosition()!=tempSelectedAssistants.size()) {
-            tempSelectedAssistants.remove(spLeader.getSelectedItemPosition());
-        }
-        includeTechnomancer=true;
     }
+    */
+    if(spLeader.getSelectedItemPosition()!=tempSelectedAssistants.size()) {
+        tempSelectedAssistants.remove(spLeader.getSelectedItemPosition());
+    }
+
+
     for(int i: spAssistance.getSelectedIndicies()){
-        activeAssistants.add(tempSelectedAssistants.get(i));
+        if(i==(spLeader.getCount()-2) && spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size() ){
+            includeTechnomancer=true;
+        }else{
+            activeAssistants.add(tempSelectedAssistants.get(i));
+        }
     }
 
     String assistantDice = "";
@@ -94,12 +98,15 @@ public void UpdateAssistance(){
             }
         }
         if(includeTechnomancer){
-            if(assistantDice.length()>1){
-                assistantDice+=", ";
+            actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+            if(actionDice>0) {
+                if (assistantDice.length() > 1) {
+                    assistantDice += ", ";
+                }
+
+                actionLimit = GetLimit(ma.getLimitType());
+                assistantDice += "(" + actionDice + ")[" + actionLimit + "]";
             }
-            actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
-            actionLimit=GetLimit(ma.getLimitType());
-            assistantDice+="("+actionDice+")["+actionLimit+"]";
         }
         if(assistantDice.length()==0){assistantDice="nothing";};
         LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
@@ -210,14 +217,12 @@ public void UpdateLeader(boolean isTechnomancer){
         if(isTechnomancer){
             currentRow.setEnabled(true);
             currentRow.setVisibility(View.VISIBLE);
-            actiondice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
+            actiondice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
             actionLimit=GetLimit(ma.getLimitType());
         }else{
-
             int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
             int spriteRating = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
             actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
-
 
             actiondice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
             if(actiondice==-1){
@@ -228,7 +233,7 @@ public void UpdateLeader(boolean isTechnomancer){
                 currentRow.setVisibility(View.VISIBLE);
             }
         }
-        if(actiondice==0){
+        if(actiondice<=0){
             btnAction.setText(ma.getActionName() + " No Roll");
         }else {
             btnAction.setText(ma.getActionName() + " (" + actiondice + ")[" + actionLimit + "]");
@@ -260,6 +265,7 @@ public void UpdateLeader(boolean isTechnomancer){
             default:
                 return -1;
         }
+        if(skill.equals("Software")||skill.equals("Hardware")||skill.equals("Electronic Warfare")){return -1;}
         return spriteRating-1;
     }
 
@@ -388,10 +394,14 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             if(spLeader.getSelectedItemPosition()!=tempSelectedAssistants.size()) {
                 tempSelectedAssistants.remove(spLeader.getSelectedItemPosition());
             }
-            includeTechnomancer=true;
+
         }
         for(int i: spAssistance.getSelectedIndicies()){
-            activeAssistants.add(tempSelectedAssistants.get(i));
+            if(i==(spLeader.getCount()-2)){
+                includeTechnomancer=true;
+            }else{
+                activeAssistants.add(tempSelectedAssistants.get(i));
+            }
         }
 
         String assistantDice = "";
@@ -427,7 +437,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 if(assistantDice.length()>1){
                     assistantDice+=", ";
                 }
-                actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
+                actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
                 actionLimit=GetLimit(ma.getLimitType());
                 assistantDice+="("+actionDice+")["+actionLimit+"]";
                 //TODO: Remember Edge use when character is assisting
@@ -497,7 +507,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             int actionLimit;
         boolean useEdge=false;
             if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1){//Technomancer
-                actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
+                actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
                 actionLimit=GetLimit(ma.getLimitType());
 
                 //Todo: Calculate penalties for each action from Qualities
@@ -673,7 +683,6 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         npDieModifier.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    //TODO: Update dice for Leader and each Assistant
                 int myNewValue = newVal+ minDieValue;
             }
         });
@@ -735,7 +744,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                     rollAction(action);
                 }
             });
-            int actiondice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
+            int actiondice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
             btnAction.setText(ma.getActionName() + " ("+ actiondice +")");
             btnAction.setTag("Action" + ma.getActionName());
             //btnAction.setHeight(75);
