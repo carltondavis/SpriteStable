@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -43,8 +44,16 @@ public class MainActivity extends FragmentActivity {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                String importfilepath = "/sdcard/My Documents/" + name;
+                String importfilepath = "/sdcard/" + name;
+
                 InputStreamToFile(input, importfilepath);
+
+                ReadXMLFile readXMLFile = new ReadXMLFile();
+                data.ResetDB(this);
+                data.RestoreFromDB(this);
+                readXMLFile.loadFile(importfilepath, this);
+                data.SaveAllToDB();
+                data.RestoreFromDB(this);
             }
             else if (scheme.compareTo(ContentResolver.SCHEME_FILE) == 0) {
                 Uri uri = intent.getData();
