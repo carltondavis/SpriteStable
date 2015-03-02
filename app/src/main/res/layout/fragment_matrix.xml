@@ -137,7 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Push the Limit"
-                android:id="@+id/CheckKarma"
+                android:id="@+id/CheckEdge"
 
                 android:checked="false"
                 android:layout_alignParentLeft="true"
@@ -155,8 +155,8 @@
                 android:visibility="invisible"
                 android:maxLines="2"
                 android:id="@+id/SecondChance"
-                android:layout_toRightOf="@+id/CheckKarma"
-                android:layout_alignBottom="@+id/CheckKarma" />
+                android:layout_toRightOf="@+id/CheckEdge"
+                android:layout_alignBottom="@+id/CheckEdge" />
         </RelativeLayout>
 
 <ScrollView

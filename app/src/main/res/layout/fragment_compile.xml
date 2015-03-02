@@ -109,8 +109,8 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Use Karma for Skill"
-            android:id="@+id/SkillKarma"
+            android:text="Use Edge for Skill"
+            android:id="@+id/SkillEdge"
 
             android:checked="false"
             android:layout_alignParentLeft="true"
@@ -123,13 +123,13 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Use Karma for Drain"
-            android:id="@+id/DrainKarma"
+            android:text="Use Edge for Drain"
+            android:id="@+id/DrainEdge"
 
             android:checked="false"
             android:layout_below="@+id/valuesHours"
-            android:layout_toRightOf="@+id/SkillKarma"
-            android:layout_toEndOf="@+id/SkillKarma" />
+            android:layout_toRightOf="@+id/SkillEdge"
+            android:layout_toEndOf="@+id/SkillEdge" />
 
         <Button
             android:id="@+id/Compile"
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:text="@string/Compile"
             android:layout_gravity="start"
-            android:layout_below="@+id/SkillKarma" />
+            android:layout_below="@+id/SkillEdge" />
 
         <Button
             android:id="@+id/Rest"
@@ -155,7 +155,7 @@
             android:layout_height="wrap_content"
             android:text="Use Service"
             android:id="@+id/buttonUseService"
-        android:layout_below="@+id/SkillKarma"
+        android:layout_below="@+id/SkillEdge"
         android:layout_toRightOf="@+id/Compile"
         android:layout_toEndOf="@+id/Compile" />
 
@@ -171,7 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/CompileSpinnerSpriteType"
-            android:layout_below="@+id/DrainKarma"
+            android:layout_below="@+id/DrainEdge"
             android:layout_toRightOf="@+id/buttonUseService"
             android:layout_toEndOf="@+id/buttonUseService" />
 

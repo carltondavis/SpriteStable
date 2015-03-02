@@ -272,14 +272,14 @@ public class Database extends SQLiteOpenHelper {
         AddStat(database, "Magic", -1);
         AddStat(database,  "Reaction");
         AddStat(database,  "Resonance");
-        AddStat(database,  "Karma");
-        AddStat(database,  "KarmaUsed",0);
+        AddStat(database,  "Edge");
+        AddStat(database,  "EdgeUsed",0);
         AddStat(database, "Stun",0);
         AddStat(database, "Physical",0);
         AddStat(database, "HoursThisSession",0);
         AddStat(database,  "SleeplessHours",0);
         AddStat(database, "ConsecutiveRest",0);
-        AddStat(database, "HoursSinceKarmaRefresh",0);
+        AddStat(database, "HoursSinceEdgeRefresh",0);
 
         AddQuality(database,  "Codeslinger");
         AddQuality(database,  "Focused Concentration");

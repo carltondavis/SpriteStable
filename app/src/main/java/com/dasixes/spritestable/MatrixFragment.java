@@ -2,7 +2,9 @@ package com.dasixes.spritestable;
 //TODO: HouseRule: Track matrix action usage, sort by frequency
 //TODO: Assist button is wonky when page first loads and no assistants are chosen, acts like techonmancer is assisting?
 //TODO: Nobody can default on Electronic Warfare, Hardware, or Software
-//TODO: Used Karma isn't updating correctly
+//TODO: Used Edge isn't updating correctly
+//TODO: Add Hot-Sim checkbox, +2 to technomancer rolls when checked
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -44,10 +46,10 @@ public void UpdateAssistance(){
     //Loop through all actions
     Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
     MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
-    CheckBox checkKarma = (CheckBox) getActivity().findViewById(R.id.CheckKarma);
+    CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
     Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
 
-    checkKarma.setChecked(false);
+    checkEdge.setChecked(false);
 
 
 
@@ -375,7 +377,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
-        CheckBox checkKarma = (CheckBox) getActivity().findViewById(R.id.CheckKarma);
+        CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
 
         List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
         List<Sprite> activeAssistants= new ArrayList<Sprite>();
@@ -428,7 +430,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
                 actionLimit=GetLimit(ma.getLimitType());
                 assistantDice+="("+actionDice+")["+actionLimit+"]";
-                //TODO: Remember karma use when character is assisting
+                //TODO: Remember Edge use when character is assisting
                 //Todo: Calculate penalties for each action from Qualities
                 actionDice+= npDieModifier.getValue()-20;
                 actionLimit+= npLimitModifier.getValue()-10;
@@ -441,18 +443,18 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                     }
                 }
                 assistDiceBonus+=result;
-               /* if(checkKarma.isChecked()){
-                    Main.data.addStatValue("KarmaUsed", 1);
-                    checkKarma.setChecked(false);
+               /* if(checkEdge.isChecked()){
+                    Main.data.addStatValue("EdgeUsed", 1);
+                    checkEdge.setChecked(false);
                 }
-                if(Main.data.getStatValue("KarmaUsed")>=Main.data.getStatValue("Karma")){
+                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
                     secondChance.setEnabled(false);
                     secondChance.setVisibility(View.INVISIBLE);
-                    checkKarma.setEnabled(false);
+                    checkEdge.setEnabled(false);
                 }else{
                     secondChance.setEnabled(true);
                     secondChance.setVisibility(View.VISIBLE);
-                    checkKarma.setEnabled(true);
+                    checkEdge.setEnabled(true);
                 }*/
 
 
@@ -483,7 +485,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
     public void rollAction(MatrixActions ma){
         NumberPicker npDieModifier= (NumberPicker) getActivity().findViewById(R.id.npDieModifier);
         NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
-        CheckBox checkKarma = (CheckBox) getActivity().findViewById(R.id.CheckKarma);
+        CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
         Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
 
         Dice dice = new Dice();
@@ -493,25 +495,25 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
             int actionDice;
             int actionLimit;
-        boolean useKarma=false;
+        boolean useEdge=false;
             if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1){//Technomancer
                 actionDice= Main.data.getStatValue(ma.getLinkedAttribute()) +Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName());
                 actionLimit=GetLimit(ma.getLimitType());
 
                 //Todo: Calculate penalties for each action from Qualities
-                //TODO: Remember karma use when character is leading
-                if(checkKarma.isChecked()){
-                    Main.data.addStatValue("KarmaUsed", 1);
-                    checkKarma.setChecked(false);
+                //TODO: RememberEdge use when character is leading
+                if(checkEdge.isChecked()){
+                    Main.data.addStatValue("EdgeUsed", 1);
+                    checkEdge.setChecked(false);
                 }
-                if(Main.data.getStatValue("KarmaUsed")>=Main.data.getStatValue("Karma")){
+                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
                     secondChance.setEnabled(false);
                     secondChance.setVisibility(View.INVISIBLE);
-                    checkKarma.setEnabled(false);
+                    checkEdge.setEnabled(false);
                 }else{
                     secondChance.setEnabled(true);
                     secondChance.setVisibility(View.VISIBLE);
-                    checkKarma.setEnabled(true);
+                    checkEdge.setEnabled(true);
                 }
             }else{
                 int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
@@ -534,7 +536,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 actionDice=0;
                 result=0;
             }else {
-                result = dice.rollDice(actionDice,checkKarma.isChecked(), actionLimit);
+                result = dice.rollDice(actionDice,checkEdge.isChecked(), actionLimit);
             }
         TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
         TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
@@ -572,13 +574,15 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
         //TODO Push the Limit checkbox
         //TODO Second Chance button
-        //TODO: Remember karma use when character is assisting
+        //TODO: Remember Edge use when character is assisting
 
 //TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
         //TODO: One service = Assist Threading = + dice pool by level
 
+//TODO: Assistant is adding an exta person. Possibly the technomancer?
+
         final Button secondChance = (Button) v.findViewById(R.id.SecondChance);
-        final CheckBox checkKarma = (CheckBox) v.findViewById(R.id.CheckKarma);
+        final CheckBox checkEdge = (CheckBox) v.findViewById(R.id.CheckEdge);
         secondChance.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -593,11 +597,11 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 int newDice = Integer.valueOf( diceText.getText().toString()) - Integer.valueOf( hitsText.getText().toString());
                 int result = dice.rollDice(newDice,false);
                 hitsText.setText(String.valueOf(result + Integer.valueOf( hitsText.getText().toString()) ));
-                Main.data.addStatValue("KarmaUsed",1);
+                Main.data.addStatValue("EdgeUsed",1);
                 secondChance.setVisibility(View.INVISIBLE);
                 secondChance.setEnabled(false);
-                if(Main.data.getStatValue("KarmaUsed")>=Main.data.getStatValue("Karma")){
-                    checkKarma.setEnabled(false);
+                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
+                    checkEdge.setEnabled(false);
                 }
             }
         });
@@ -696,7 +700,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         });
 
 //TODO: Checkbox for pre-edge
-//Todo: Update Stats for  karma when used
+//Todo: Update Stats for  Edge when used
         //Todo: Add box for current damage, so it can be changed on the fly
         //Todo: Update Stats for time so it can be changed on the fly (increment 15  minutes?)
         //Todo: add onResume to refresh from DB

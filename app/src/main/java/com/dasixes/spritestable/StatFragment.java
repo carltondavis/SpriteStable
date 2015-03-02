@@ -25,12 +25,7 @@ public class StatFragment extends Fragment  {
     MultiSelectionSpinner spinnerCompiling;
     MultiSelectionSpinner spinnerRegistering;
 
-//TODO Add Load Chummer File Button
-    //TODO: Pick file
-    //TODO: Clear out existing Character PV values
-    //TODO: Parse data object into PV object
-    //TODO: Convert Quality Build Points into my levels.
-
+//
 //Todo add multiple character option
 //Todo add a Spirit/Mage handler option
 //Display display;// = new Display(getActivity());
@@ -118,12 +113,12 @@ public class StatFragment extends Fragment  {
         CreateListener(R.id.editResonance, Main.data.getStatValue("Resonance"), v);
         CreateListener(R.id.editStun, Main.data.getStatValue("Stun"), v);
         CreateListener(R.id.editPhysical, Main.data.getStatValue("Physical"), v);
-        CreateListener(R.id.editKarma, Main.data.getStatValue("Karma"), v);
-        CreateListener(R.id.editKarmaUsed, Main.data.getStatValue("KarmaUsed"), v);
+        CreateListener(R.id.editEdge, Main.data.getStatValue("Edge"), v);
+        CreateListener(R.id.editEdgeUsed, Main.data.getStatValue("EdgeUsed"), v);
         CreateListener(R.id.editConsecutiveHoursRested, Main.data.getStatValue("ConsecutiveRest"), v);
         CreateListener(R.id.editHoursWithoutSleep, Main.data.getStatValue("SleeplessHours"), v);
         CreateListener(R.id.editHoursThisSession, Main.data.getStatValue("HoursThisSession"), v);
-        CreateListener(R.id.editHoursSinceKarmaRefresh, Main.data.getStatValue("HoursSinceKarmaRefresh"), v);
+        CreateListener(R.id.editHoursSinceEdgeRefresh, Main.data.getStatValue("HoursSinceEdgeRefresh"), v);
 //        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
 
 
@@ -220,30 +215,30 @@ public class StatFragment extends Fragment  {
     }
 
     private void UpdateCheckBoxes() {
-        CheckBox checkDrain = (CheckBox) getActivity().findViewById(R.id.DrainKarma);
+        CheckBox checkDrain = (CheckBox) getActivity().findViewById(R.id.DrainEdge);
         if(checkDrain!=null) {
-            CheckBox checkSkill = (CheckBox) getActivity().findViewById(R.id.SkillKarma);
+            CheckBox checkSkill = (CheckBox) getActivity().findViewById(R.id.SkillEdge);
             if (checkDrain.isChecked()) {
-                if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
+                if (Main.data.getStatValue("EdgeUsed") < (Main.data.getStatValue("Edge") - 1)) {
                     checkSkill.setEnabled(true);
                 } else {
                     checkSkill.setEnabled(false);
                 }
             } else {
-                if (Main.data.getStatValue("KarmaUsed") < Main.data.getStatValue("Karma")) {
+                if (Main.data.getStatValue("EdgeUsed") < Main.data.getStatValue("Edge")) {
                     checkSkill.setEnabled(true);
                 } else {
                     checkSkill.setEnabled(false);
                 }
             }
             if (checkSkill.isChecked()) {
-                if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
+                if (Main.data.getStatValue("EdgeUsed") < (Main.data.getStatValue("Edge") - 1)) {
                     checkDrain.setEnabled(true);
                 } else {
                     checkDrain.setEnabled(false);
                 }
             } else {
-                if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma"))) {
+                if (Main.data.getStatValue("EdgeUsed") < (Main.data.getStatValue("Edge"))) {
                     checkDrain.setEnabled(true);
                 } else {
                     checkDrain.setEnabled(false);
@@ -312,14 +307,14 @@ public class StatFragment extends Fragment  {
                         UpdateDamage();
 
                     break;
-                case R.id.editKarma:
-        UpdateStat("Karma", value);
+                case R.id.editEdge:
+        UpdateStat("Edge", value);
                         //Change checkboxes
                         UpdateCheckBoxes();
 
                     break;
-                case R.id.editKarmaUsed:
-        UpdateStat("KarmaUsed", value);
+                case R.id.editEdgeUsed:
+        UpdateStat("EdgeUsed", value);
                     //Change checkboxes
                     UpdateCheckBoxes();
 
@@ -339,8 +334,8 @@ public class StatFragment extends Fragment  {
                 case R.id.editHoursWithoutSleep:
         UpdateStat("HoursWithoutSleep", value);
                     break;
-                case R.id.editHoursSinceKarmaRefresh:
-        UpdateStat("HoursSinceKarmaRefresh", value);
+                case R.id.editHoursSinceEdgeRefresh:
+        UpdateStat("HoursSinceEdgeRefresh", value);
                     break;
             }
         }

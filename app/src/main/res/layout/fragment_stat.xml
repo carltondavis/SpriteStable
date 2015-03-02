@@ -136,14 +136,14 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/editKarma" />
+                android:id="@+id/editEdge" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Karma"
-                android:id="@+id/textKarma"/>
+                android:text="Edge"
+                android:id="@+id/textEdge"/>
         </TableRow>
         <TableRow
             android:id="@+id/tableRow6"
@@ -156,14 +156,14 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/editKarmaUsed" />
+                android:id="@+id/editEdgeUsed" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Karma Used"
-                android:id="@+id/textKarmaUsed" />
+                android:text="Edge Used"
+                android:id="@+id/textEdgeUsed" />
 
         </TableRow>
         <TableRow
@@ -349,14 +349,14 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:id="@+id/editHoursSinceKarmaRefresh"/>
+                android:id="@+id/editHoursSinceEdgeRefresh"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Hours Since Karma Refresh"
-                android:id="@+id/textHoursSinceKarmaRefresh" />
+                android:text="Hours Since Edge Refresh"
+                android:id="@+id/textHoursSinceEdgeRefresh" />
 
         </TableRow>
 

@@ -26,8 +26,8 @@ import android.widget.Toast;
 //ToDo Add Post-edge buttons for skill and drain. Set minimum number of hits desired for roll, re-roll failures and subtract edge if that number not met. Use Toast if edge used this way
 //Fancy UI:
 
-//Todo karma regen after 8 hours consecutive rest
-//todo test consecutive rest karma reset
+//Todo Edge regen after 8 hours consecutive rest
+//todo test consecutive rest Edge reset
 //ToDo Add penalty popup warnings  Add Total Penalty display, tap it to have a toast pop up listing sources of penalties
 //Todo add Toast for disabled buttons explaining why they're disabled
 //Todo Someday Add statistics for rolls to include actual percentage chance of something happening to warnings
@@ -92,11 +92,11 @@ public class CompileFragment extends Fragment {
         compileButton.setEnabled(IsConscious());
         if(Main.data.getCurrentSprite().getServicesOwed()>0){compileButton.setText("Register");}else{compileButton.setText("Compile");}
 
-        final CheckBox checkDrainKarma = (CheckBox) v.findViewById(R.id.DrainKarma);
-        checkDrainKarma.setEnabled(Main.data.getStatValue("KarmaUsed")<Main.data.getStatValue("Karma"));
+        final CheckBox checkDrainEdge = (CheckBox) v.findViewById(R.id.DrainEdge);
+        checkDrainEdge.setEnabled(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge"));
 
-        final CheckBox checkSkillKarma = (CheckBox) v.findViewById(R.id.SkillKarma);
-        checkSkillKarma.setEnabled(Main.data.getStatValue("KarmaUsed")<Main.data.getStatValue("Karma"));
+        final CheckBox checkSkillEdge = (CheckBox) v.findViewById(R.id.SkillEdge);
+        checkSkillEdge.setEnabled(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge"));
 
         final TextView valueHours = (TextView) v.findViewById(R.id.valuesHours);
         valueHours.setText(String.valueOf(Main.data.getStatValue("HoursThisSession")));
@@ -220,18 +220,18 @@ public void onClick(View v) {
         RestTime=RestTime*2;
         }
         Main.data.addStatValue("HoursThisSession", RestTime);
-        Main.data.addStatValue("HoursSinceKarmaRefresh", RestTime);
+        Main.data.addStatValue("HoursSinceEdgeRefresh", RestTime);
         Main.data.addStatValue("ConsecutiveRest", RestTime);
 
         if (Main.data.getStatValue("ConsecutiveRest") >= 8) {
-        if (Main.data.getStatValue("HoursSinceKarmaRefresh") >= 24 && Main.data.getStatValue("KarmaUsed") > 0) {
-        Main.data.setStatValue("HoursSinceKarmaRefresh", 0);
+        if (Main.data.getStatValue("HoursSinceEdgeRefresh") >= 24 && Main.data.getStatValue("EdgeUsed") > 0) {
+        Main.data.setStatValue("HoursSinceEdgeRefresh", 0);
         if(!Sleepless||Main.data.getQualityValue("Insomnia")==1){
-        Main.data.addStatValue("KarmaUsed",-1);
-        UpdateStatKarmaUsed();
+        Main.data.addStatValue("EdgeUsed",-1);
+        UpdateStatEdgeUsed();
 
-        checkDrainKarma.setEnabled(true);
-        checkSkillKarma.setEnabled(true);
+        checkDrainEdge.setEnabled(true);
+        checkSkillEdge.setEnabled(true);
         }
         }
         Main.data.setStatValue("SleeplessHours", 0);
@@ -243,7 +243,7 @@ public void onClick(View v) {
         }
         });
 //Sleep Button
-//Adds 8 hours, heal stun, regen karma, reset consecutive hours without sleep
+//Adds 8 hours, heal stun, regen Edge, reset consecutive hours without sleep
         Button sleepButton = (Button) v.findViewById(R.id.buttonSleep);
         sleepButton.setOnClickListener(new View.OnClickListener() {
 
@@ -276,25 +276,25 @@ public void onClick(View v) {
 
         //Add hours
         Main.data.addStatValue("HoursThisSession", 8);
-        //If it's been at least 24 hours, refresh karma.
-        if (Main.data.getStatValue("HoursSinceKarmaRefresh") >= 24 && Main.data.getStatValue("KarmaUsed") > 0) {
-        Main.data.setStatValue("HoursSinceKarmaRefresh", 0);
+        //If it's been at least 24 hours, refresh Edge.
+        if (Main.data.getStatValue("HoursSinceEdgeRefresh") >= 24 && Main.data.getStatValue("EdgeUsed") > 0) {
+        Main.data.setStatValue("HoursSinceEdgeRefresh", 0);
         if(!Sleepless||Main.data.getQualityValue("Insomnia")==1) {
-        Main.data.addStatValue("KarmaUsed",-1);
-        UpdateStatKarmaUsed();
-        checkDrainKarma.setEnabled(true);
-        checkSkillKarma.setEnabled(true);
+        Main.data.addStatValue("EdgeUsed",-1);
+        UpdateStatEdgeUsed();
+        checkDrainEdge.setEnabled(true);
+        checkSkillEdge.setEnabled(true);
         }
         }
         Main.data.setStatValue("SleeplessHours" , 0);
-        Main.data.addStatValue("HoursSinceKarmaRefresh", 8);
+        Main.data.addStatValue("HoursSinceEdgeRefresh", 8);
         Main.data.setStatValue("ConsecutiveRest" , 0);
         valueHours.setText(String.valueOf(Main.data.getStatValue("HoursThisSession")));
         }
         });
 
 //Heal Button
-//Adds 24 hours, heal stun or physical, regen karma, reset consecutive hours without sleep
+//Adds 24 hours, heal stun or physical, regen Edge, reset consecutive hours without sleep
         Button healButton = (Button) v.findViewById(R.id.buttonHeal);
         healButton.setOnClickListener(new View.OnClickListener() {
 
@@ -353,23 +353,23 @@ public void onClick(View v) {
 
         //Add hours
 
-        //If it's been at least 24 hours, refresh karma.
-        if (Main.data.getStatValue("HoursSinceKarmaRefresh") >= 24 && Main.data.getStatValue("KarmaUsed") > 0) {
-        Main.data.setStatValue("HoursSinceKarmaRefresh", 0);
+        //If it's been at least 24 hours, refresh Edge.
+        if (Main.data.getStatValue("HoursSinceEdgeRefresh") >= 24 && Main.data.getStatValue("EdgeUsed") > 0) {
+        Main.data.setStatValue("HoursSinceEdgeRefresh", 0);
         if (!Sleepless || Main.data.getQualityValue("Insomnia") == 1) {
-        Main.data.addStatValue("KarmaUsed", -1);
-        UpdateStatKarmaUsed();
-        checkDrainKarma.setEnabled(true);
-        checkSkillKarma.setEnabled(true);
+        Main.data.addStatValue("EdgeUsed", -1);
+        UpdateStatEdgeUsed();
+        checkDrainEdge.setEnabled(true);
+        checkSkillEdge.setEnabled(true);
         }
         }
-        if (Main.data.getStatValue("KarmaUsed") > 0) {
-        Main.data.setStatValue("HoursSinceKarmaRefresh", 0);
+        if (Main.data.getStatValue("EdgeUsed") > 0) {
+        Main.data.setStatValue("HoursSinceEdgeRefresh", 0);
         if (!Sleepless || (Main.data.getQualityValue("Insomnia") == 1)) {
-                Main.data.addStatValue("KarmaUsed", -1);
-        UpdateStatKarmaUsed();
-        checkDrainKarma.setEnabled(true);
-        checkSkillKarma.setEnabled(true);
+                Main.data.addStatValue("EdgeUsed", -1);
+        UpdateStatEdgeUsed();
+        checkDrainEdge.setEnabled(true);
+        checkSkillEdge.setEnabled(true);
         }
         }
         Main.data.setStatValue("SleeplessHours", 0);
@@ -400,39 +400,39 @@ public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         }
         });
 
-        checkDrainKarma.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkDrainEdge.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 @Override
 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-        if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
-        checkSkillKarma.setEnabled(true);
+        if (Main.data.getStatValue("EdgeUsed") < (Main.data.getStatValue("Edge") - 1)) {
+        checkSkillEdge.setEnabled(true);
         } else {
-        checkSkillKarma.setEnabled(false);
+        checkSkillEdge.setEnabled(false);
         }
         } else {
-        if (Main.data.getStatValue("KarmaUsed") < Main.data.getStatValue("Karma")) {
-        checkSkillKarma.setEnabled(true);
+        if (Main.data.getStatValue("EdgeUsed") < Main.data.getStatValue("Edge")) {
+        checkSkillEdge.setEnabled(true);
         } else {
-        checkSkillKarma.setEnabled(false);
+        checkSkillEdge.setEnabled(false);
         }
         }
         }
         });
 
-        checkSkillKarma.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkSkillEdge.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 @Override
 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-        if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
-        checkDrainKarma.setEnabled(true);
+        if (Main.data.getStatValue("EdgeUsed") < (Main.data.getStatValue("Edge") - 1)) {
+        checkDrainEdge.setEnabled(true);
         } else {
-        checkDrainKarma.setEnabled(false);
+        checkDrainEdge.setEnabled(false);
         }
         } else {
-        if (Main.data.getStatValue("KarmaUsed") < Main.data.getStatValue("Karma")) {
-        checkDrainKarma.setEnabled(true);
+        if (Main.data.getStatValue("EdgeUsed") < Main.data.getStatValue("Edge")) {
+        checkDrainEdge.setEnabled(true);
         } else {
-        checkDrainKarma.setEnabled(false);
+        checkDrainEdge.setEnabled(false);
         }
         }
         }
@@ -455,11 +455,11 @@ public void onClick(View v) {
 
         //Make Opposed Dice Roll
         if (Main.data.getCurrentSprite().getServicesOwed() == 0) {//New Sprite, so Compile
-        if(Main.data.DoIHaveBadLuck()&&checkSkillKarma.isChecked()){
-        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties -Main.data.getStatValue("Karma")), false, Main.data.getCurrentSprite().getRating());
+        if(Main.data.DoIHaveBadLuck()&&checkSkillEdge.isChecked()){
+        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties -Main.data.getStatValue("Edge")), false, Main.data.getCurrentSprite().getRating());
         }else{
-        if(checkDrainKarma.isChecked()){
-        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties +Main.data.getStatValue("Karma")), true, Main.data.getCurrentSprite().getRating());
+        if(checkDrainEdge.isChecked()){
+        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties +Main.data.getStatValue("Edge")), true, Main.data.getCurrentSprite().getRating());
         }else{
         NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Compiling", Main.data.getCurrentSprite().getType()) - DamagePenalties), false, Main.data.getCurrentSprite().getRating());
         }
@@ -469,7 +469,7 @@ public void onClick(View v) {
         SpriteRoll = dice.rollDice(Main.data.getCurrentSprite().getRating(), false);
         } else {//Already has services, so Register
         Main.data.addStatValue("HoursThisSession", Main.data.getCurrentSprite().getRating());  //Registering takes hours
-        Main.data.addStatValue("HoursSinceKarmaRefresh", Main.data.getCurrentSprite().getRating());
+        Main.data.addStatValue("HoursSinceEdgeRefresh", Main.data.getCurrentSprite().getRating());
         //TODO Check that this is actually working correctly
         //Check for fatigue before making the roll, no fair registering your sprite before you pass out from sleep exhaustion.
         if (Main.data.getStatValue("SleeplessHours") + Main.data.getCurrentSprite().getRating() >= 24) {//If you've been awake 24 hours you start taking stun.  24, 27, 30, etc hours
@@ -492,11 +492,11 @@ public void onClick(View v) {
         }
         Main.data.addStatValue("SleeplessHours", Main.data.getCurrentSprite().getRating());
 
-        if(Main.data.DoIHaveBadLuck()&&checkSkillKarma.isChecked()){
-        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties -Main.data.getStatValue("Karma")), false, Main.data.getCurrentSprite().getRating());
+        if(Main.data.DoIHaveBadLuck()&&checkSkillEdge.isChecked()){
+        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties -Main.data.getStatValue("Edge")), false, Main.data.getCurrentSprite().getRating());
         }else{
-        if(checkDrainKarma.isChecked()){
-        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties +Main.data.getStatValue("Karma")), true, Main.data.getCurrentSprite().getRating());
+        if(checkDrainEdge.isChecked()){
+        NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties +Main.data.getStatValue("Edge")), true, Main.data.getCurrentSprite().getRating());
         }else{
         NetHits = dice.rollDice((Main.data.getStatValue("Resonance") + Main.data.getSkillValue("Registering", Main.data.getCurrentSprite().getType()) - DamagePenalties), false, Main.data.getCurrentSprite().getRating());
         }
@@ -534,11 +534,11 @@ public void onClick(View v) {
         if(Main.data.getQualityValue("Sensitive System")==1){
         if(dice.rollDice(Main.data.getStatValue("Willpower"),false)<2){SpriteRoll++;}
         }
-        if(Main.data.DoIHaveBadLuck()&&checkDrainKarma.isChecked()){
-        SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") - Main.data.getStatValue("Karma"), false);
+        if(Main.data.DoIHaveBadLuck()&&checkDrainEdge.isChecked()){
+        SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") - Main.data.getStatValue("Edge"), false);
         }else{
-        if(checkDrainKarma.isChecked()){
-        SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") + Main.data.getStatValue("Karma"), true);
+        if(checkDrainEdge.isChecked()){
+        SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") + Main.data.getStatValue("Edge"), true);
         }else{
         SpriteRoll = 2 * SpriteRoll - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower"), false);
         }
@@ -568,15 +568,15 @@ public void onClick(View v) {
         }else{
         Toast.makeText(getActivity(),"You passed out due to exhaustion!", Toast.LENGTH_SHORT).show();
         }
-        if (checkDrainKarma.isChecked()) {
-        Main.data.addStatValue("KarmaUsed",1);
-        UpdateStatKarmaUsed();
-        checkDrainKarma.setChecked(false);
+        if (checkDrainEdge.isChecked()) {
+        Main.data.addStatValue("EdgeUsed",1);
+        UpdateStatEdgeUsed();
+        checkDrainEdge.setChecked(false);
         }
-        if (checkSkillKarma.isChecked()) {
-        Main.data.addStatValue("KarmaUsed",1);
-        UpdateStatKarmaUsed();
-        checkSkillKarma.setChecked(false);
+        if (checkSkillEdge.isChecked()) {
+        Main.data.addStatValue("EdgeUsed",1);
+        UpdateStatEdgeUsed();
+        checkSkillEdge.setChecked(false);
         }
 
         UpdateDisplay();
@@ -586,10 +586,10 @@ public void onClick(View v) {
         return v;
         }
 
-private void UpdateStatKarmaUsed(){
-        EditText ku = (EditText) getActivity().findViewById(R.id.editKarmaUsed);
+private void UpdateStatEdgeUsed(){
+        EditText ku = (EditText) getActivity().findViewById(R.id.editEdgeUsed);
         if(ku!=null){
-        ku.setText(String.valueOf(Main.data.getStatValue("KarmaUsed")));
+        ku.setText(String.valueOf(Main.data.getStatValue("EdgeUsed")));
         }
         }
 
@@ -598,11 +598,11 @@ private void UpdateStatTime(){
         if(chr!=null){
         EditText hws = (EditText) getActivity().findViewById(R.id.editHoursWithoutSleep);
         EditText hts = (EditText) getActivity().findViewById(R.id.editHoursThisSession);
-        EditText hskr = (EditText) getActivity().findViewById(R.id.editHoursSinceKarmaRefresh);
+        EditText hskr = (EditText) getActivity().findViewById(R.id.editHoursSinceEdgeRefresh);
         chr.setText(String.valueOf(Main.data.getStatValue("ConsecutiveRest")));
         hws.setText(String.valueOf(Main.data.getStatValue("SleeplessHours")));
         hts.setText(String.valueOf(Main.data.getStatValue("HoursThisSession")));
-        hskr.setText(String.valueOf(Main.data.getStatValue("HoursSinceKarmaRefresh")));
+        hskr.setText(String.valueOf(Main.data.getStatValue("HoursSinceEdgeRefresh")));
         }
         }
 
@@ -777,29 +777,29 @@ private void UpdateCompileSpriteList() {
 
 
 private void UpdateCheckBoxes() {
-        CheckBox checkDrain = (CheckBox) getActivity().findViewById(R.id.DrainKarma);
-        CheckBox checkSkill = (CheckBox) getActivity().findViewById(R.id.SkillKarma);
+        CheckBox checkDrain = (CheckBox) getActivity().findViewById(R.id.DrainEdge);
+        CheckBox checkSkill = (CheckBox) getActivity().findViewById(R.id.SkillEdge);
         if (checkDrain.isChecked()) {
-        if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
+        if (Main.data.getStatValue("EdgeUsed") < (Main.data.getStatValue("Edge") - 1)) {
         checkSkill.setEnabled(true);
         } else {
         checkSkill.setEnabled(false);
         }
         } else {
-        if (Main.data.getStatValue("KarmaUsed") < Main.data.getStatValue("Karma")) {
+        if (Main.data.getStatValue("EdgeUsed") < Main.data.getStatValue("Edge")) {
         checkSkill.setEnabled(true);
         } else {
         checkSkill.setEnabled(false);
         }
         }
         if (checkSkill.isChecked()) {
-        if (Main.data.getStatValue("KarmaUsed") < (Main.data.getStatValue("Karma") - 1)) {
+        if (Main.data.getStatValue("EdgeUsed") < (Main.data.getStatValue("Edge") - 1)) {
         checkDrain.setEnabled(true);
         } else {
         checkDrain.setEnabled(false);
         }
         } else {
-        if (Main.data.getStatValue("KarmaUsed") < Main.data.getStatValue("Karma")) {
+        if (Main.data.getStatValue("EdgeUsed") < Main.data.getStatValue("Edge")) {
         checkDrain.setEnabled(true);
         } else {
         checkDrain.setEnabled(false);

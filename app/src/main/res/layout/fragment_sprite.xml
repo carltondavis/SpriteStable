@@ -3,8 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.dasixes.spritestable.SpriteFragment"
-    >
-
+        android:background="#ff00fff8"
+        >
 
     <TextView
         android:layout_width="wrap_content"
@@ -138,5 +138,84 @@
         android:layout_below="@+id/textSkills"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Total Hits: "
+        android:layout_below="@+id/textPowers"
+        android:id="@+id/textHits"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="0"
+        android:id="@+id/textHitsResult"
+        android:layout_alignBottom="@+id/textHits"
+        android:layout_toRightOf="@+id/textHits"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="/"
+        android:id="@+id/textDiceRolled"
+        android:layout_alignBottom="@+id/textHitsResult"
+        android:layout_toRightOf="@+id/textHitsResult"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="0"
+        android:id="@+id/textDiceNumber"
+        android:layout_alignBottom="@+id/textHitsResult"
+        android:layout_toRightOf="@+id/textDiceRolled"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="NO Glitch"
+        android:id="@+id/textGlitchStatus"
+        android:layout_below="@+id/textHitsResult"
+        android:layout_alignParentLeft="true"/>
+
+            <Button
+                android:id="@+id/Cookie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cookie"
+                android:layout_gravity="start"
+                android:visibility="invisible"
+                android:layout_below="@+id/textGlitchStatus"/>
+            <Button
+                android:id="@+id/ElectronStorm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Electron Storm"
+                android:layout_gravity="start"
+                android:visibility="invisible"
+                android:layout_below="@+id/textGlitchStatus"/>
+
+            <Button
+                android:id="@+id/Diagnostics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diagnostics"
+                android:layout_gravity="start"
+                android:visibility="invisible"
+                android:layout_below="@+id/textGlitchStatus"/>
+    <Button
+        android:id="@+id/Gremlins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gremlins"
+        android:layout_gravity="start"
+        android:visibility="invisible"
+        android:layout_below="@+id/Diagnostics"/>
+
 
 </RelativeLayout>

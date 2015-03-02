@@ -1,15 +1,24 @@
 
 package com.dasixes.spritestable;
+//TODO: Add results
+//TODO: Add spinners for Dice and Limit mods
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpriteFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
@@ -18,7 +27,6 @@ public class SpriteFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//TODO: Whichever sprite is selected gets set to the stats of whatever sprite was previously selected on this page.
         Main = (MainActivity)getActivity();
     UpdateSpritePage();
     }
@@ -58,6 +66,71 @@ public void onPause() {
                     }
                 });
 
+
+
+        Button btnPowerCookie = (Button) v.findViewById(R.id.Cookie);
+        btnPowerCookie.setText("Cookie Vs. Intuition + Firewall");
+        btnPowerCookie.setTextSize(8);
+        btnPowerCookie.setMaxLines(3);
+        btnPowerCookie.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //TODO: Add Push Limit
+                //Todo: Add Second Chance
+                rollPower(Main.data.getCurrentSprite().getRating()+Main.data.getCurrentSprite().getRating(), (Main.data.getCurrentSprite().getRating() + 3));
+            }
+        });
+
+        //TODO: Display dice and limit
+
+        Button btnPowerElectronStorm = (Button) v.findViewById(R.id.ElectronStorm);
+        btnPowerElectronStorm.setText("Electron Storm Vs. Intuition + Firewall");
+        btnPowerElectronStorm.setTextSize(8);
+        btnPowerElectronStorm.setMaxLines(3);
+        btnPowerElectronStorm.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //TODO: Add Push Limit
+                //Todo: Add Second Chance
+                rollPower(Main.data.getCurrentSprite().getRating()*2, (Main.data.getCurrentSprite().getRating() + 3));
+            }
+        });
+
+        //TODO: Display dice and limit
+
+
+        Button btnPowerDiagnostics = (Button) v.findViewById(R.id.Diagnostics);
+        btnPowerDiagnostics.setText("Diagnostics Vs. No Opposed Roll");
+        btnPowerDiagnostics.setTextSize(8);
+        btnPowerDiagnostics.setMaxLines(3);
+        btnPowerDiagnostics.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //TODO: Add Push Limit
+                //Todo: Add Second Chance
+                rollPower(Main.data.getCurrentSprite().getRating()*2, (Main.data.getCurrentSprite().getRating() + 3));
+            }
+        });
+
+
+        Button btnPowerGremlins =(Button) v.findViewById(R.id.Gremlins);
+        btnPowerGremlins.setText("Gremlins Vs. Device Rating + Firewall");
+        btnPowerGremlins.setTextSize(8);
+        btnPowerGremlins.setMaxLines(3);
+        btnPowerGremlins.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //TODO: Add Push Limit
+                //Todo: Add Second Chance
+                rollPower(Main.data.getCurrentSprite().getRating()*2, (Main.data.getCurrentSprite().getRating() + 1));
+            }
+        });
+
+
         UpdateSpritePage();
         return v;
     }
@@ -85,7 +158,19 @@ public void onPause() {
         //data.SaveAllToDB();Infinite loop
 
     }
+public void hideAllPowers(){
+    Button Cookie = (Button) getActivity().findViewById(R.id.Cookie);
+    Cookie.setVisibility(View.INVISIBLE);
 
+    Button ElectronStorm = (Button) getActivity().findViewById(R.id.ElectronStorm);
+    ElectronStorm.setVisibility(View.INVISIBLE);
+
+    Button Diagnostics = (Button) getActivity().findViewById(R.id.Diagnostics);
+    Diagnostics.setVisibility(View.INVISIBLE);
+
+    Button Gremlins = (Button) getActivity().findViewById(R.id.Gremlins);
+    Gremlins.setVisibility(View.INVISIBLE);
+}
 
     public void UpdateSpritePage() {
         //Log.i("Sprite", " Update Sprite Page");
@@ -103,6 +188,7 @@ public void onPause() {
             evRegistered.setChecked(Main.data.getCurrentSprite().getRegistered() == 1);
         }
 */
+
         final TextView tvAttack = (TextView) getActivity().findViewById(R.id.textAttack);
         final TextView tvSleaze = (TextView) getActivity().findViewById(R.id.textSleaze);
         final TextView tvDataProcessing = (TextView) getActivity().findViewById(R.id.textDataProcessing);
@@ -115,11 +201,15 @@ public void onPause() {
         final TextView tvGOD = (TextView) getActivity().findViewById(R.id.textGOD);
         final TextView tvServices = (TextView) getActivity().findViewById(R.id.textServices);
         final TextView tvDamage = (TextView) getActivity().findViewById(R.id.textDamage);
+
+
         if(tvInitiativeDice!=null){
             tvInitiativeDice.setText("+4D6");
             tvGOD.setText("GOD Score: " + Main.data.getCurrentSprite().getGODScore());
             tvServices.setText("Services: " + (Main.data.getCurrentSprite().getServicesOwed()));
             tvDamage.setText("Damage: " + (Main.data.getCurrentSprite().getCondition()));
+
+            hideAllPowers();
 
             switch (Main.data.getCurrentSprite().getSpriteType()) {
             case 1://Courier
@@ -131,6 +221,12 @@ public void onPause() {
                 tvResonance.setText("Resonance: " + Main.data.getCurrentSprite().getRating());
                 tvSkills.setText("Skills: Computer, Hacking");
                 tvPowers.setText("Powers: Cookie, Hash");
+                if(Main.data.getCurrentSprite().getServicesOwed()>0) {
+                    Button Cookie = (Button) getActivity().findViewById(R.id.Cookie);
+                    Cookie.setText("Cookie (" + (Main.data.getCurrentSprite().getRating() * 2) + ")[" + (Main.data.getCurrentSprite().getRating() + 3) + "] Vs. Intuition + Firewall");
+                    Cookie.setVisibility(View.VISIBLE);
+                }
+
                 break;
             case 2: //Crack
                 tvAttack.setText("Attack: " + Main.data.getCurrentSprite().getRating());
@@ -161,6 +257,13 @@ public void onPause() {
                 tvResonance.setText("Resonance: " + Main.data.getCurrentSprite().getRating());
                 tvSkills.setText("Skills: Computer, Cybercombat, Hacking");
                 tvPowers.setText("Powers: Electron Storm");
+
+                if(Main.data.getCurrentSprite().getServicesOwed()>0) {
+                    Button ElectronStorm = (Button) getActivity().findViewById(R.id.ElectronStorm);
+                    ElectronStorm.setText("Electron Storm (" + (Main.data.getCurrentSprite().getRating() * 2) + ")[" + (Main.data.getCurrentSprite().getRating() + 3) + "] Vs. Intuition + Firewall");
+                    ElectronStorm.setVisibility(View.VISIBLE);
+                }
+
                 break;
             case 5: //Machine
                 tvAttack.setText("Attack: " + (Main.data.getCurrentSprite().getRating() + 1));
@@ -171,7 +274,55 @@ public void onPause() {
                 tvResonance.setText("Resonance: " + Main.data.getCurrentSprite().getRating());
                 tvSkills.setText("Skills: Computer, Electronic Warfare, Hardware");
                 tvPowers.setText("Powers: Diagnostics, Gremlins, Stability");
+
+                if(Main.data.getCurrentSprite().getServicesOwed()>0) {
+                    Button Diagnostics = (Button) getActivity().findViewById(R.id.Diagnostics);
+                    Diagnostics.setText("Diagnostics (" + (Main.data.getCurrentSprite().getRating() * 2) + ")[" + (Main.data.getCurrentSprite().getRating() + 3) + "] Vs. No Opposed Roll");
+                    Diagnostics.setVisibility(View.VISIBLE);
+
+                    Button Gremlins = (Button) getActivity().findViewById(R.id.Gremlins);
+                    Gremlins.setText("Gremlins (" + (Main.data.getCurrentSprite().getRating() * 2) + ")[" + (Main.data.getCurrentSprite().getRating() + 1) + "] Vs. Device Rating + Firewall");
+                    Gremlins.setVisibility(View.VISIBLE);
+                }
                 break;
         }
     }}
+
+    public void rollPower(int diceToRoll, int limit){
+        Dice dice = new Dice();
+        int results;
+        //TODO: Handle edge
+        results = dice.rollDice(diceToRoll, false, limit);
+
+    TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
+    TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
+    TextView glitchText = (TextView) getActivity().findViewById(R.id.textGlitchStatus);
+    hitsText.setText(String.valueOf(results));
+    diceText.setText(String.valueOf(diceToRoll));
+    if(dice.isCriticalGlitch){
+        glitchText.setText("CRITICAL GLITCH");
+        glitchText.setTextColor(Color.RED);
+    }else {
+        if (dice.isGlitch) {
+            glitchText.setText("GLITCH");
+            glitchText.setTextColor(Color.RED);
+        } else {
+            glitchText.setText("NO Glitch");
+            glitchText.setTextColor(Color.BLACK);
+        }
+    }
+    Main.data.getCurrentSprite().setServicesOwed(Main.data.getCurrentSprite().getServicesOwed()-1);
+        Main.data.UpdateSpriteList();
+        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Main.data.pvSpriteList);
+        adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        Spinner spinnerSprites = (Spinner) getActivity().findViewById(R.id.SpriteSpinnerSprites);
+        spinnerSprites.setAdapter(adp1);
+        if (spinnerSprites.getSelectedItemPosition() != Main.data.pvActiveSpriteId) {
+            spinnerSprites.setSelection(Main.data.pvActiveSpriteId);
+        }
+        if(Main.data.getCurrentSprite().getServicesOwed()<1){
+            hideAllPowers();
+        }
+//TODO: Update display
+    }
 }
