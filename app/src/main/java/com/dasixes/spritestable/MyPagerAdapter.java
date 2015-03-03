@@ -25,6 +25,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter{
             case 2: return SpriteFragment.newInstance();
             case 3: return QualitiesFragment.newInstance();
             case 4: return MatrixFragment.newInstance();
+            case 5: return ComplexFormsFragment.newInstance();
             default: return CompileFragment.newInstance();
         }
 
@@ -32,7 +33,10 @@ public class MyPagerAdapter extends FragmentPagerAdapter{
 
     @Override
     public int getCount() {
-        return 5;//5 pages SpriteCompiler 1, Stats 2, Sprite 3 Qualities 4, MatrixActions 5
+        return 6;//5 pages SpriteCompiler 1, Stats 2, Sprite 3 Qualities 4, MatrixActions 5
+        //TODO: Add Submerged abilities?
+        //TODO: Make Matrix Actions main thing, surrounded by Compile and Complex Forms
+        //TODO: Make infinite scrolling happen
     }
 
 

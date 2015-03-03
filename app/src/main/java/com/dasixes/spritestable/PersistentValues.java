@@ -21,6 +21,7 @@ public class PersistentValues {
     List<Stats> pvStats = new ArrayList<>();
     List<Qualities> pvQualities = new ArrayList<>();
     List<MatrixActions> pvMatrixActions = new ArrayList<>();
+    List<ComplexForm> pvComplexForms = new ArrayList<>();
 
     List<Specializations> pvSpecializations = new ArrayList<>();
     private StatsDataSource datasource;
@@ -38,6 +39,7 @@ public class PersistentValues {
     }
     public void SaveSpriteToDB(Sprite SpriteToSave){datasource.updateSprite(SpriteToSave);}
     public void SaveNewSpriteToDB(Sprite SpriteToInsert){datasource.insertSprite(SpriteToInsert);}
+    public void SaveNewComplexFormToDB(ComplexForm CFtoInsert){datasource.insertComplexForm(CFtoInsert);}
     public void SaveSkillToDB(String SkillName){datasource.updateSkill(SkillName, getSkillValue(SkillName));}
     public void SaveSkillToDB(String name, Integer value){datasource.updateSkill(name, value);}
 
@@ -99,6 +101,7 @@ public class PersistentValues {
         pvStats = datasource.getAllStats();
         pvSpecializations = datasource.getAllSpecializations();
         pvMatrixActions = datasource.getAllMatrixActions();
+        pvComplexForms = datasource.getAllComplexForms();
         pvActiveSpriteId = 0;
 
 

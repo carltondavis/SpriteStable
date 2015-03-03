@@ -44,7 +44,8 @@ public class ReadXMLFile {
             getQualities(doc, activity);
             getSkills(doc, activity);
             getSprites(doc, activity);
-
+//TODO: GetComplexForms(doc, activity);
+            getComplexForms(doc, activity);
 
            // return data;
         } catch (SAXException e) {
@@ -169,6 +170,37 @@ public class ReadXMLFile {
         //   return data;
     }
 
+    public void getComplexForms(Document doc, Activity activity) {
+        MainActivity Main = (MainActivity)activity;
+        try {
+
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+            NodeList nList = doc.getElementsByTagName("complexforms");
+            NodeList Attributes = nList.item(0).getChildNodes();
+            ComplexForm cf = new ComplexForm();
+            for (int temp = 0; temp < Attributes.getLength(); temp++) {
+
+                Node node = Attributes.item(temp);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) node;
+                    cf.setName(eElement.getElementsByTagName("name").item(0).getTextContent());
+                    cf.setFading(eElement.getElementsByTagName("fv").item(0).getTextContent());
+                    cf.setTarget(eElement.getElementsByTagName("target").item(0).getTextContent());
+                    cf.setDuration(eElement.getElementsByTagName("duration").item(0).getTextContent());
+
+                    Main.data.SaveNewComplexFormToDB(cf);
+
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //   return data;
+    }
 
     public void getQualities(Document doc, Activity activity) {
         MainActivity Main = (MainActivity)activity;

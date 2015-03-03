@@ -53,6 +53,20 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
 
+    public static final String TABLE_COMPLEXFORMS = "Sprites";
+    public static final String COLUMN_CF_NAME= "Name";
+    public static final String COLUMN_CF_TARGET= "Target";
+    public static final String COLUMN_CF_DURATION= "Duration";
+    public static final String COLUMN_CF_FADING = "Fading";
+    private static final String COMPLEXFORM_DATABASE_CREATE = "create table "
+            + TABLE_COMPLEXFORMS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_CF_NAME
+            + " string not null, " + COLUMN_CF_TARGET
+            + " string not null, " + COLUMN_CF_DURATION
+            + " string not null, " + COLUMN_CF_FADING
+            + " string not null"
+            + ");";
+
     public static final String TABLE_SPRITES = "Sprites";
     public static final String COLUMN_RATING = "Rating";
     public static final String COLUMN_TYPE = "Type";
@@ -97,7 +111,7 @@ public class Database extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_NAME = "SpriteStable.db";
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
 
 
     public Database(Context context) {
@@ -166,6 +180,7 @@ public class Database extends SQLiteOpenHelper {
         database.execSQL(SPECIALIZATION_DATABASE_CREATE);
         database.execSQL(SPRITE_DATABASE_CREATE);
         database.execSQL(MATRIXACTIONS_DATABASE_CREATE);
+        database.execSQL(COMPLEXFORM_DATABASE_CREATE);
         ContentValues values = new ContentValues();
         ContentValues spritevalues = new ContentValues();
 

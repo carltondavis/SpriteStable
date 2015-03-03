@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.dasixes.spritestable.ComplexFormsFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- Header aligned to top -->
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#ff00fff8"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Total Hits: "
+            android:id="@+id/textHits"
+            android:layout_alignParentTop="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/textHitsResult"
+            android:layout_below="@id/textHits"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="/"
+            android:id="@+id/textDiceRolled"
+            android:layout_alignBottom="@id/textHitsResult"
+            android:layout_toRightOf="@id/textHitsResult"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/textDiceNumber"
+            android:layout_alignBottom="@id/textHitsResult"
+            android:layout_toRightOf="@id/textDiceRolled"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="NO Glitch"
+            android:id="@+id/textGlitchStatus"
+            android:layout_below="@+id/textHitsResult"
+            android:layout_alignParentLeft="true"/>
+
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Die Pool Modifier:"
+            android:id="@+id/textViewDiePool"
+            android:layout_alignTop="@+id/npDieModifier"
+            android:layout_toLeftOf="@+id/npDieModifier"
+            android:layout_alignBottom="@+id/npDieModifier" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/npDieModifier"
+            android:layout_toLeftOf="@+id/textViewLimitMod"
+            />
+
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Limit Modifier:"
+            android:id="@+id/textViewLimitMod"
+            android:layout_alignTop="@+id/npDieModifier"
+            android:layout_toLeftOf="@+id/npLimitMod"
+            android:layout_alignBottom="@+id/npDieModifier" />
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/npLimitMod"
+            android:baselineAligned="false"
+            android:layout_alignTop="@+id/textViewLimitMod"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Leader:"
+            android:id="@+id/textLeader"
+            android:layout_above="@+id/spLeader"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Spinner
+            android:id="@+id/spLeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textAssistance"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Assistants:"
+            android:id="@+id/textAssistance"
+            android:layout_above="@+id/spAssistance"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <com.dasixes.spritestable.MultiSelectionSpinner
+            android:id="@+id/spAssistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/npDieModifier"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Push the Limit"
+            android:id="@+id/CheckEdge"
+
+            android:checked="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_below="@+id/spAssistance" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Second&#10;Chance"
+            android:textSize="8dp"
+            android:enabled="false"
+            android:visibility="invisible"
+            android:maxLines="2"
+            android:id="@+id/SecondChance"
+            android:layout_toRightOf="@+id/CheckEdge"
+            android:layout_alignBottom="@+id/CheckEdge" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_below="@+id/header"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:id="@+id/tableMatrix"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="true"
+            android:shrinkColumns="1"
+            android:orientation="vertical"
+            >
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
+

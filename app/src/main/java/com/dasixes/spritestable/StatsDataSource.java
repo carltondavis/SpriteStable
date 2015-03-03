@@ -51,6 +51,11 @@ public class StatsDataSource {
             Database.COLUMN_CONDITION,
             Database.COLUMN_SERVICES,
             Database.COLUMN_TYPE};
+    private String[] allComplexFormColumns = {Database.COLUMN_ID,
+            Database.COLUMN_CF_NAME,
+            Database.COLUMN_CF_TARGET,
+            Database.COLUMN_CF_DURATION,
+            Database.COLUMN_CF_FADING};
 
     public StatsDataSource(Context context) {
         dbHelper = new Database(context);
@@ -143,6 +148,31 @@ public class StatsDataSource {
         } finally {
             database.endTransaction();
         }
+    }
+    public long insertComplexForm(ComplexForm cf){
+        ContentValues value = new ContentValues();
+        long  val=0;
+
+        value.put(Database.COLUMN_CF_NAME, cf.getName());
+        value.put(Database.COLUMN_CF_TARGET, cf.getTarget());//Services
+        value.put(Database.COLUMN_CF_DURATION, cf.getDuration());//SpriteType
+        value.put(Database.COLUMN_CF_FADING,cf.getFading());
+        database.beginTransaction();
+        try {
+            val = database.insert(Database.TABLE_COMPLEXFORMS, null,value);
+            if(val>0){
+                cf.setId(val);
+                //        Log.i("Sprite", "Insert ID: " + val);
+                database.setTransactionSuccessful();
+            }else{
+                //        Log.i("Sprite", "FAILED UPDATE/INSERT");
+            }
+
+        } finally {
+            database.endTransaction();
+        }
+        return val;
+
     }
 
     public long insertSprite(Sprite sprite){
@@ -325,6 +355,35 @@ public class StatsDataSource {
         // make sure to close the cursor
         cursor.close();
         return matrixActions;
+    }
+
+    public List<ComplexForm> getAllComplexForms() {
+        List<ComplexForm> complexForms = new ArrayList<>();
+
+        Cursor cursor = database.query(Database.TABLE_COMPLEXFORMS,
+                allComplexFormColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            ComplexForm complexForm = cursorToComplexForm(cursor);
+            complexForms.add(complexForm);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return complexForms;
+    }
+    private ComplexForm cursorToComplexForm(Cursor cursor) {
+        ComplexForm cf= new ComplexForm();
+
+        cf.setId(Integer.parseInt(cursor.getString(0)));//ID
+        cf.setName(cursor.getString(1));
+        cf.setTarget(cursor.getString(2));//Services
+        cf.setDuration(cursor.getString(3));//SpriteType
+        cf.setFading(cursor.getString(4));
+
+        //Log.i("Sprite", "Loaded ID: " + sprite.getId());
+        return cf;
     }
 
     private Sprite cursorToSprite(Cursor cursor) {
