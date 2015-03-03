@@ -87,7 +87,7 @@ public void UpdateAssistance(){
         //Loop through assistants for each action
         for(Sprite assistantSprite: activeAssistants){
             spriteType = assistantSprite.getSpriteType();
-            spriteRating = assistantSprite.getSpriteType();
+            spriteRating = assistantSprite.getRating();
             actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
             actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
             if(actionDice>=1){//Only add if it can help
