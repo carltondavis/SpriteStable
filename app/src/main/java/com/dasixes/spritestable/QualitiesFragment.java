@@ -52,9 +52,15 @@ public class QualitiesFragment extends Fragment {
         super.onResume();
 
         Main = (MainActivity)getActivity();
+        Main.data.RestoreFromDB(Main);
         //Toast.makeText(getActivity(), "Stat.onResume()", Toast.LENGTH_SHORT).show();
     }
-
+    @Override
+    public void onPause() {
+        //Log.e("DEBUG", "onResume of CompileFragment");
+        super.onPause();
+        Main.data.SaveAllToDB();
+    }
     public void UpdateRadioButtons(RadioGroup rg, final String QualityName){
         rg.check(rg.getChildAt(Main.data.getQualityValue(QualityName)).getId());
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()

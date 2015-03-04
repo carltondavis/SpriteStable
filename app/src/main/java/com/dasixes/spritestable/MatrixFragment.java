@@ -53,7 +53,12 @@ public class MatrixFragment extends Fragment {
         Button btnMAViewLimitMod = (Button) getActivity().findViewById(R.id.btnMAViewLimitMod);
         btnMAViewLimitMod.setText("Limit Modifier: " + mod);
     }
-
+    @Override
+    public void onPause() {
+        //Log.e("DEBUG", "onResume of CompileFragment");
+        super.onPause();
+        Main.data.SaveAllToDB();
+    }
 public void UpdateAssistance(){
     //Loop through all actions
     Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);

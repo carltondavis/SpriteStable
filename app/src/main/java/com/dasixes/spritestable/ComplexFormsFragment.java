@@ -79,12 +79,20 @@ public class ComplexFormsFragment extends Fragment {
             btnAction.setClickable(true);
         }
     }
+    @Override
+    public void onPause() {
+        //Log.e("DEBUG", "onResume of CompileFragment");
+        super.onPause();
+        Main.data.SaveAllToDB();
 
+    }
     @Override
     public void onResume() {
         //Log.e("DEBUG", "onResume of CompileFragment");
         super.onResume();
         Main = (MainActivity)getActivity();
+        Main.data.RestoreFromDB(Main);
+        UpdateDamage();
         UpdateAssistance();
     }
 
@@ -528,33 +536,12 @@ public void setForce(Integer force){
 
             rowColor=!rowColor;
         }
-
-        RatingBar stunDamage = (RatingBar) v.findViewById(R.id.cfstunTrack);
-        stunDamage.setClickable(false);
-        stunDamage.setEnabled(false);
-        stunDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun"));
-
-        stunDamage.setMax((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun"));
-        stunDamage.setRating(Main.data.getStatValue("Stun"));
-
-        RatingBar physicalDamage = (RatingBar) v.findViewById(R.id.cfphysicalTrack);
-        physicalDamage.setClickable(false);
-        physicalDamage.setEnabled(false);
-        physicalDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 +Main.data.getQualityValue("Tough as Nails Physical"));
-        physicalDamage.setMax((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical"));
-
-        RatingBar overflowDamage = (RatingBar) v.findViewById(R.id.cfoverflowTrack);
-        overflowDamage.setClickable(false);
-        overflowDamage.setEnabled(false);
-        overflowDamage.setNumStars(Main.data.getStatValue("Body")+Main.data.getQualityValue("Will to Live"));
-        overflowDamage.setMax(Main.data.getStatValue("Body"));
-
-        if (Main.data.getStatValue("Physical") > (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical")) {
-            overflowDamage.setRating(Main.data.getStatValue("Physical") - (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical"));
-        }
-        physicalDamage.setRating(Main.data.getStatValue("Physical") - overflowDamage.getRating());//Don't count overflow when drawing boxes of damage
-
+        UpdateDamage();
 //TODO: Damage is not persisting between fragments.
+//Stats is working correctly.
+//CF is not.  It's saving correctly, but not loading correctly after changed in stats.
+//Stats saves change no problem.
+//Changes in Compile aren't saving appropriately.
 
         return v;
     }

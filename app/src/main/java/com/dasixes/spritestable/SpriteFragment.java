@@ -28,13 +28,16 @@ public class SpriteFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Main = (MainActivity)getActivity();
+        Main.data.RestoreFromDB(Main);
     UpdateSpritePage();
     }
 
-@Override
-public void onPause() {
-    super.onPause();
-}
+    @Override
+    public void onPause() {
+        //Log.e("DEBUG", "onResume of CompileFragment");
+        super.onPause();
+        Main.data.SaveAllToDB();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

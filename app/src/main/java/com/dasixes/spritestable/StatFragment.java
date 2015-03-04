@@ -35,7 +35,23 @@ public class StatFragment extends Fragment  {
         super.onResume();
 
         Main = (MainActivity)getActivity();
-        //Toast.makeText(getActivity(), "Stat.onResume()", Toast.LENGTH_SHORT).show();
+        Main.data.RestoreFromDB(Main);
+        CreateListener(Main.data.getStatValue("Body"), getActivity().findViewById(R.id.editBody));
+        CreateListener( Main.data.getStatValue("Willpower") , getActivity().findViewById(R.id.editWillpower));
+        CreateListener(Main.data.getStatValue("Intuition") , getActivity().findViewById(R.id.editIntuition));
+        CreateListener(Main.data.getStatValue("Logic"), getActivity().findViewById(R.id.editLogic));
+        CreateListener( Main.data.getSkillValue("Compiling") , getActivity().findViewById(R.id.editCompiling));
+        CreateListener( Main.data.getSkillValue("Registering"), getActivity().findViewById(R.id.editRegistering));
+        CreateListener( Main.data.getStatValue("Resonance"), getActivity().findViewById(R.id.editResonance));
+        CreateListener( Main.data.getStatValue("Stun"), getActivity().findViewById(R.id.editStun));
+        CreateListener( Main.data.getStatValue("Physical"), getActivity().findViewById(R.id.editPhysical));
+        CreateListener( Main.data.getStatValue("Edge"), getActivity().findViewById(R.id.editEdge));
+        CreateListener(Main.data.getStatValue("EdgeUsed"), getActivity().findViewById(R.id.editEdgeUsed));
+        CreateListener(Main.data.getStatValue("ConsecutiveRest"), getActivity().findViewById(R.id.editConsecutiveHoursRested));
+        CreateListener( Main.data.getStatValue("SleeplessHours"), getActivity().findViewById(R.id.editHoursWithoutSleep));
+        CreateListener( Main.data.getStatValue("HoursThisSession"), getActivity().findViewById(R.id.editHoursThisSession));
+        CreateListener( Main.data.getStatValue("HoursSinceEdgeRefresh"), getActivity().findViewById(R.id.editHoursSinceEdgeRefresh));
+                //Toast.makeText(getActivity(), "Stat.onResume()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -45,6 +61,8 @@ public class StatFragment extends Fragment  {
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
 */
+
+
         List<String> specs = new ArrayList<String>();
         List<String> specsExists = new ArrayList<String>();
         specs=Main.data.getSpecializationList("Compiling");
@@ -104,7 +122,23 @@ public class StatFragment extends Fragment  {
                     }
                 });
 
-        CreateListener(R.id.editBody, Main.data.getStatValue("Body"), v);
+        Main.data.RestoreFromDB(Main);
+        SetStats(R.id.editBody, Main.data.getStatValue("Body"), v);
+        SetStats(R.id.editWillpower, Main.data.getStatValue("Willpower") , v);
+        SetStats(R.id.editIntuition, Main.data.getStatValue("Intuition"), v );
+        SetStats(R.id.editLogic, Main.data.getStatValue("Logic"), v);
+        SetStats(R.id.editCompiling, Main.data.getSkillValue("Compiling") , v);
+        SetStats(R.id.editRegistering, Main.data.getSkillValue("Registering"), v);
+        SetStats(R.id.editResonance, Main.data.getStatValue("Resonance"), v);
+        SetStats(R.id.editStun, Main.data.getStatValue("Stun"), v);
+        SetStats(R.id.editPhysical, Main.data.getStatValue("Physical"), v);
+        SetStats(R.id.editEdge, Main.data.getStatValue("Edge"), v);
+        SetStats(R.id.editEdgeUsed, Main.data.getStatValue("EdgeUsed"), v);
+        SetStats(R.id.editConsecutiveHoursRested, Main.data.getStatValue("ConsecutiveRest"), v);
+        SetStats(R.id.editHoursWithoutSleep, Main.data.getStatValue("SleeplessHours"), v);
+        SetStats(R.id.editHoursThisSession, Main.data.getStatValue("HoursThisSession"), v);
+        SetStats(R.id.editHoursSinceEdgeRefresh, Main.data.getStatValue("HoursSinceEdgeRefresh"), v);
+    /*    CreateListener(R.id.editBody, Main.data.getStatValue("Body"), v);
         CreateListener(R.id.editWillpower, Main.data.getStatValue("Willpower") , v);
         CreateListener(R.id.editIntuition, Main.data.getStatValue("Intuition") , v);
         CreateListener(R.id.editLogic, Main.data.getStatValue("Logic"), v);
@@ -118,7 +152,7 @@ public class StatFragment extends Fragment  {
         CreateListener(R.id.editConsecutiveHoursRested, Main.data.getStatValue("ConsecutiveRest"), v);
         CreateListener(R.id.editHoursWithoutSleep, Main.data.getStatValue("SleeplessHours"), v);
         CreateListener(R.id.editHoursThisSession, Main.data.getStatValue("HoursThisSession"), v);
-        CreateListener(R.id.editHoursSinceEdgeRefresh, Main.data.getStatValue("HoursSinceEdgeRefresh"), v);
+        CreateListener(R.id.editHoursSinceEdgeRefresh, Main.data.getStatValue("HoursSinceEdgeRefresh"), v);*/
 //        Toast.makeText(v.getContext(), "OnCreateView Stats",Toast.LENGTH_SHORT).show();
 
 
@@ -134,11 +168,11 @@ public class StatFragment extends Fragment  {
 */
         return f;
     }
-    private void CreateListener(Integer etId, Integer value, View view) {
+    private void CreateListener(Integer value, View view) {
 
 
 
-        final EditText et = (EditText) view.findViewById(etId);
+        final EditText et = (EditText) view;
         et.setText(String.valueOf(value));
         et.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -158,6 +192,12 @@ public class StatFragment extends Fragment  {
             }
         });
     }
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+
+    }
+
     private void UpdateDamage() {
         RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.stunTrack);
         if(stunDamage!=null) {
@@ -247,11 +287,20 @@ public class StatFragment extends Fragment  {
         }
     }
     private void UpdateStat(String name, Integer value) {
-        if (Main.data.getStatValue(name) != value) {
+        if (Main.data.getStatValue(name) != value&&value!=-1) {
             Main.data.setStatValue(name, value);
             Main.data.SaveStatToDB(name, value);
         }
     }
+    private void SetStats(int id, int value, View v){
+       final EditText et = (EditText) v.findViewById(id);
+        et.setText(String.valueOf(value));
+    }
+    private void SetStats(int value, View v){
+        final EditText et = (EditText) v;
+        et.setText(String.valueOf(value));
+    }
+
     private void UpdateStatsStats(View view) {
         EditText et = (EditText) getActivity().findViewById(view.getId());
         if (!et.getText().toString().isEmpty()) {

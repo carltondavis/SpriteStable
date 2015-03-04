@@ -78,7 +78,15 @@ public class CompileFragment extends Fragment {
         //Log.e("DEBUG", "onResume of CompileFragment");
         super.onResume();
         Main = (MainActivity)getActivity();
+        Main.data.RestoreFromDB(Main);
         UpdateDisplay();
+    }
+    @Override
+    public void onPause() {
+        //Log.e("DEBUG", "onResume of CompileFragment");
+        super.onPause();
+        Main.data.SaveAllStatsToDB();
+        Main.data.SaveAllSpritesToDB();
     }
 
     @Override
@@ -854,5 +862,6 @@ private void UpdateDamage(int stun, int physical) {
         EditText physicaltext = (EditText) getActivity().findViewById(R.id.editPhysical);
         physicaltext.setText(String.valueOf(Main.data.getStatValue("Physical")));
         }
+    Main.data.SaveAllStatsToDB();
         }
         }
