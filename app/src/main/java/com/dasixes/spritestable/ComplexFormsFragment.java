@@ -1,11 +1,21 @@
 package com.dasixes.spritestable;
+//TODO: Why is everything but Diffusion at 14?
+//TODO: Add Force Picker (Resonance*3)
+//TODO: Set Limit to Force Picker
+//TODO: Add Drain roll
+//TODO: Add damage display
+//TODO: Save to DB when moving away from here
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +25,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,14 +35,17 @@ import java.util.List;
 
 public class ComplexFormsFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
+    int Force=1;
+    int diePoolMod=0;
+    int limitMod=0;
+
 
 
     public void UpdateAssistance(){
         //Loop through all actions
-        Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
-        MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
-        CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
-        Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
+        MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.CFspAssistance);
+        CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CFCheckEdge);
+        Button secondChance = (Button) getActivity().findViewById(R.id.CFSecondChance);
 
         checkEdge.setChecked(false);
 
@@ -50,25 +64,17 @@ public class ComplexFormsFragment extends Fragment {
             activeAssistants.add(tempSelectedAssistants.get(i));
         }
 
-        String assistantDice = "";
-        int actionLimit=0;
-        int actionDice=0;
-        int spriteType=0;
-        int spriteRating =0;
-
-
+        Integer actionDice;
         for(ComplexForm cf :Main.data.pvComplexForms){
-
-
-            assistantDice="";
             //Loop through assistants for each action
+            actionDice=Main.data.getDice("Resonance", "Software", cf.getName());
             for(Sprite assistantSprite: activeAssistants){
                 actionDice+= assistantSprite.getRating();
             }
-            LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
-            LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + cf.getName());
-            Button btnAction = (Button) currentRow.findViewWithTag("Action" + cf.getName());
-            btnAction.setText(cf.getName() + " (" + Main.data.getDice("Resonance", "Software", cf.getName()) + assistantDice +")");
+            LinearLayout tableComplexForm = (LinearLayout) getActivity().findViewById(R.id.CFtableComplexForm);
+            LinearLayout currentRow = (LinearLayout) tableComplexForm.findViewWithTag("CFRow" + cf.getName());
+            Button btnAction = (Button) currentRow.findViewWithTag("CF" + cf.getName());
+            btnAction.setText(cf.getName() + " (" + actionDice +")");
             btnAction.setTextColor(Color.BLACK);
             btnAction.setClickable(true);
         }
@@ -76,36 +82,33 @@ public class ComplexFormsFragment extends Fragment {
 
     public void rollAction(ComplexForm cf){
 
-        int actionLimit=0;
-        NumberPicker npDieModifier= (NumberPicker) getActivity().findViewById(R.id.npDieModifier);
-        NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
-        CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
-        Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
+        int actionLimit=Force;
+        CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CFCheckEdge);
+        Button secondChance = (Button) getActivity().findViewById(R.id.CFSecondChance);
 
         Dice dice = new Dice();
         int result=0;
-        Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         //Reset assistant buttons
 
         int actionDice;
         boolean useEdge=false;
-            actionDice= Main.data.getDice("Resonance","Software",cf.getName());
+        actionDice= Main.data.getDice("Resonance","Software",cf.getName());
 
-            //Todo: Calculate penalties for each action from Qualities
-            //TODO: RememberEdge use when character is leading
-            if(checkEdge.isChecked()){
-                Main.data.addStatValue("EdgeUsed", 1);
-                checkEdge.setChecked(false);
-            }
-            if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
-                secondChance.setEnabled(false);
-                secondChance.setVisibility(View.INVISIBLE);
-                checkEdge.setEnabled(false);
-            }else{
-                secondChance.setEnabled(true);
-                secondChance.setVisibility(View.VISIBLE);
-                checkEdge.setEnabled(true);
-            }
+        //Todo: Calculate penalties for each action from Qualities
+        //TODO: RememberEdge use when character is leading
+        if(checkEdge.isChecked()){
+            Main.data.addStatValue("EdgeUsed", 1);
+            checkEdge.setChecked(false);
+        }
+        if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
+            secondChance.setEnabled(false);
+            secondChance.setVisibility(View.INVISIBLE);
+            checkEdge.setEnabled(false);
+        }else{
+            secondChance.setEnabled(true);
+            secondChance.setVisibility(View.VISIBLE);
+            checkEdge.setEnabled(true);
+        }
         List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
         List<Sprite> activeAssistants= new ArrayList<Sprite>();
 
@@ -114,29 +117,29 @@ public class ComplexFormsFragment extends Fragment {
     }else {//Add the technomancer, remove the leader
     }
     */
-        MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
+        MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.CFspAssistance);
 
         for(int i: spAssistance.getSelectedIndicies()){
             activeAssistants.add(tempSelectedAssistants.get(i));
         }
 
-            //Loop through assistants for each action
-            for(Sprite assistantSprite: activeAssistants){
-                actionDice+= assistantSprite.getRating();
-            }
+        //Loop through assistants for each action
+        for(Sprite assistantSprite: activeAssistants){
+            actionDice+= assistantSprite.getRating();
+        }
 
 
-        actionDice+= npDieModifier.getValue()-20;
-        actionLimit+= npLimitModifier.getValue()-10;
+        actionDice+= diePoolMod;
+        actionLimit+= limitMod;
         if(actionDice<0){
             actionDice=0;
             result=0;
         }else {
             result = dice.rollDice(actionDice,checkEdge.isChecked(), actionLimit);
         }
-        TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
-        TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
-        TextView glitchText = (TextView) getActivity().findViewById(R.id.textGlitchStatus);
+        TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
+        TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
+        TextView glitchText = (TextView) getActivity().findViewById(R.id.CFtextGlitchStatus);
         hitsText.setText(String.valueOf(result));
         diceText.setText(String.valueOf(actionDice));
         if(dice.isCriticalGlitch){
@@ -154,37 +157,189 @@ public class ComplexFormsFragment extends Fragment {
         UpdateAssistance();
         return;
     }
-
+public void setForce(Integer force){
+    Force=force;
+    Button btnForce = (Button) getActivity().findViewById(R.id.btnForce);
+    btnForce.setText("Force: " + Force);
+}
+    public void setDieMod(Integer mod){
+        diePoolMod=mod;
+        Button btnCFViewDiePool = (Button) getActivity().findViewById(R.id.btnCFViewDiePool);
+        btnCFViewDiePool.setText("Die Pool Mod: " + mod);
+    }
+    public void setLimitMod(Integer mod){
+        limitMod=mod;
+        Button btnCFViewLimitMod = (Button) getActivity().findViewById(R.id.btnCFViewLimitMod);
+        btnCFViewLimitMod.setText("Limit Modifier: " + mod);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_matrix, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_complex_forms, container, false);
         Main = (MainActivity)getActivity();
 
 
-        //TODO: pop-up for NumberPicker selection to edit value field?
-        //https://stackoverflow.com/questions/17944061/how-to-use-number-picker-with-dialog
-        //TODO: Perhaps reuse this on all number entry options?
+        RelativeLayout dpmLayout = new RelativeLayout(v.getContext());
+        final NumberPicker diePoolNumberPicker = new NumberPicker(v.getContext());
+        final int minDieValue = -20;
+        final int maxDieValue = 20;
+        diePoolNumberPicker.setMinValue(0);
+        diePoolNumberPicker.setMaxValue(maxDieValue - minDieValue);
+        diePoolNumberPicker.setValue(20);
+        diePoolNumberPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int index) {
+                return Integer.toString(index + minDieValue);
+            }
+        });
+        diePoolNumberPicker.setEnabled(true);
+        diePoolNumberPicker.setWrapSelectorWheel(true);
+
+        RelativeLayout.LayoutParams rlparams = new RelativeLayout.LayoutParams(50, 50);
+        RelativeLayout.LayoutParams numPicerParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        numPicerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        dpmLayout.setLayoutParams(rlparams);
+        dpmLayout.addView(diePoolNumberPicker,numPicerParams);
+
+        AlertDialog.Builder dpmDialogBuilder = new AlertDialog.Builder(v.getContext());
+        dpmDialogBuilder.setTitle("Die Pool Modifier:");
+        dpmDialogBuilder.setView(dpmLayout);
+        dpmDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                setDieMod(diePoolNumberPicker.getValue()+minDieValue);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog dpmalertDialog = dpmDialogBuilder.create();
+        final Button btnCFViewDiePool = (Button) v.findViewById(R.id.btnCFViewDiePool);
+        btnCFViewDiePool.setText("Die Pool Mod: " + diePoolMod);
+        btnCFViewDiePool.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dpmalertDialog.show();
+            }
+        });
+
+        RelativeLayout dplLayout = new RelativeLayout(v.getContext());
+        final NumberPicker dplNumberPicker = new NumberPicker(v.getContext());
+        final int minLimitValue = -10;
+        final int maxLimitValue = 10;
+        dplNumberPicker.setMinValue(0);
+        dplNumberPicker.setMaxValue(maxLimitValue - minLimitValue);
+        dplNumberPicker.setValue(10);
+        dplNumberPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int index) {
+                return Integer.toString(index + minLimitValue);
+            }
+        });
+        dplNumberPicker.setEnabled(true);
+        dplNumberPicker.setWrapSelectorWheel(true);
+
+        dplLayout.setLayoutParams(rlparams);
+        dplLayout.addView(dplNumberPicker,numPicerParams);
+
+        AlertDialog.Builder dplDialogBuilder = new AlertDialog.Builder(v.getContext());
+        dplDialogBuilder.setTitle("Pick Limit Modifier:");
+        dplDialogBuilder.setView(dplLayout);
+        dplDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                setLimitMod(dplNumberPicker.getValue()+ minLimitValue);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog dplDialog = dplDialogBuilder.create();
+        final Button btnCFViewLimitMod = (Button) v.findViewById(R.id.btnCFViewLimitMod);
+        btnCFViewLimitMod.setText("Limit Modifier: " + limitMod);
+        btnCFViewLimitMod.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dplDialog.show();
+            }
+        });
+
+        RelativeLayout forceLayout = new RelativeLayout(v.getContext());
+        final NumberPicker forceNumberPicker = new NumberPicker(v.getContext());
+        Force=Main.data.getStatValue("Resonance");
+        forceNumberPicker.setMaxValue(Force*3);
+        forceNumberPicker.setMinValue(1);
+
+        forceLayout.setLayoutParams(rlparams);
+        forceLayout.addView(forceNumberPicker,numPicerParams);
+
+        AlertDialog.Builder forceDialogBuilder = new AlertDialog.Builder(v.getContext());
+        forceDialogBuilder.setTitle("Pick Force for Complex Form");
+        forceDialogBuilder.setView(forceLayout);
+        forceDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                setForce(forceNumberPicker.getValue());
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog forceDialog = forceDialogBuilder.create();
+        final Button btnForce = (Button) v.findViewById(R.id.btnForce);
+        btnForce.setText("Force: " + Force);
+        btnForce.setOnClickListener(new View.OnClickListener() {
+
+                                     @Override
+                                     public void onClick(View v) {
+                                         forceDialog.show();
+                                     }
+                                 });
+
+
 
         //TODO Push the Limit checkbox
-        //TODO Second Chance button
         //TODO: Remember Edge use when character is assisting
 
 //TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
         //TODO: One service = Assist Threading = + dice pool by level
 
-//TODO: Assistant is adding an exta person. Possibly the technomancer?
 
-        final Button secondChance = (Button) v.findViewById(R.id.SecondChance);
-        final CheckBox checkEdge = (CheckBox) v.findViewById(R.id.CheckEdge);
+        final Button secondChance = (Button) v.findViewById(R.id.CFSecondChance);
+        final CheckBox checkEdge = (CheckBox) v.findViewById(R.id.CFCheckEdge);
         secondChance.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Dice dice = new Dice();
                 //TODO: Store limit somewhere for second chance option
-                TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
-                TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
+                TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
+                TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
                 //Re-roll failures
                 //TODO: Re-roll failures for technomancer assistant
                 //TODO: Re-roll failures for sprite assistant
@@ -200,10 +355,9 @@ public class ComplexFormsFragment extends Fragment {
             }
         });
 
-        final MultiSelectionSpinner spAssistance = (MultiSelectionSpinner) v.findViewById(R.id.spAssistance);
+        final MultiSelectionSpinner spAssistance = (MultiSelectionSpinner) v.findViewById(R.id.CFspAssistance);
 
-        //Remove selected Leader
-        String[] arrayAssistance = new String[Main.data.pvSpriteList.size()+1];
+        String[] arrayAssistance = new String[Main.data.pvSpriteList.size()];
         List<String> assistants = new ArrayList<String>(Main.data.pvSpriteList);
         arrayAssistance=assistants.toArray(arrayAssistance);
         spAssistance.setItems(arrayAssistance);
@@ -218,47 +372,7 @@ public class ComplexFormsFragment extends Fragment {
                 });
 
 
-        NumberPicker npDieModifier = (NumberPicker) v.findViewById(R.id.npDieModifier);
-        final int minDieValue = -20;
-        final int maxDieValue = 20;
-        npDieModifier.setMinValue(0);
-        npDieModifier.setMaxValue(maxDieValue - minDieValue);
-        npDieModifier.setValue(20);
-        npDieModifier.setFormatter(new NumberPicker.Formatter() {
-            @Override
-            public String format(int index) {
-                return Integer.toString(index + minDieValue);
-            }
-        });
-        npDieModifier.setEnabled(true);
-        npDieModifier.setWrapSelectorWheel(true);
-        npDieModifier.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                int myNewValue = newVal+ minDieValue;
-            }
-        });
 
-        NumberPicker npLimitMod = (NumberPicker) v.findViewById(R.id.npLimitMod);
-        final int minLimitValue = -10;
-        final int maxLimitValue = 10;
-        npLimitMod.setMinValue(0);
-        npLimitMod.setMaxValue(maxLimitValue - minLimitValue);
-        npLimitMod.setValue(10);
-        npLimitMod.setFormatter(new NumberPicker.Formatter() {
-            @Override
-            public String format(int index) {
-                return Integer.toString(index + minLimitValue);
-            }
-        });
-        npLimitMod.setEnabled(true);
-        npLimitMod.setWrapSelectorWheel(true);
-        npLimitMod.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                int myNewValue = newVal+ minLimitValue;
-            }
-        });
 
 //TODO: Checkbox for pre-edge
 //Todo: Update Stats for  Edge when used
@@ -275,7 +389,7 @@ public class ComplexFormsFragment extends Fragment {
             }else{
                 bgColor= Color.WHITE;
             }
-            LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.tableMatrix);
+            LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.CFtableComplexForm);
             LinearLayout newRow = new LinearLayout(v.getContext());
             newRow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
             newRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -298,7 +412,7 @@ public class ComplexFormsFragment extends Fragment {
             });
             int actiondice= Main.data.getDice("Resonance","Software",cf.getName());
             btnAction.setText(cf.getName() + " ("+ actiondice +")");
-            btnAction.setTag("Action" + cf.getName());
+            btnAction.setTag("CF" + cf.getName());
             //btnAction.setHeight(75);
             //btnAction.setWidth(150);
             btnAction.setTextSize(8);
@@ -312,7 +426,7 @@ public class ComplexFormsFragment extends Fragment {
             oppdice.setLines(2);
 
             newRow.addView(oppdice);
-            newRow.setTag("Row" + cf.getName());
+            newRow.setTag("CFRow" + cf.getName());
             linearLayout.addView(newRow);
 
             rowColor=!rowColor;
@@ -324,7 +438,7 @@ public class ComplexFormsFragment extends Fragment {
 
     public static ComplexFormsFragment newInstance() {
 
-       ComplexFormsFragment f = new ComplexFormsFragment();
+        ComplexFormsFragment f = new ComplexFormsFragment();
        /* Bundle b = new Bundle();
         //b.putString("msg", text);
 

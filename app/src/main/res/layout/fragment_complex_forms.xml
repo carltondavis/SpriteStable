@@ -7,7 +7,7 @@
 
     <!-- Header aligned to top -->
     <RelativeLayout
-        android:id="@+id/header"
+        android:id="@+id/CFheader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Total Hits: "
-            android:id="@+id/textHits"
+            android:id="@+id/CFtextHits"
             android:layout_alignParentTop="true"
             />
         <TextView
@@ -28,89 +28,82 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="0"
-            android:id="@+id/textHitsResult"
-            android:layout_below="@id/textHits"
+            android:id="@+id/CFtextHitsResult"
+            android:layout_below="@id/CFtextHits"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="/"
-            android:id="@+id/textDiceRolled"
-            android:layout_alignBottom="@id/textHitsResult"
-            android:layout_toRightOf="@id/textHitsResult"
+            android:id="@+id/CFtextDiceRolled"
+            android:layout_alignBottom="@id/CFtextHitsResult"
+            android:layout_toRightOf="@id/CFtextHitsResult"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="0"
-            android:id="@+id/textDiceNumber"
-            android:layout_alignBottom="@id/textHitsResult"
-            android:layout_toRightOf="@id/textDiceRolled"
+            android:id="@+id/CFtextDiceNumber"
+            android:layout_alignBottom="@id/CFtextHitsResult"
+            android:layout_toRightOf="@id/CFtextDiceRolled"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="NO Glitch"
-            android:id="@+id/textGlitchStatus"
-            android:layout_below="@+id/textHitsResult"
+            android:id="@+id/CFtextGlitchStatus"
+            android:layout_below="@+id/CFtextHitsResult"
             android:layout_alignParentLeft="true"/>
 
 
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Die Pool Modifier:"
-            android:id="@+id/textViewDiePool"
-            android:layout_alignTop="@+id/npDieModifier"
-            android:layout_toLeftOf="@+id/npDieModifier"
-            android:layout_alignBottom="@+id/npDieModifier" />
-
-        <NumberPicker
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:text="Die Pool Modifier: 0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/npDieModifier"
-            android:layout_toLeftOf="@+id/textViewLimitMod"
-            />
+            android:id="@+id/btnCFViewDiePool"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"/>
 
 
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Limit Modifier:"
-            android:id="@+id/textViewLimitMod"
-            android:layout_alignTop="@+id/npDieModifier"
-            android:layout_toLeftOf="@+id/npLimitMod"
-            android:layout_alignBottom="@+id/npDieModifier" />
 
-        <NumberPicker
+        <Button
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/npLimitMod"
-            android:baselineAligned="false"
-            android:layout_alignTop="@+id/textViewLimitMod"
-            android:layout_alignParentRight="true" />
+            android:text="Limit Modifier: 0"
+            android:id="@+id/btnCFViewLimitMod"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btnCFViewDiePool"
+        />
 
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/btnForce"
+            android:text="Force: 1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCFViewLimitMod"
+            android:layout_alignParentRight="true"            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Assistants:"
-            android:id="@+id/textAssistance"
-            android:layout_above="@+id/spAssistance"
+            android:id="@+id/CFtextAssistance"
+            android:layout_above="@+id/CFspAssistance"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <com.dasixes.spritestable.MultiSelectionSpinner
-            android:id="@+id/spAssistance"
+            android:id="@+id/CFspAssistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/npDieModifier"
+            android:layout_alignBottom="@+id/btnForce"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
 
@@ -119,13 +112,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Push the Limit"
-            android:id="@+id/CheckEdge"
+            android:id="@+id/CFCheckEdge"
 
             android:checked="false"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
 
-            android:layout_below="@+id/spAssistance" />
+            android:layout_above="@+id/CFtextAssistance" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -136,9 +129,9 @@
             android:enabled="false"
             android:visibility="invisible"
             android:maxLines="2"
-            android:id="@+id/SecondChance"
-            android:layout_toRightOf="@+id/CheckEdge"
-            android:layout_alignBottom="@+id/CheckEdge" />
+            android:id="@+id/CFSecondChance"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/CFtextHits" />
     </RelativeLayout>
 
     <ScrollView
@@ -147,13 +140,13 @@
         android:scrollbars="none"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_below="@+id/header"
+        android:layout_below="@+id/CFheader"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true">
 
         <LinearLayout
-            android:id="@+id/tableMatrix"
+            android:id="@+id/CFtableComplexForm"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:isScrollContainer="true"

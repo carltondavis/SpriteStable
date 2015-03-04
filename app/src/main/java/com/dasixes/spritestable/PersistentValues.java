@@ -139,7 +139,7 @@ public Integer getSkillValue(String Name, String Specialization){
     Integer value=-1;
     long ID=0;
     for(Skills skill: pvSkills){
-        if(skill.getSkillName().toUpperCase().equals(Name.toUpperCase())) {
+        if(skill.getSkillName().equalsIgnoreCase(Name)) {
             ID=skill.getId();
             value= skill.getSkillValue();
             break;

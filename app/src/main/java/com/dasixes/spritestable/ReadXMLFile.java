@@ -184,12 +184,18 @@ public class ReadXMLFile {
                 Node node = Attributes.item(temp);
 
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
-
                     Element eElement = (Element) node;
-                    cf.setName(eElement.getElementsByTagName("name").item(0).getTextContent());
+
+                    String name = eElement.getElementsByTagName("name").item(0).getTextContent();
+                    name = name.replace("[Matrix Attribute]", eElement.getElementsByTagName("extra").item(0).getTextContent());
+                    cf.setName(name);
+
                     cf.setFading(eElement.getElementsByTagName("fv").item(0).getTextContent());
                     cf.setTarget(eElement.getElementsByTagName("target").item(0).getTextContent());
                     cf.setDuration(eElement.getElementsByTagName("duration").item(0).getTextContent());
+
+
+
 
                     Main.data.SaveNewComplexFormToDB(cf);
 

@@ -53,7 +53,7 @@ public class Database extends SQLiteOpenHelper {
             + " integer not null"
             + ");";
 
-    public static final String TABLE_COMPLEXFORMS = "Sprites";
+    public static final String TABLE_COMPLEXFORMS = "ComplexForms";
     public static final String COLUMN_CF_NAME= "Name";
     public static final String COLUMN_CF_TARGET= "Target";
     public static final String COLUMN_CF_DURATION= "Duration";
@@ -349,6 +349,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SKILLS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPECIALIZATIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATRIXACTIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMPLEXFORMS);
         onCreate(db);
     }
     public void ResetDB(){
@@ -359,6 +360,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SKILLS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SPECIALIZATIONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MATRIXACTIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMPLEXFORMS);
         onCreate(db);
     };
 
