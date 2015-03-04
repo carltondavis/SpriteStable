@@ -1,5 +1,5 @@
 package com.dasixes.spritestable;
-
+//TODO: Make Compact Sprite list for Multi-select summary.  5Ma/5,3Co/4,2Cr/8
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

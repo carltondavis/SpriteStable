@@ -59,41 +59,26 @@
                 android:layout_alignParentLeft="true"/>
 
 
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Die Pool Modifier:"
-                android:id="@+id/textViewDiePool"
-                android:layout_alignTop="@+id/npDieModifier"
-                android:layout_toLeftOf="@+id/npDieModifier"
-                android:layout_alignBottom="@+id/npDieModifier" />
-
-            <NumberPicker
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:text="Die Pool Modifier: 0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/npDieModifier"
-                android:layout_toLeftOf="@+id/textViewLimitMod"
+                android:id="@+id/btnMAViewDiePool"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"/>
+
+
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Limit Modifier: 0"
+                android:id="@+id/btnMAViewLimitMod"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/btnMAViewDiePool"
                 />
-
-
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Limit Modifier:"
-                android:id="@+id/textViewLimitMod"
-                android:layout_alignTop="@+id/npDieModifier"
-                android:layout_toLeftOf="@+id/npLimitMod"
-                android:layout_alignBottom="@+id/npDieModifier" />
-
-            <NumberPicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/npLimitMod"
-                android:baselineAligned="false"
-                android:layout_alignTop="@+id/textViewLimitMod"
-                android:layout_alignParentRight="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,7 +86,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Leader:"
                 android:id="@+id/textLeader"
-                android:layout_above="@+id/spLeader"
+                android:layout_below="@+id/textGlitchStatus"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
@@ -109,7 +94,7 @@
                 android:id="@+id/spLeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/textAssistance"
+                android:layout_below="@+id/textLeader"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
@@ -120,7 +105,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Assistants:"
                 android:id="@+id/textAssistance"
-                android:layout_above="@+id/spAssistance"
+                android:layout_below="@+id/spLeader"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
@@ -128,7 +113,7 @@
                 android:id="@+id/spAssistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/npDieModifier"
+                android:layout_below="@+id/textAssistance"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"/>
 
@@ -155,8 +140,8 @@
                 android:visibility="invisible"
                 android:maxLines="2"
                 android:id="@+id/SecondChance"
-                android:layout_toRightOf="@+id/CheckEdge"
-                android:layout_alignBottom="@+id/CheckEdge" />
+                android:layout_toRightOf="@+id/textGlitchStatus"
+                android:layout_alignParentTop="true" />
         </RelativeLayout>
 
 <ScrollView

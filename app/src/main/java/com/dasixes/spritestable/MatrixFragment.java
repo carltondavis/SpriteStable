@@ -3,6 +3,8 @@ package com.dasixes.spritestable;
 //TODO: Used Edge isn't updating correctly
 //TODO: Add Hot-Sim checkbox, +2 to technomancer rolls when checked
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,7 +27,8 @@ import java.util.List;
 
 public class MatrixFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
-
+    int diePoolMod=0;
+    int limitMod=0;
 
 
     // Die modifier spinner, Limit Modifier Spinner
@@ -39,6 +43,16 @@ public class MatrixFragment extends Fragment {
     //Two rows per action?
     //Spinner to pick action?
 
+    public void setDieMod(Integer mod){
+        diePoolMod=mod;
+        Button btnMAViewDiePool = (Button) getActivity().findViewById(R.id.btnMAViewDiePool);
+        btnMAViewDiePool.setText("Die Pool Mod: " + mod);
+    }
+    public void setLimitMod(Integer mod){
+        limitMod=mod;
+        Button btnMAViewLimitMod = (Button) getActivity().findViewById(R.id.btnMAViewLimitMod);
+        btnMAViewLimitMod.setText("Limit Modifier: " + mod);
+    }
 
 public void UpdateAssistance(){
     //Loop through all actions
@@ -379,8 +393,6 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         Dice dice = new Dice();
 
 
-        NumberPicker npDieModifier= (NumberPicker) getActivity().findViewById(R.id.npDieModifier);
-        NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
         CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
@@ -420,8 +432,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
                 actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
                 if(actionDice>=1){//Only add if it can help
-                    actionLimit+= npLimitModifier.getValue()-10;
-                    actionDice+=npDieModifier.getValue()-20;
+                    actionLimit+= limitMod;
+                    actionDice+=diePoolMod;
                     result = dice.rollDice(actionDice,false, actionLimit);
                     if(result>0&& !dice.isGlitch && assistLimitBonus!=-1) {
                     assistLimitBonus++;
@@ -442,8 +454,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 assistantDice+="("+actionDice+")["+actionLimit+"]";
                 //TODO: Remember Edge use when character is assisting
                 //Todo: Calculate penalties for each action from Qualities
-                actionDice+= npDieModifier.getValue()-20;
-                actionLimit+= npLimitModifier.getValue()-10;
+                actionDice+= diePoolMod;
+                actionLimit+= limitMod;
                 result = dice.rollDice(actionDice,false, actionLimit);
                 if(result>0&& !dice.isGlitch && assistLimitBonus!=-1) {
                     assistLimitBonus++;
@@ -493,8 +505,6 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
 
     public void rollAction(MatrixActions ma){
-        NumberPicker npDieModifier= (NumberPicker) getActivity().findViewById(R.id.npDieModifier);
-        NumberPicker npLimitModifier= (NumberPicker) getActivity().findViewById(R.id.npLimitMod);
         CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
         Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
 
@@ -540,8 +550,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         if(Main.data.getMatrixActionAssistLimit(ma.getActionName())>0){
             actionLimit+=Main.data.getMatrixActionAssistLimit(ma.getActionName());
         }
-        actionDice+= npDieModifier.getValue()-20;
-        actionLimit+= npLimitModifier.getValue()-10;
+        actionDice+= diePoolMod;
+        actionLimit+= limitMod;
         if(actionDice<0){
                 actionDice=0;
                 result=0;
@@ -666,45 +676,105 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 });
 
 
-        NumberPicker npDieModifier = (NumberPicker) v.findViewById(R.id.npDieModifier);
+        RelativeLayout dpmLayout = new RelativeLayout(v.getContext());
+        final NumberPicker diePoolNumberPicker = new NumberPicker(v.getContext());
         final int minDieValue = -20;
         final int maxDieValue = 20;
-        npDieModifier.setMinValue(0);
-        npDieModifier.setMaxValue(maxDieValue - minDieValue);
-        npDieModifier.setValue(20);
-        npDieModifier.setFormatter(new NumberPicker.Formatter() {
+        diePoolNumberPicker.setMinValue(0);
+        diePoolNumberPicker.setMaxValue(maxDieValue - minDieValue);
+        diePoolNumberPicker.setValue(20);
+        diePoolNumberPicker.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int index) {
                 return Integer.toString(index + minDieValue);
             }
         });
-        npDieModifier.setEnabled(true);
-        npDieModifier.setWrapSelectorWheel(true);
-        npDieModifier.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        diePoolNumberPicker.setEnabled(true);
+        diePoolNumberPicker.setWrapSelectorWheel(true);
+
+        RelativeLayout.LayoutParams rlparams = new RelativeLayout.LayoutParams(50, 50);
+        RelativeLayout.LayoutParams numPicerParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        numPicerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        dpmLayout.setLayoutParams(rlparams);
+        dpmLayout.addView(diePoolNumberPicker,numPicerParams);
+
+        AlertDialog.Builder dpmDialogBuilder = new AlertDialog.Builder(v.getContext());
+        dpmDialogBuilder.setTitle("Die Pool Modifier:");
+        dpmDialogBuilder.setView(dpmLayout);
+        dpmDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                setDieMod(diePoolNumberPicker.getValue()+minDieValue);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog dpmalertDialog = dpmDialogBuilder.create();
+        final Button btnMAViewDiePool = (Button) v.findViewById(R.id.btnMAViewDiePool);
+        btnMAViewDiePool.setText("Die Pool Mod: " + diePoolMod);
+        btnMAViewDiePool.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                int myNewValue = newVal+ minDieValue;
+            public void onClick(View v) {
+                dpmalertDialog.show();
             }
         });
 
-        NumberPicker npLimitMod = (NumberPicker) v.findViewById(R.id.npLimitMod);
+        RelativeLayout dplLayout = new RelativeLayout(v.getContext());
+        final NumberPicker dplNumberPicker = new NumberPicker(v.getContext());
         final int minLimitValue = -10;
         final int maxLimitValue = 10;
-        npLimitMod.setMinValue(0);
-        npLimitMod.setMaxValue(maxLimitValue - minLimitValue);
-        npLimitMod.setValue(10);
-        npLimitMod.setFormatter(new NumberPicker.Formatter() {
+        dplNumberPicker.setMinValue(0);
+        dplNumberPicker.setMaxValue(maxLimitValue - minLimitValue);
+        dplNumberPicker.setValue(10);
+        dplNumberPicker.setFormatter(new NumberPicker.Formatter() {
             @Override
             public String format(int index) {
                 return Integer.toString(index + minLimitValue);
             }
         });
-        npLimitMod.setEnabled(true);
-        npLimitMod.setWrapSelectorWheel(true);
-        npLimitMod.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        dplNumberPicker.setEnabled(true);
+        dplNumberPicker.setWrapSelectorWheel(true);
+
+        dplLayout.setLayoutParams(rlparams);
+        dplLayout.addView(dplNumberPicker,numPicerParams);
+
+        AlertDialog.Builder dplDialogBuilder = new AlertDialog.Builder(v.getContext());
+        dplDialogBuilder.setTitle("Pick Limit Modifier:");
+        dplDialogBuilder.setView(dplLayout);
+        dplDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                setLimitMod(dplNumberPicker.getValue()+ minLimitValue);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog dplDialog = dplDialogBuilder.create();
+        final Button btnMAViewLimitMod = (Button) v.findViewById(R.id.btnMAViewLimitMod);
+        btnMAViewLimitMod.setText("Limit Modifier: " + limitMod);
+        btnMAViewLimitMod.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                int myNewValue = newVal+ minLimitValue;
+            public void onClick(View v) {
+                dplDialog.show();
             }
         });
 
