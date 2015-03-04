@@ -666,7 +666,7 @@ private void UpdateHours(int hours) {
 //UpdateDamage             Compile Button, Rest, Use Service
 private void UpdateDamage() {
         UpdateDamage(Main.data.getStatValue("Stun"), Main.data.getStatValue("Physical"));
-        }
+    }
 
 
 

@@ -1,11 +1,9 @@
 package com.dasixes.spritestable;
-//TODO: Why is everything but Diffusion at 14?
-//TODO: Add Force Picker (Resonance*3)
-//TODO: Set Limit to Force Picker
-//TODO: Add Drain roll
 //TODO: Add damage display
+//TODO: Add second chance drain karma button
 //TODO: Save to DB when moving away from here
-
+//TODO: Assisting can only be done by registered sprites
+//TODO: Assisting uses a service
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,8 +21,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -80,7 +80,18 @@ public class ComplexFormsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        //Log.e("DEBUG", "onResume of CompileFragment");
+        super.onResume();
+        Main = (MainActivity)getActivity();
+        UpdateAssistance();
+    }
+
     public void rollAction(ComplexForm cf){
+//TODO: Add damage penalties to die rolls
+//TODO: Save damage to DB
+//TODO: Disable actions when unconscious or dead
 
         int actionLimit=Force;
         CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CFCheckEdge);
@@ -136,6 +147,12 @@ public class ComplexFormsFragment extends Fragment {
             result=0;
         }else {
             result = dice.rollDice(actionDice,checkEdge.isChecked(), actionLimit);
+
+            if(Main.data.DoIHaveBadLuck()&&checkEdge.isChecked()){
+                result = dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") - Main.data.getStatValue("Edge"), false);
+            }else{
+                result = dice.rollDice(actionDice,checkEdge.isChecked(), actionLimit);
+            }
         }
         TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
         TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
@@ -154,9 +171,89 @@ public class ComplexFormsFragment extends Fragment {
                 glitchText.setTextColor(Color.BLACK);
             }
         }
+
+        //TODO: Second Chance Drain
+        Integer Fading = Force + Integer.valueOf(cf.getFading().replace("+", "").replace("L", ""));
+
+        //Roll Drain
+        CheckBox checkDrainEdgeCF= (CheckBox) getActivity().findViewById(R.id.checkDrainEdgeCF);
+        if(Main.data.getQualityValue("Sensitive System")==1){
+            if(dice.rollDice(Main.data.getStatValue("Willpower"),false)<2){Fading+=2;}
+        }
+        if(Main.data.DoIHaveBadLuck()&&checkDrainEdgeCF.isChecked()){
+            Fading = Fading - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") - Main.data.getStatValue("Edge"), false);
+        }else{
+            if(checkDrainEdgeCF.isChecked()){
+                Fading = Fading - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") + Main.data.getStatValue("Edge"), true);
+            }else{
+                Fading = Fading - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower"), false);
+            }
+
+        }
+        if (Fading < 0) {
+            Fading = 0;
+        }
+        if (result > Main.data.getStatValue("Resonance")) {//Big Success, physical damage
+            Main.data.addStatValue("Physical", Fading);
+        } else {//Small Success: Stun
+            Main.data.addStatValue("Stun", Fading);
+        }
+        UpdateDamage();
         UpdateAssistance();
         return;
     }
+    private void UpdateDamage() {
+        UpdateDamage(Main.data.getStatValue("Stun"), Main.data.getStatValue("Physical"));
+    }
+    private void UpdateDamage(int stun, int physical) {
+        RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.cfstunTrack);
+        if(stunDamage!=null) {
+            int MaxStun = (int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun");
+            int MaxPhysical = (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Physical");
+            int _overflow = 0;
+
+            stunDamage.setClickable(false);
+            stunDamage.setEnabled(false);
+            if (stunDamage.getRating() != stun || MaxStun != stunDamage.getMax()) {
+                stunDamage.setNumStars(MaxStun);
+                stunDamage.setMax(MaxStun);
+                if (stun > MaxStun) {//Did we exceed the stun condition monitor?
+                    physical += (int) Math.floor((stun - MaxStun) / 2);  //(TotalStun - StunMax)/2 rounded down is overflow
+                    Main.data.setStatValue("Stun", MaxStun);
+                }
+                stunDamage.setRating(Main.data.getStatValue("Stun"));
+            }
+            RatingBar physicalDamage = (RatingBar) getActivity().findViewById(R.id.cfphysicalTrack);
+            physicalDamage.setClickable(false);
+            physicalDamage.setEnabled(false);
+            if (physicalDamage.getRating() != physical || MaxPhysical != physicalDamage.getMax()) {
+                physicalDamage.setNumStars(MaxPhysical);
+                physicalDamage.setMax(MaxPhysical);
+
+                RatingBar overflowDamage = (RatingBar) getActivity().findViewById(R.id.cfoverflowTrack);
+                overflowDamage.setClickable(false);
+                overflowDamage.setEnabled(false);
+                overflowDamage.setNumStars(Main.data.getStatValue("Body"));
+                overflowDamage.setMax(Main.data.getStatValue("Body"));
+
+                if (physical > MaxPhysical) {
+                    _overflow = physical - MaxPhysical;
+                }
+                physicalDamage.setRating(physical - _overflow);//Don't count overflow when drawing boxes of damage
+                overflowDamage.setRating(_overflow);
+                Main.data.setStatValue("Physical", physical);
+            }
+
+            EditText stuntext = (EditText) getActivity().findViewById(R.id.editStun);
+            if (stuntext != null) {
+                stuntext.setText(String.valueOf(Main.data.getStatValue("Stun")));
+                EditText physicaltext = (EditText) getActivity().findViewById(R.id.editPhysical);
+                physicaltext.setText(String.valueOf(Main.data.getStatValue("Physical")));
+            }
+            Main.data.SaveAllStatsToDB();
+        }
+    }
+
 public void setForce(Integer force){
     Force=force;
     Button btnForce = (Button) getActivity().findViewById(R.id.btnForce);
@@ -431,6 +528,34 @@ public void setForce(Integer force){
 
             rowColor=!rowColor;
         }
+
+        RatingBar stunDamage = (RatingBar) v.findViewById(R.id.cfstunTrack);
+        stunDamage.setClickable(false);
+        stunDamage.setEnabled(false);
+        stunDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun"));
+
+        stunDamage.setMax((int) Math.floor(Main.data.getStatValue("Willpower") / 2) + 9 + Main.data.getQualityValue("Tough as Nails Stun"));
+        stunDamage.setRating(Main.data.getStatValue("Stun"));
+
+        RatingBar physicalDamage = (RatingBar) v.findViewById(R.id.cfphysicalTrack);
+        physicalDamage.setClickable(false);
+        physicalDamage.setEnabled(false);
+        physicalDamage.setNumStars((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9 +Main.data.getQualityValue("Tough as Nails Physical"));
+        physicalDamage.setMax((int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical"));
+
+        RatingBar overflowDamage = (RatingBar) v.findViewById(R.id.cfoverflowTrack);
+        overflowDamage.setClickable(false);
+        overflowDamage.setEnabled(false);
+        overflowDamage.setNumStars(Main.data.getStatValue("Body")+Main.data.getQualityValue("Will to Live"));
+        overflowDamage.setMax(Main.data.getStatValue("Body"));
+
+        if (Main.data.getStatValue("Physical") > (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical")) {
+            overflowDamage.setRating(Main.data.getStatValue("Physical") - (int) Math.floor(Main.data.getStatValue("Body") / 2) + 9+Main.data.getQualityValue("Tough as Nails Physical"));
+        }
+        physicalDamage.setRating(Main.data.getStatValue("Physical") - overflowDamage.getRating());//Don't count overflow when drawing boxes of damage
+
+//TODO: Damage is not persisting between fragments.
+
         return v;
     }
 

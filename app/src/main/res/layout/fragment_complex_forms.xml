@@ -58,6 +58,127 @@
             android:layout_below="@+id/CFtextHitsResult"
             android:layout_alignParentLeft="true"/>
 
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Push the Limit: Fading"
+            android:id="@+id/checkDrainEdgeCF"
+
+            android:checked="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_below="@+id/CFtextGlitchStatus" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Push the Limit: Skill"
+            android:id="@+id/CFCheckEdge"
+
+            android:checked="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_below="@+id/checkDrainEdgeCF" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Assistants:"
+            android:id="@+id/CFtextAssistance"
+            android:layout_below="@+id/CFCheckEdge"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <com.dasixes.spritestable.MultiSelectionSpinner
+            android:id="@+id/CFspAssistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/CFtextAssistance"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+
+            android:text="Stun Damage"
+            android:id="@+id/cftextStunDamage"
+
+            android:layout_below="@+id/CFspAssistance"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <RatingBar
+            android:layout_height="30sp"
+            android:layout_width="wrap_content"
+            android:id="@+id/cfstunTrack"
+            style="@style/damageRatingBar"
+            android:numStars="@integer/StunTrack"
+            android:rating="0"
+            android:stepSize="1"
+            android:clickable="false"
+            android:layout_gravity="start"
+
+            android:layout_alignWithParentIfMissing="false"
+            android:longClickable="false"
+            android:mirrorForRtl="false"
+            android:nestedScrollingEnabled="false"
+            android:layout_below="@+id/cftextStunDamage"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Physical Damage"
+            android:id="@+id/cftextPhysicalDamage"
+            android:layout_gravity="start"
+            android:layout_below="@id/cfstunTrack"
+            android:layout_marginTop="5dp" />
+
+        <RatingBar
+            android:layout_height="30sp"
+            android:layout_width="wrap_content"
+            android:id="@+id/cfphysicalTrack"
+            style="@style/damageRatingBar"
+            android:numStars="@integer/PhysicalTrack"
+            android:rating="0"
+            android:stepSize="1"
+            android:clickable="false"
+            android:layout_gravity="start"
+            android:layout_below="@+id/cftextPhysicalDamage"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Overflow Damage"
+            android:id="@+id/cftextOverflow"
+
+            android:layout_gravity="start"
+            android:layout_below="@id/cfphysicalTrack" />
+
+        <RatingBar
+            android:layout_height="30sp"
+            android:layout_width="wrap_content"
+            android:id="@+id/cfoverflowTrack"
+            android:numStars="@integer/OverflowTrack"
+            android:rating="0"
+            android:stepSize="1"
+            android:clickable="false"
+            android:layout_gravity="start"
+            style="@style/damageRatingBar"
+            android:layout_below="@+id/cftextOverflow"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -78,7 +199,7 @@
             android:id="@+id/btnCFViewLimitMod"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/btnCFViewDiePool"
-        />
+            />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -88,38 +209,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btnCFViewLimitMod"
             android:layout_alignParentRight="true"            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Assistants:"
-            android:id="@+id/CFtextAssistance"
-            android:layout_above="@+id/CFspAssistance"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <com.dasixes.spritestable.MultiSelectionSpinner
-            android:id="@+id/CFspAssistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/btnForce"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
-
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Push the Limit"
-            android:id="@+id/CFCheckEdge"
-
-            android:checked="false"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-
-            android:layout_above="@+id/CFtextAssistance" />
-
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
