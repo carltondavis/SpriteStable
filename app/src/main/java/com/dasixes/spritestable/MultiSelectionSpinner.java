@@ -1,5 +1,4 @@
 package com.dasixes.spritestable;
-//TODO: Make Compact Sprite list for Multi-select summary.  5Ma/5,3Co/4,2Cr/8
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -156,7 +155,7 @@ public class MultiSelectionSpinner extends Spinner implements
         }
         return selection;
     }
-
+/*
     private String buildSelectedItemString() {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
@@ -173,7 +172,23 @@ public class MultiSelectionSpinner extends Spinner implements
         }
         return sb.toString();
     }
+*/
+private String buildSelectedItemString() {
+    StringBuilder sb = new StringBuilder();
+    boolean foundOne = false;
 
+    for (int i = 0; i < _items.length; ++i) {
+        if (mSelection[i]) {
+            if (foundOne) {
+                sb.append(", ");
+            }
+            foundOne = true;
+
+            sb.append(_items[i].replace("Force ", "F").replace(" Courier with ","Co/").replace(" Crack with ","Cr/").replace(" Data with ","Da/").replace(" Fault with ","Fa/").replace(" Machine with ","Ma/").replace(" services","").replace(" Registered","R"));
+        }
+    }
+    return sb.toString();
+}
     public String getSelectedItemsAsString() {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;

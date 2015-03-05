@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Push the Limit: Fading"
-            android:id="@+id/checkDrainEdgeCF"
+            android:id="@+id/CFCheckEdgeFade"
 
             android:checked="false"
             android:layout_alignParentLeft="true"
@@ -73,22 +73,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Push the Limit: Skill"
-            android:id="@+id/CFCheckEdge"
+            android:id="@+id/CFCheckEdgeSkill"
 
             android:checked="false"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
 
-            android:layout_below="@+id/checkDrainEdgeCF" />
+            android:layout_below="@+id/CFCheckEdgeFade" />
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Assistants:"
+            android:text="Registered Assistants:"
             android:id="@+id/CFtextAssistance"
-            android:layout_below="@+id/CFCheckEdge"
+            android:layout_below="@+id/CFCheckEdgeSkill"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -213,14 +213,27 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Second&#10;Chance"
+            android:text="Second&#10;Chance&#10;Skill"
             android:textSize="8dp"
             android:enabled="false"
             android:visibility="invisible"
             android:maxLines="2"
-            android:id="@+id/CFSecondChance"
+            android:id="@+id/CFSecondChanceSkill"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/CFtextHits" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Second&#10;Chance&#10;Fading"
+            android:textSize="8dp"
+            android:enabled="false"
+            android:visibility="invisible"
+            android:maxLines="2"
+            android:id="@+id/CFSecondChanceFade"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/CFSecondChanceSkill" />
     </RelativeLayout>
 
     <ScrollView
