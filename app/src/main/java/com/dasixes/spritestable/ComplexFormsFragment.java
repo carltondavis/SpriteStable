@@ -94,7 +94,6 @@ public class ComplexFormsFragment extends Fragment {
     }
 
     public void rollAction(ComplexForm cf){
-//TODO: Add damage penalties to die rolls
 //TODO: Disable actions when unconscious or dead
         CheckBox CFCheckEdgeSkill= (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeSkill);
         CheckBox CFCheckEdgeFade= (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeFade);
@@ -196,7 +195,6 @@ public class ComplexFormsFragment extends Fragment {
             }
         }
 
-        //TODO: Second Chance Drain
         Integer Fading = Force + Integer.valueOf(cf.getFading().replace("+", "").replace("L", ""));
 
         //Roll Drain
@@ -531,9 +529,7 @@ public void setForce(Integer force){
 
 
 
-//TODO: Checkbox for pre-edge
-//Todo: Update Stats for  Edge when used
-        //Todo: Add box for current damage, so it can be changed on the fly
+        //Todo: Make current damage editable, so it can be changed on the fly
         //Todo: Update Stats for time so it can be changed on the fly (increment 15  minutes?)
         //Todo: add onResume to refresh from DB
         boolean rowColor = false;
@@ -628,11 +624,6 @@ public void setForce(Integer force){
             rowColor=!rowColor;
         }
         UpdateDamage();
-//TODO: Damage is not persisting between fragments.
-//Stats is working correctly.
-//CF is not.  It's saving correctly, but not loading correctly after changed in stats.
-//Stats saves change no problem.
-//Changes in Compile aren't saving appropriately.
 
         return v;
     }

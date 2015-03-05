@@ -138,6 +138,7 @@ public class PersistentValues {
 public Integer getSkillValue(String Name, String Specialization){
     Integer value=-1;
     long ID=0;
+
     for(Skills skill: pvSkills){
         if(skill.getSkillName().equalsIgnoreCase(Name)) {
             ID=skill.getId();
@@ -145,12 +146,23 @@ public Integer getSkillValue(String Name, String Specialization){
             break;
         }
     }
+    if(getQualityExtra("Codeslinger").equalsIgnoreCase(Specialization)){
+        value+=2;
+    }
+    if(getQualityExtra("Codeblock").equalsIgnoreCase(Specialization)){
+        value-=2;
+    }
+    if(getQualityExtra("LossOfConfidence").equalsIgnoreCase(Specialization)){
+        value-=2;
+        Specialization="";
+    }
     for(Specializations specialization: pvSpecializations){
         if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().toUpperCase().equals(Specialization.toUpperCase()))) {
             return (value+2);
         }
     }
-    //TODO: Handle qualities that modify skills
+
+
     return value;
 }
 
@@ -175,7 +187,8 @@ public Integer getSkillValue(String Name, String Specialization){
             }
         }
 
-        return value+getStatValue(stat);
+        value+=getStatValue(stat);
+        return value;
     }
 
     public Integer getStatValue(String Name){
@@ -254,10 +267,22 @@ public Integer getSkillValue(String Name, String Specialization){
             }
         }
     }
+
+    public String getQualityExtra(String Name){
+        String extra="";
+        for(Qualities quality: pvQualities){
+            if(quality.getQuality().equalsIgnoreCase(Name)) {
+                extra= quality.getExtra();
+                break;
+            }
+        }
+        return extra;
+    }
+
     public Integer getQualityValue(String Name){
         Integer value=0;
         for(Qualities quality: pvQualities){
-            if(quality.getQuality().equals(Name)) {
+            if(quality.getQuality().equalsIgnoreCase(Name)) {
                 value= quality.getValue();
                 break;
             }
@@ -276,7 +301,7 @@ public Integer getSkillValue(String Name, String Specialization){
     }
     public void setQualityValue(String Name, String Extra, Integer LinkedSkill, Integer Value) {
         for (Qualities quality : pvQualities) {
-            if (quality.getQuality().equals(Name)) {
+            if (quality.getQuality().equalsIgnoreCase(Name)) {
                 quality.setValue(Value);
                 quality.setExtra(Extra);
                 quality.setLinkedSkill(LinkedSkill);
@@ -301,7 +326,7 @@ public Integer getSkillValue(String Name, String Specialization){
                 quality.setExtra(Extra);
                 quality.setLinkedSkill(LinkedSkill);
                 switch (quality.getQuality().toUpperCase()){
-                    case "CODESLINGER"://TODO: Add action that is benefited to DB, and a picker for the Quality page
+                    case "CODESLINGER":
                         if(BuildPoints>0) {
                             quality.setValue(1);
                         }else{
@@ -366,14 +391,14 @@ public Integer getSkillValue(String Name, String Specialization){
                             quality.setValue(0);
                         }
                         break;
-                    case "CODEBLOCK":  //TODO: Add action that is blocked to DB, and a picker for the Quality page
+                    case "CODEBLOCK":
                         if(BuildPoints<0) {
                             quality.setValue(1);
                         }else{
                             quality.setValue(0);
                         }
                         break;
-                    case "LOSS OF CONFIDENCE"://TODO: Add action that is penalized to DB, and a picker for the Quality page
+                    case "LOSS OF CONFIDENCE":
                         if(BuildPoints<0) {
                             quality.setValue(1);
                         }else{
@@ -508,13 +533,13 @@ public Integer getSkillValue(String Name, String Specialization){
         Integer value=0;
         long ID=0;
         for(Skills skill: pvSkills){
-            if(skill.getSkillName().toUpperCase().equals(SkillName.toUpperCase())) {
+            if(skill.getSkillName().toUpperCase().equalsIgnoreCase(SkillName.toUpperCase())) {
                 ID=skill.getId();
                 break;
             }
         }
         for(Specializations specialization: pvSpecializations){
-            if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().toUpperCase().equals(Specialization.toUpperCase()))) {
+            if((specialization.getLinkedSkill()== ID)&&(specialization.getSpecializationName().toUpperCase().equalsIgnoreCase(Specialization.toUpperCase()))) {
                 specialization.setExists(Exists);
             }
         }
@@ -524,7 +549,7 @@ public Integer getSkillValue(String Name, String Specialization){
         long ID=0;
         List<String> SpecList = new ArrayList<>();
         for(Skills skill: pvSkills){
-            if(skill.getSkillName().equals(SkillName)) {
+            if(skill.getSkillName().equalsIgnoreCase(SkillName)) {
                 ID=skill.getId();
                 break;
             }
@@ -540,7 +565,7 @@ public Integer getSkillValue(String Name, String Specialization){
         long ID=0;
         List<String> SpecList = new ArrayList<>();
         for(Skills skill: pvSkills){
-            if(skill.getSkillName().equals(SkillName)) {
+            if(skill.getSkillName().equalsIgnoreCase(SkillName)) {
                 ID=skill.getId();
                 break;
             }

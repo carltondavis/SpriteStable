@@ -5,14 +5,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QualitiesFragment extends Fragment {
 
 
 //ID, Name, Rating
-//Todo: code for drop downs
 
 //Codeslinger: +2 dice a specific matrix action
 //Codeblock -2 dice pool on a specific action
@@ -154,6 +158,30 @@ public class QualitiesFragment extends Fragment {
 
         RadioGroup PieIesuDomine = (RadioGroup) v.findViewById(R.id.rgPieIesuDomine);
         UpdateRadioButtons(PieIesuDomine, "Pie Iesu Domine");
+
+        Spinner spCodeBlock = (Spinner) v.findViewById(R.id.spinnerCodeBlock);
+        Spinner spCodeSlinger = (Spinner) v.findViewById(R.id.spinnerCodeSlinger);
+        Spinner spinnerLossOfConfidence = (Spinner) v.findViewById(R.id.spinnerLossOfConfidence);
+
+        List<String> codeBlockList = new ArrayList<>();
+        List<String> codeSlingerList = new ArrayList<>();
+        List<String> lossOfConfidenceList = new ArrayList<>();
+
+        codeBlockList.add(Main.data.getQualityExtra("Codeblock"));
+        codeSlingerList.add(Main.data.getQualityExtra("Codeslinger"));
+        lossOfConfidenceList.add(Main.data.getQualityExtra("LossOfConfidence"));
+
+        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, codeBlockList);
+        adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spCodeBlock.setAdapter(adp1);
+
+        ArrayAdapter<String> adp2 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, codeSlingerList);
+        adp2.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spCodeSlinger.setAdapter(adp2);
+
+        ArrayAdapter<String> adp3 = new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, lossOfConfidenceList);
+        adp3.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinnerLossOfConfidence.setAdapter(adp3);
 
 
         return v;

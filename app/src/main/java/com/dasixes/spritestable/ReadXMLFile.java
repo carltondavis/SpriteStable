@@ -44,7 +44,6 @@ public class ReadXMLFile {
             getQualities(doc, activity);
             getSkills(doc, activity);
             getSprites(doc, activity);
-//TODO: GetComplexForms(doc, activity);
             getComplexForms(doc, activity);
 
            // return data;
