@@ -1,8 +1,5 @@
 package com.dasixes.spritestable;
-//TODO: Add damage display
 //TODO: Add second chance drain karma button
-//TODO: Save to DB when moving away from here
-//TODO: Assisting can only be done by registered sprites
 //TODO: Assisting uses a service
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -55,13 +52,10 @@ public class ComplexFormsFragment extends Fragment {
         List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
         List<Sprite> activeAssistants= new ArrayList<Sprite>();
 
-  /*  if(spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size()) {//Lead by technomancer
-
-    }else {//Add the technomancer, remove the leader
-    }
-    */
-        for(int i: spAssistance.getSelectedIndicies()){
-            activeAssistants.add(tempSelectedAssistants.get(i));
+        for(int i: spAssistance.getSelectedIndicies()) {
+            if (tempSelectedAssistants.get(i).getServicesOwed() > 0 && tempSelectedAssistants.get(i).getRegistered() == 1){
+                activeAssistants.add(tempSelectedAssistants.get(i));
+            }
         }
 
         Integer actionDice;
@@ -98,7 +92,6 @@ public class ComplexFormsFragment extends Fragment {
 
     public void rollAction(ComplexForm cf){
 //TODO: Add damage penalties to die rolls
-//TODO: Save damage to DB
 //TODO: Disable actions when unconscious or dead
 
         int actionLimit=Force;
@@ -428,11 +421,7 @@ public void setForce(Integer force){
 
 
 
-        //TODO Push the Limit checkbox
-        //TODO: Remember Edge use when character is assisting
 
-//TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
-        //TODO: One service = Assist Threading = + dice pool by level
 
 
         final Button secondChance = (Button) v.findViewById(R.id.CFSecondChance);
@@ -446,8 +435,6 @@ public void setForce(Integer force){
                 TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
                 TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
                 //Re-roll failures
-                //TODO: Re-roll failures for technomancer assistant
-                //TODO: Re-roll failures for sprite assistant
                 int newDice = Integer.valueOf( diceText.getText().toString()) - Integer.valueOf( hitsText.getText().toString());
                 int result = dice.rollDice(newDice,false);
                 hitsText.setText(String.valueOf(result + Integer.valueOf( hitsText.getText().toString()) ));
@@ -461,10 +448,15 @@ public void setForce(Integer force){
         });
 
         final MultiSelectionSpinner spAssistance = (MultiSelectionSpinner) v.findViewById(R.id.CFspAssistance);
-
-        String[] arrayAssistance = new String[Main.data.pvSpriteList.size()];
-        List<String> assistants = new ArrayList<String>(Main.data.pvSpriteList);
-        arrayAssistance=assistants.toArray(arrayAssistance);
+        List<String> activeSpriteList = new ArrayList<>();
+        for (Sprite sprite : Main.data.pvSprites) {
+            if((sprite.getServicesOwed()>0) && (sprite.getRegistered()==1)){
+                String title = String.valueOf("Force " + sprite.getRating() + " " + sprite.getType()) + " with " + sprite.getServicesOwed() + " services";
+                activeSpriteList.add(title);
+            }
+        }
+        String[] arrayAssistance = new String[activeSpriteList.size()];
+        arrayAssistance=activeSpriteList.toArray(arrayAssistance);
         spAssistance.setItems(arrayAssistance);
         spAssistance.setOnMultiSpinnerListener(
                 new MultiSelectionSpinner.MultiSpinnerListener() {
