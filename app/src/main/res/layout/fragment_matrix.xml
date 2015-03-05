@@ -130,6 +130,18 @@
 
                 android:layout_below="@+id/spAssistance" />
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hot Sim"
+                android:id="@+id/HotSim"
+
+                android:checked="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toRightOf="@id/CheckEdge"
+                android:layout_below="@+id/spAssistance" />
+
             <Button
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"

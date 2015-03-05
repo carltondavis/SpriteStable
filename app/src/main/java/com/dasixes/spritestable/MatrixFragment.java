@@ -1,7 +1,6 @@
 package com.dasixes.spritestable;
 //TODO: HouseRule: Track matrix action usage, sort by frequency
 //TODO: Used Edge isn't updating correctly
-//TODO: Add Hot-Sim checkbox, +2 to technomancer rolls when checked
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -65,8 +64,9 @@ public void UpdateAssistance(){
     MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
     CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
     Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
+    CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
 
-    checkEdge.setChecked(false);
+            checkEdge.setChecked(false);
 
 
 
@@ -118,6 +118,7 @@ public void UpdateAssistance(){
         }
         if(includeTechnomancer){
             actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+            if(checkHotSim.isChecked()){actionDice+=2;}
             if(actionDice>0) {
                 if (assistantDice.length() > 1) {
                     assistantDice += ", ";
@@ -217,6 +218,7 @@ public void UpdateLeader(boolean isTechnomancer){
 
     Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
     MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
+    CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
 
     //Remove selected Leader
     List<String> assistants= new ArrayList<String>(Main.data.pvSpriteList);
@@ -237,6 +239,7 @@ public void UpdateLeader(boolean isTechnomancer){
             currentRow.setEnabled(true);
             currentRow.setVisibility(View.VISIBLE);
             actiondice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+            if(checkHotSim.isChecked()){actiondice+=2;}
             actionLimit=GetLimit(ma.getLimitType());
         }else{
             int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
@@ -401,6 +404,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
         CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
+        CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
 
         List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
         List<Sprite> activeAssistants= new ArrayList<Sprite>();
@@ -455,6 +459,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                     assistantDice+=", ";
                 }
                 actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+                if(checkHotSim.isChecked()){actionDice+=2;}
                 actionLimit=GetLimit(ma.getLimitType());
                 assistantDice+="("+actionDice+")["+actionLimit+"]";
                 //TODO: Remember Edge use when character is assisting
@@ -511,6 +516,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
     public void rollAction(MatrixActions ma){
         CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
+        CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
         Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
 
         Dice dice = new Dice();
@@ -549,7 +555,9 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
         actionDice+=Main.data.getMatrixActionAssistDice(ma.getActionName());
 
-
+        if(checkHotSim.isChecked()){
+            actionDice+=2;
+        }
 
 
         if(Main.data.getMatrixActionAssistLimit(ma.getActionName())>0){

@@ -92,7 +92,6 @@ public class MainActivity extends FragmentActivity {
 
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
-//TODO: Move Stats, Skills, Qualities to Config page
 
     }
 
