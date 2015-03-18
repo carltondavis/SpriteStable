@@ -1,6 +1,7 @@
 package com.dasixes.spritestable;
 //TODO: HouseRule: Track matrix action usage, sort by frequency
 //TODO: Used Edge isn't updating correctly
+//TODO: Damage penalties
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -463,7 +464,6 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                 actionLimit=GetLimit(ma.getLimitType());
                 assistantDice+="("+actionDice+")["+actionLimit+"]";
                 //TODO: Remember Edge use when character is assisting
-                //Todo: Calculate penalties for each action from Qualities
                 actionDice+= diePoolMod;
                 actionLimit+= limitMod;
                 result = dice.rollDice(actionDice,false, actionLimit);

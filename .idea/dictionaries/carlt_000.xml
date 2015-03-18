@@ -11,8 +11,10 @@
       <w>oppdice</w>
       <w>overwatch</w>
       <w>overwatchscore</w>
+      <w>physmod</w>
       <w>spritestable</w>
       <w>spritevalues</w>
+      <w>stunmod</w>
     </words>
   </dictionary>
 </component>

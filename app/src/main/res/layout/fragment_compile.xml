@@ -131,7 +131,31 @@
             android:layout_toRightOf="@+id/SkillEdge"
             android:layout_toEndOf="@+id/SkillEdge" />
 
-        <Button
+    <Button
+        android:id="@+id/SecondSkill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Second Chance Skill"
+        android:lines="3"
+        android:layout_gravity="start"
+        android:layout_below="@+id/buttonUseService"
+        android:layout_alignLeft="@+id/Rest"
+        android:layout_alignRight="@+id/buttonSleep"
+        />
+    <Button
+        android:id="@+id/SecondFading"
+        android:lines="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Second Chance Fading"
+        android:layout_gravity="start"
+        android:layout_below="@+id/buttonUseService"
+        android:layout_toRightOf="@+id/SecondSkill"
+
+         />
+
+
+    <Button
             android:id="@+id/Compile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
