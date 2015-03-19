@@ -27,16 +27,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO: Add Stimpatches
 
 public class ComplexFormsFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
     int Force=1;
     int diePoolMod=0;
     int limitMod=0;
-    int secondChanceFadeDice =0;
+    int secondChanceFadeSuccesses =0;
     int secondChanceDamage=0;
     String secondChanceFadeType="";
+    int secondChanceLimit=0;
 
     public void UpdateAssistance(){
         //Loop through all actions
@@ -60,6 +61,17 @@ public class ComplexFormsFragment extends Fragment {
                 activeAssistants.add(tempSelectedAssistants.get(i));
             }
         }
+
+        List<String> activeSpriteList = new ArrayList<>();
+        for (Sprite sprite : Main.data.pvSprites) {
+            if((sprite.getServicesOwed()>0) && (sprite.getRegistered()==1)){
+                String title = String.valueOf("Force " + sprite.getRating() + " " + sprite.getType()) + " with " + sprite.getServicesOwed() + " services";
+                activeSpriteList.add(title);
+            }
+        }
+        String[] arrayAssistance = new String[activeSpriteList.size()];
+        arrayAssistance=activeSpriteList.toArray(arrayAssistance);
+        spAssistance.setItems(arrayAssistance);
 
         Integer actionDice;
         for(ComplexForm cf :Main.data.pvComplexForms){
@@ -95,6 +107,7 @@ public class ComplexFormsFragment extends Fragment {
 
     public void rollAction(ComplexForm cf){
 //TODO: Disable actions when unconscious or dead
+        //If Stun or Physical>MAX then create a toast saying you're unconscious.
         CheckBox CFCheckEdgeSkill= (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeSkill);
         CheckBox CFCheckEdgeFade= (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeFade);
 
@@ -119,7 +132,6 @@ public class ComplexFormsFragment extends Fragment {
         boolean useEdge=false;
         actionDice= Main.data.getDice("Resonance","Software",cf.getName());
 
-        //Todo: Calculate penalties for each action from Qualities
         if(CFCheckEdgeSkill.isChecked()){
             Main.data.addStatValue("EdgeUsed", 1);
         }
@@ -143,15 +155,16 @@ public class ComplexFormsFragment extends Fragment {
         }
         List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
         List<Sprite> activeAssistants= new ArrayList<Sprite>();
-
-//TODO Make sure we're looking at the right place.  Non-registered, service 0 sprites are stripped from selection list, but not main list
-//TODO: Decrement a service from the sprites that were checked.
+//TODO: Update display to reflect new sprite services
 
         MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.CFspAssistance);
 
         for(int i: spAssistance.getSelectedIndicies()){
             activeAssistants.add(tempSelectedAssistants.get(i));
+            Main.data.pvSprites.get(i).setServicesOwed(Main.data.pvSprites.get(i).getServicesOwed()-1);
         }
+        Main.data.SaveAllSpritesToDB();
+        UpdateAssistance();
 
         //Loop through assistants for each action
         for(Sprite assistantSprite: activeAssistants){
@@ -176,6 +189,7 @@ public class ComplexFormsFragment extends Fragment {
         }else{
             result = dice.rollDice(actionDice,CFCheckEdgeSkill.isChecked(),actionLimit);
         }
+        secondChanceLimit=actionLimit;
 
         TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
         TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
@@ -201,20 +215,23 @@ public class ComplexFormsFragment extends Fragment {
         if(Main.data.getQualityValue("Sensitive System")==1){
             if(dice.rollDice(Main.data.getStatValue("Willpower"),false)<2){Fading+=2;}
         }
+        int fadeResult=0;
         if(Main.data.DoIHaveBadLuck()&&CFCheckEdgeFade.isChecked()){
-            Fading = Fading - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") - Main.data.getStatValue("Edge"), false);
+            fadeResult = dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") - Main.data.getStatValue("Edge"), false);
         }else{
             if(CFCheckEdgeFade.isChecked()){
-                Fading = Fading - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") + Main.data.getStatValue("Edge"), true);
+                fadeResult = dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower") + Main.data.getStatValue("Edge"), true);
             }else{
-                Fading = Fading - dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower"), false);
+                fadeResult =  dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower"), false);
             }
 
         }
+        Fading-=fadeResult;
         if (Fading < 0) {
             Fading = 0;
         }
-        secondChanceFadeDice=Fading;
+        secondChanceFadeSuccesses=fadeResult;
+        secondChanceDamage=Fading;
         if (result > Main.data.getStatValue("Resonance")) {//Big Success, physical damage
             Main.data.addStatValue("Physical", Fading);
             secondChanceFadeType="P";
@@ -232,6 +249,8 @@ public class ComplexFormsFragment extends Fragment {
     private void UpdateDamage() {
         UpdateDamage(Main.data.getStatValue("Stun"), Main.data.getStatValue("Physical"));
     }
+
+
     private void UpdateDamage(int stun, int physical) {
         RatingBar stunDamage = (RatingBar) getActivity().findViewById(R.id.cfstunTrack);
         if(stunDamage!=null) {
@@ -459,22 +478,8 @@ public void setForce(Integer force){
 
             @Override
             public void onClick(View v) {
-                Dice dice = new Dice();
-                //TODO: Store limit somewhere for second chance option
-                TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
-                TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
-                //Re-roll failures
-                int newDice = Integer.valueOf( diceText.getText().toString()) - Integer.valueOf( hitsText.getText().toString());
-                int result = dice.rollDice(newDice,false);
-                hitsText.setText(String.valueOf(result + Integer.valueOf( hitsText.getText().toString()) ));
-                Main.data.addStatValue("EdgeUsed",1);
-                secondChanceSkill.setVisibility(View.INVISIBLE);
-                secondChanceSkill.setEnabled(false);
-                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
-                    checkEdgeSkill.setEnabled(false);
-                    checkEdgeFade.setEnabled(false);
-                    secondChanceFade.setEnabled(false);
-                }
+
+                secondChanceSkill();
             }
         });
 
@@ -482,26 +487,8 @@ public void setForce(Integer force){
 
             @Override
             public void onClick(View v) {
-                Dice dice = new Dice();
 
-                //Re-roll failures
-                int result = dice.rollDice(secondChanceFadeDice,false);
-                if(result>secondChanceDamage){
-                    result=secondChanceDamage;
-                }
-                if(secondChanceFadeType.equalsIgnoreCase("S")){
-                    Main.data.addStatValue("Stun", -1*result);
-                }else{
-                    Main.data.addStatValue("Physical", -1*result);
-                }
-                Main.data.addStatValue("EdgeUsed",1);
-                secondChanceFade.setVisibility(View.INVISIBLE);
-                secondChanceFade.setEnabled(false);
-                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
-                    checkEdgeSkill.setEnabled(false);
-                    checkEdgeFade.setEnabled(false);
-                    secondChanceSkill.setEnabled(false);
-                }
+                secondChanceFading();
             }
         });
 
@@ -531,7 +518,6 @@ public void setForce(Integer force){
 
         //Todo: Make current damage editable, so it can be changed on the fly
         //Todo: Update Stats for time so it can be changed on the fly (increment 15  minutes?)
-        //Todo: add onResume to refresh from DB
         boolean rowColor = false;
         int bgColor;
 
@@ -629,7 +615,72 @@ public void setForce(Integer force){
     }
 
 
+    //Post-edge skill
+    public void secondChanceSkill() {
+        Button secondChanceSkill = (Button) getActivity().findViewById(R.id.CFSecondChanceSkill);
+        Button secondChanceFade = (Button) getActivity().findViewById(R.id.CFSecondChanceFade);
+        CheckBox checkEdgeSkill = (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeSkill);
+        CheckBox checkEdgeFade = (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeFade);
+        //TODO: Store limit somewhere for second chance option
+        TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
+        TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
 
+        Dice dice = new Dice();
+
+        Main.data.addStatValue("EdgeUsed",1);
+        secondChanceSkill.setVisibility(View.INVISIBLE);
+        secondChanceSkill.setEnabled(false);
+        if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
+            checkEdgeSkill.setEnabled(false);
+            checkEdgeFade.setEnabled(false);
+            secondChanceFade.setEnabled(false);
+            secondChanceFade.setVisibility(View.INVISIBLE);
+        }
+        //Get failed roll count
+        //Roll those dice again
+        //Re-roll failures
+        int result = dice.rollDice(Integer.getInteger(diceText.getText().toString())-Integer.getInteger(hitsText.getText().toString()) ,false,secondChanceLimit);
+        hitsText.setText(result+Integer.getInteger(hitsText.getText().toString()));
+
+        //Make this button invisible, check on the other second chance button
+        Button secondSkill = (Button) getActivity().findViewById(R.id.SecondSkill);
+        Button secondFading = (Button) getActivity().findViewById(R.id.SecondFading);
+
+        if(Main.data.getStatValue("Edge")<=Main.data.getStatValue("EdgeUsed")){
+            secondFading.setVisibility(View.INVISIBLE);
+        }
+        secondSkill.setVisibility(View.INVISIBLE);
+
+
+
+    }
+    //Post-edge drain
+    public void secondChanceFading(){
+        Button secondChanceSkill = (Button) getActivity().findViewById(R.id.CFSecondChanceSkill);
+        Button secondChanceFade = (Button) getActivity().findViewById(R.id.CFSecondChanceFade);
+        CheckBox checkEdgeSkill = (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeSkill);
+        CheckBox checkEdgeFade = (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeFade);
+
+        Dice dice = new Dice();
+
+
+
+        Main.data.addStatValue("EdgeUsed",1);
+        secondChanceSkill.setVisibility(View.INVISIBLE);
+        secondChanceSkill.setEnabled(false);
+        if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
+            checkEdgeSkill.setEnabled(false);
+            checkEdgeFade.setEnabled(false);
+            secondChanceFade.setEnabled(false);
+        }
+        int results=dice.rollDice(Main.data.getStatValue("Resonance") + Main.data.getStatValue("Willpower")-secondChanceFadeSuccesses, false, secondChanceDamage);
+        //Determine if fading was physical or stun, remove newfade from that track
+        if(secondChanceFadeType.equalsIgnoreCase("S")){
+            UpdateDamage(Main.data.getStatValue("Stun")-results, Main.data.getStatValue("Physical"));
+        }else {//   stun
+            UpdateDamage(Main.data.getStatValue("Stun"), Main.data.getStatValue("Physical")-results);
+        }
+    }
     public static ComplexFormsFragment newInstance() {
 
         ComplexFormsFragment f = new ComplexFormsFragment();

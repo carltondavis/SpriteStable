@@ -217,7 +217,7 @@
             android:textSize="8dp"
             android:enabled="false"
             android:visibility="invisible"
-            android:maxLines="2"
+            android:maxLines="3"
             android:id="@+id/CFSecondChanceSkill"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/CFtextHits" />
@@ -230,7 +230,7 @@
             android:textSize="8dp"
             android:enabled="false"
             android:visibility="invisible"
-            android:maxLines="2"
+            android:maxLines="3"
             android:id="@+id/CFSecondChanceFade"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/CFSecondChanceSkill" />

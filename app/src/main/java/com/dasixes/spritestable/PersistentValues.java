@@ -134,8 +134,9 @@ public class PersistentValues {
     public Integer getSkillValue(String Name){
         return getSkillValue(Name, "");
     }
+    //Todo: Calculate penalties for each action from Qualities
 
-public Integer getSkillValue(String Name, String Specialization){
+    public Integer getSkillValue(String Name, String Specialization){
     Integer value=-1;
     long ID=0;
 

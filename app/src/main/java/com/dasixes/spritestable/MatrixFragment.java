@@ -1,7 +1,6 @@
 package com.dasixes.spritestable;
 //TODO: HouseRule: Track matrix action usage, sort by frequency
 //TODO: Used Edge isn't updating correctly
-//TODO: Damage penalties
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -460,6 +459,15 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                     assistantDice+=", ";
                 }
                 actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+                //Damage penalties
+                int DamagePenalties;
+                int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance"))));
+                if(temppenalties<0){temppenalties=0;}
+                DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance")));
+                if(DamagePenalties<0){DamagePenalties=0;}
+                DamagePenalties+=temppenalties;
+                actionDice-=DamagePenalties;
+
                 if(checkHotSim.isChecked()){actionDice+=2;}
                 actionLimit=GetLimit(ma.getLimitType());
                 assistantDice+="("+actionDice+")["+actionLimit+"]";
@@ -530,6 +538,15 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1){//Technomancer
                 actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
                 actionLimit=GetLimit(ma.getLimitType());
+
+                //Damage penalties
+                int DamagePenalties;
+                int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance"))));
+                if(temppenalties<0){temppenalties=0;}
+                DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance")));
+                if(DamagePenalties<0){DamagePenalties=0;}
+                DamagePenalties+=temppenalties;
+                actionDice-=DamagePenalties;
 
                 //Todo: Calculate penalties for each action from Qualities
                 //TODO: RememberEdge use when character is leading
