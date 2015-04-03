@@ -1,6 +1,7 @@
 package com.dasixes.spritestable;
 //TODO: HouseRule: Track matrix action usage, sort by frequency
-//TODO: Used Edge isn't updating correctly
+// TODO: Crashes when screen rotates
+// TODO: Second chance available even when out of edge
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -28,8 +29,11 @@ public class MatrixFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
     int diePoolMod=0;
     int limitMod=0;
-
-
+    int secondChanceLimit=0;
+    int secondChanceTMAssistantHits=0;
+    int secondChanceTMAssistantDice=0;
+    int secondChanceTMAssistantLimit=0;
+    String secondChanceAction="";
     // Die modifier spinner, Limit Modifier Spinner
 
     // Action Name, Total Dice, Total/Total/Total assisting dice, Limit(Assisted Limit),
@@ -58,88 +62,90 @@ public class MatrixFragment extends Fragment {
         super.onPause();
         Main.data.SaveAllToDB();
     }
-public void UpdateAssistance(){
-    //Loop through all actions
-    Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
-    MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
-    CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
-    Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
-    CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
 
-            checkEdge.setChecked(false);
-
-
-
-
-    List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
-    List<Sprite> activeAssistants= new ArrayList<Sprite>();
-    boolean includeTechnomancer=false;
-  /*  if(spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size()) {//Lead by technomancer
-
-    }else {//Add the technomancer, remove the leader
+    @Override
+    public void onResume() {
+        //Log.e("DEBUG", "onResume of CompileFragment");
+        super.onResume();
+        Main = (MainActivity)getActivity();
+        Main.data.RestoreFromDB(Main);
+        UpdateAssistance();
     }
-    */
-    if(spLeader.getSelectedItemPosition()!=tempSelectedAssistants.size()) {
-        tempSelectedAssistants.remove(spLeader.getSelectedItemPosition());
-    }
+    public void UpdateAssistance(){
+        //Loop through all actions
+        Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
+        MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
+        CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
+        CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
+
+        checkEdge.setChecked(false);
 
 
-    for(int i: spAssistance.getSelectedIndicies()){
-        if(i==(spLeader.getCount()-2) && spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size() ){
-            includeTechnomancer=true;
-        }else{
-            activeAssistants.add(tempSelectedAssistants.get(i));
+
+
+        List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
+        List<Sprite> activeAssistants= new ArrayList<Sprite>();
+        boolean includeTechnomancer=false;
+
+        if(spLeader.getSelectedItemPosition()!=tempSelectedAssistants.size()) {
+            tempSelectedAssistants.remove(spLeader.getSelectedItemPosition());
         }
-    }
-
-    String assistantDice = "";
-    int actionLimit=0;
-    int actionDice=0;
-    int spriteType=0;
-    int spriteRating =0;
 
 
-    for(MatrixActions ma :Main.data.pvMatrixActions){
-
-
-        assistantDice="";
-        //Loop through assistants for each action
-        for(Sprite assistantSprite: activeAssistants){
-            spriteType = assistantSprite.getSpriteType();
-            spriteRating = assistantSprite.getRating();
-            actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
-            actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
-            if(actionDice>=1){//Only add if it can help
-                if(assistantDice.length()>1){
-                    assistantDice+=", ";
-                }
-                assistantDice+="("+actionDice+")["+actionLimit+"]";
+        for(int i: spAssistance.getSelectedIndicies()){
+            if(i==(spLeader.getCount()-2) && spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size() ){
+                includeTechnomancer=true;
+            }else{
+                activeAssistants.add(tempSelectedAssistants.get(i));
             }
         }
-        if(includeTechnomancer){
-            actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
-            if(checkHotSim.isChecked()){actionDice+=2;}
-            if(actionDice>0) {
-                if (assistantDice.length() > 1) {
-                    assistantDice += ", ";
+
+        String assistantDice = "";
+        int actionLimit=0;
+        int actionDice=0;
+        int spriteType=0;
+        int spriteRating =0;
+
+
+        for(MatrixActions ma :Main.data.pvMatrixActions){
+            assistantDice="";
+            //Loop through assistants for each action
+            for(Sprite assistantSprite: activeAssistants){
+                spriteType = assistantSprite.getSpriteType();
+                spriteRating = assistantSprite.getRating();
+                actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
+                actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
+                if(actionDice>=1){//Only add if it can help
+                    if(assistantDice.length()>1){
+                        assistantDice+=", ";
+                    }
+                    assistantDice+="("+actionDice+")["+actionLimit+"]";
                 }
-
-                actionLimit = GetLimit(ma.getLimitType());
-                assistantDice += "(" + actionDice + ")[" + actionLimit + "]";
             }
-        }
-        if(assistantDice.length()==0){assistantDice="nothing";};
-        LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
-        LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
-        Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
-        btnAssist.setText("Roll " + assistantDice +" to assist.");
-        btnAssist.setTextColor(Color.BLACK);
-        btnAssist.setClickable(true);
-        Main.data.setMatrixActionAssistDice(ma.getActionName(), 0);
-        Main.data.setMatrixActionAssistLimit(ma.getActionName(), 0);
+            if(includeTechnomancer){
+                actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+                if(checkHotSim.isChecked()){actionDice+=2;}
+                if(actionDice>0) {
+                    if (assistantDice.length() > 1) {
+                        assistantDice += ", ";
+                    }
 
+                    actionLimit = GetLimit(ma.getLimitType());
+                    assistantDice += "(" + actionDice + ")[" + actionLimit + "]";
+                }
+            }
+            if(assistantDice.length()==0){assistantDice="nothing";};
+            LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
+            LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
+            Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
+            btnAssist.setText("Roll " + assistantDice +" to assist.");
+            btnAssist.setTextColor(Color.BLACK);
+            btnAssist.setClickable(true);
+            Main.data.setMatrixActionAssistDice(ma.getActionName(), 0);
+            Main.data.setMatrixActionAssistLimit(ma.getActionName(), 0);
+
+        }
     }
-}
     public int GetLimit(int limitType){
         switch (limitType){
             case 1:
@@ -211,61 +217,61 @@ public void UpdateAssistance(){
                     case 4:
                         return spriteRating+2;
                 }
-    }
+        }
         return spriteRating;
     }
-public void UpdateLeader(boolean isTechnomancer){
+    public void UpdateLeader(boolean isTechnomancer){
 
-    Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
-    MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
-    CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
+        Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
+        MultiSelectionSpinner spAssistance= (MultiSelectionSpinner) getActivity().findViewById(R.id.spAssistance);
+        CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
 
-    //Remove selected Leader
-    List<String> assistants= new ArrayList<String>(Main.data.pvSpriteList);
-    if(!isTechnomancer){
-        assistants.add("Technomancer");
-        assistants.remove(spLeader.getSelectedItem());
+        //Remove selected Leader
+        List<String> assistants= new ArrayList<String>(Main.data.pvSpriteList);
+        if(!isTechnomancer){
+            assistants.add("Technomancer");
+            assistants.remove(spLeader.getSelectedItem());
 
 
-    }
-    for(MatrixActions ma :Main.data.pvMatrixActions){
-        LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
-        LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
-        Button btnAction = (Button) currentRow.findViewWithTag("Action" + ma.getActionName());
-        Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
-        int actiondice;
-        int actionLimit;
-        if(isTechnomancer){
-            currentRow.setEnabled(true);
-            currentRow.setVisibility(View.VISIBLE);
-            actiondice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
-            if(checkHotSim.isChecked()){actiondice+=2;}
-            actionLimit=GetLimit(ma.getLimitType());
-        }else{
-            int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
-            int spriteRating = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
-            actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
-
-            actiondice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
-            if(actiondice==-1){
-                currentRow.setEnabled(false);
-                currentRow.setVisibility(View.INVISIBLE);
-            }else{
+        }
+        for(MatrixActions ma :Main.data.pvMatrixActions){
+            LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
+            LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
+            Button btnAction = (Button) currentRow.findViewWithTag("Action" + ma.getActionName());
+            Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
+            int actiondice;
+            int actionLimit;
+            if(isTechnomancer){
                 currentRow.setEnabled(true);
                 currentRow.setVisibility(View.VISIBLE);
+                actiondice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+                if(checkHotSim.isChecked()){actiondice+=2;}
+                actionLimit=GetLimit(ma.getLimitType());
+            }else{
+                int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
+                int spriteRating = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
+                actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
+
+                actiondice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
+                if(actiondice==-1){
+                    currentRow.setEnabled(false);
+                    currentRow.setVisibility(View.INVISIBLE);
+                }else{
+                    currentRow.setEnabled(true);
+                    currentRow.setVisibility(View.VISIBLE);
+                }
+            }
+            if(actiondice<=0){
+                btnAction.setText(ma.getActionName() + " No Roll");
+            }else {
+                btnAction.setText(ma.getActionName() + " (" + actiondice + ")[" + actionLimit + "]");
             }
         }
-        if(actiondice<=0){
-            btnAction.setText(ma.getActionName() + " No Roll");
-        }else {
-            btnAction.setText(ma.getActionName() + " (" + actiondice + ")[" + actionLimit + "]");
-        }
-    }
-    String[] arrayAssistance = new String[Main.data.pvSpriteList.size()];
-    arrayAssistance=assistants.toArray(arrayAssistance);
-    spAssistance.setItems(arrayAssistance);
+        String[] arrayAssistance = new String[Main.data.pvSpriteList.size()];
+        arrayAssistance=assistants.toArray(arrayAssistance);
+        spAssistance.setItems(arrayAssistance);
 
-}
+    }
 
     public int GetSpriteSkill(int spriteType, int spriteRating, String skill){
         switch (spriteType){
@@ -291,107 +297,107 @@ public void UpdateLeader(boolean isTechnomancer){
         return spriteRating-1;
     }
 
-public int GetSpriteActionDice(int spriteType, int spriteRating, String actionName){
-    //TODO: Add Houserule: Can Sprites Default?
-    //TODO: Add Houserule: Deduce Sprite Attributes or Use Resonance for Sprite Skills?
+    public int GetSpriteActionDice(int spriteType, int spriteRating, String actionName){
+        //TODO: Add Houserule: Can Sprites Default?
+        //TODO: Add Houserule: Deduce Sprite Attributes or Use Resonance for Sprite Skills?
 
-    switch (actionName) {
-        case "BRUTE FORCE":
-            return GetSpriteSkill(spriteType, spriteRating,"Cybercombat");
+        switch (actionName) {
+            case "BRUTE FORCE":
+                return GetSpriteSkill(spriteType, spriteRating,"Cybercombat");
 
-        case "CHANGE ICON":
-            return 0;
+            case "CHANGE ICON":
+                return 0;
 
-        case "CHECK OVERWATCH SCORE":
-            return GetSpriteSkill(spriteType, spriteRating,"Electronic Warfare");
+            case "CHECK OVERWATCH SCORE":
+                return GetSpriteSkill(spriteType, spriteRating,"Electronic Warfare");
 
-        case "CONTROL DEVICE":
-            return GetSpriteSkill(spriteType, spriteRating,"Electronic Warfare");
+            case "CONTROL DEVICE":
+                return GetSpriteSkill(spriteType, spriteRating,"Electronic Warfare");
 
-        case "CRACK FILE":
-            return GetSpriteSkill(spriteType, spriteRating, "Hacking");
+            case "CRACK FILE":
+                return GetSpriteSkill(spriteType, spriteRating, "Hacking");
 
-        case "CRASH PROGRAM":
-            return GetSpriteSkill(spriteType, spriteRating,"Cybercombat");
+            case "CRASH PROGRAM":
+                return GetSpriteSkill(spriteType, spriteRating,"Cybercombat");
 
-        case "DATA SPIKE":
-            return GetSpriteSkill(spriteType, spriteRating,"Cybercombat");
+            case "DATA SPIKE":
+                return GetSpriteSkill(spriteType, spriteRating,"Cybercombat");
 
-        case "DISARM DATA BOMB":
-            return GetSpriteSkill(spriteType, spriteRating, "Software");
+            case "DISARM DATA BOMB":
+                return GetSpriteSkill(spriteType, spriteRating, "Software");
 
-        case "EDIT FILE":
-            return GetSpriteSkill(spriteType, spriteRating,"Computer");
+            case "EDIT FILE":
+                return GetSpriteSkill(spriteType, spriteRating,"Computer");
 
-        case "ENTER/EXIT HOST":
-            return 0;
+            case "ENTER/EXIT HOST":
+                return 0;
 
-        case "ERASE MARK":
-            return GetSpriteSkill(spriteType, spriteRating, "Computer");
+            case "ERASE MARK":
+                return GetSpriteSkill(spriteType, spriteRating, "Computer");
 
 
-        case "ERASE MATRIX SIGNATURE":
-            return GetSpriteSkill(spriteType, spriteRating,"Computer");
+            case "ERASE MATRIX SIGNATURE":
+                return GetSpriteSkill(spriteType, spriteRating,"Computer");
 
-        case "FORMAT DEVICE":
-            return GetSpriteSkill(spriteType, spriteRating, "Computer");
+            case "FORMAT DEVICE":
+                return GetSpriteSkill(spriteType, spriteRating, "Computer");
 
-        case "FULL MATRIX DEFENSE":
-            return 0;
+            case "FULL MATRIX DEFENSE":
+                return 0;
 
-        case "GRID HOP":
-            return 0;
+            case "GRID HOP":
+                return 0;
 
-        case "HACK ON THE FLY":
-            return GetSpriteSkill(spriteType, spriteRating, "Hacking");
+            case "HACK ON THE FLY":
+                return GetSpriteSkill(spriteType, spriteRating, "Hacking");
 
-        case "HIDE":
-            return GetSpriteSkill(spriteType, spriteRating, "Electronic Warfare");
+            case "HIDE":
+                return GetSpriteSkill(spriteType, spriteRating, "Electronic Warfare");
 
-        case "INVITE MARK":
-           return 0;
+            case "INVITE MARK":
+                return 0;
 
-        case "JACK OUT":
-            return -1;
+            case "JACK OUT":
+                return -1;
 
-        case "JAM SIGNALS":
-            return GetSpriteSkill(spriteType, spriteRating,"Electronic Warfare");
+            case "JAM SIGNALS":
+                return GetSpriteSkill(spriteType, spriteRating,"Electronic Warfare");
 
-        case "JUMP INTO RIGGED DEVICE":
-            return GetSpriteSkill(spriteType, spriteRating, "Electronic Warfare");
+            case "JUMP INTO RIGGED DEVICE":
+                return GetSpriteSkill(spriteType, spriteRating, "Electronic Warfare");
 
-        case "MATRIX PERCEPTION":
-            return GetSpriteSkill(spriteType, spriteRating, "Computer");
+            case "MATRIX PERCEPTION":
+                return GetSpriteSkill(spriteType, spriteRating, "Computer");
 
-        case "MATRIX SEARCH":
-            return GetSpriteSkill(spriteType, spriteRating, "Computer");
+            case "MATRIX SEARCH":
+                return GetSpriteSkill(spriteType, spriteRating, "Computer");
 
-        case "REBOOT DEVICE":
-            return GetSpriteSkill(spriteType, spriteRating, "Computer");
+            case "REBOOT DEVICE":
+                return GetSpriteSkill(spriteType, spriteRating, "Computer");
 
-        case "SEND MESSAGE":
-            return -1;
+            case "SEND MESSAGE":
+                return -1;
 
-        case "SET DATA BOMB":
-            return GetSpriteSkill(spriteType, spriteRating, "Software");
+            case "SET DATA BOMB":
+                return GetSpriteSkill(spriteType, spriteRating, "Software");
 
-        case "SNOOP":
-            return GetSpriteSkill(spriteType, spriteRating, "Electronic Warfare");
+            case "SNOOP":
+                return GetSpriteSkill(spriteType, spriteRating, "Electronic Warfare");
 
-        case "SPOOF COMMAND":
-            return GetSpriteSkill(spriteType, spriteRating,"Hacking");
+            case "SPOOF COMMAND":
+                return GetSpriteSkill(spriteType, spriteRating,"Hacking");
 
-        case "SWITCH INTERFACE MODE":
-            return -1;
+            case "SWITCH INTERFACE MODE":
+                return -1;
 
-        case "TRACE ICON":
-            return GetSpriteSkill(spriteType, spriteRating, "Computer");
+            case "TRACE ICON":
+                return GetSpriteSkill(spriteType, spriteRating, "Computer");
 
-        default:
-            return -1;
+            default:
+                return -1;
+        }
+
     }
-
-}
 
     public void rollAssistance(MatrixActions ma){
         int assistDiceBonus=0 ;
@@ -409,21 +415,24 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         List<Sprite> tempSelectedAssistants = new ArrayList<Sprite>(Main.data.pvSprites);
         List<Sprite> activeAssistants= new ArrayList<Sprite>();
         boolean includeTechnomancer=false;
-        if(spLeader.getSelectedItemPosition()!=Main.data.pvSprites.size()) {//It's the technomancer
-
+        if(spLeader.getSelectedItemPosition()==Main.data.pvSprites.size()) {//It's the technomancer
+            for(int i: spAssistance.getSelectedIndicies()){
+                    activeAssistants.add(tempSelectedAssistants.get(i));
+            }
         }else {//Add the technomancer, remove the leader
             if(spLeader.getSelectedItemPosition()!=tempSelectedAssistants.size()) {
                 tempSelectedAssistants.remove(spLeader.getSelectedItemPosition());
             }
+            for(int i: spAssistance.getSelectedIndicies()){
+                if(i==(spLeader.getCount()-2)){
+                    includeTechnomancer=true;
+                }else{
+                    activeAssistants.add(tempSelectedAssistants.get(i));
+                }
+            }
 
         }
-        for(int i: spAssistance.getSelectedIndicies()){
-            if(i==(spLeader.getCount()-2)){
-                includeTechnomancer=true;
-            }else{
-                activeAssistants.add(tempSelectedAssistants.get(i));
-            }
-        }
+
 
         String assistantDice = "";
         int actionLimit=0;
@@ -433,47 +442,16 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         int result=0;
 
 
-            assistantDice="";
-            //Loop through assistants for each action
-            for(Sprite assistantSprite: activeAssistants){
-                spriteType = assistantSprite.getSpriteType();
-                spriteRating = assistantSprite.getSpriteType();
-                actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
-                actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
-                if(actionDice>=1){//Only add if it can help
-                    actionLimit+= limitMod;
-                    actionDice+=diePoolMod;
-                    result = dice.rollDice(actionDice,false, actionLimit);
-                    if(result>0&& !dice.isGlitch && assistLimitBonus!=-1) {
-                    assistLimitBonus++;
-                    }else {
-                        if (dice.isCriticalGlitch) {//If it's a critical glitch, nobody provides a limit bonus
-                            assistLimitBonus=-1;
-                        }
-                    }
-                    assistDiceBonus+=result;
-                }
-            }
-            if(includeTechnomancer){
-                if(assistantDice.length()>1){
-                    assistantDice+=", ";
-                }
-                actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
-                //Damage penalties
-                int DamagePenalties;
-                int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance"))));
-                if(temppenalties<0){temppenalties=0;}
-                DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance")));
-                if(DamagePenalties<0){DamagePenalties=0;}
-                DamagePenalties+=temppenalties;
-                actionDice-=DamagePenalties;
-
-                if(checkHotSim.isChecked()){actionDice+=2;}
-                actionLimit=GetLimit(ma.getLimitType());
-                assistantDice+="("+actionDice+")["+actionLimit+"]";
-                //TODO: Remember Edge use when character is assisting
-                actionDice+= diePoolMod;
+        assistantDice="";
+        //Loop through assistants for each action
+        for(Sprite assistantSprite: activeAssistants){
+            spriteType = assistantSprite.getSpriteType();
+            spriteRating = assistantSprite.getSpriteType();
+            actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
+            actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
+            if(actionDice>=1){//Only add if it can help
                 actionLimit+= limitMod;
+                actionDice+=diePoolMod;
                 result = dice.rollDice(actionDice,false, actionLimit);
                 if(result>0&& !dice.isGlitch && assistLimitBonus!=-1) {
                     assistLimitBonus++;
@@ -483,39 +461,68 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
                     }
                 }
                 assistDiceBonus+=result;
-               /* if(checkEdge.isChecked()){
-                    Main.data.addStatValue("EdgeUsed", 1);
-                    checkEdge.setChecked(false);
-                }
-                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
-                    secondChance.setEnabled(false);
-                    secondChance.setVisibility(View.INVISIBLE);
-                    checkEdge.setEnabled(false);
-                }else{
-                    secondChance.setEnabled(true);
-                    secondChance.setVisibility(View.VISIBLE);
-                    checkEdge.setEnabled(true);
-                }*/
-
-
-
             }
-            if(assistantDice.length()==0){assistantDice="nothing";};
-            LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
-            LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
-            Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
-            UpdateAssistance(); //Reset all the other assistance buttons
-            if(assistLimitBonus==-1){
-                btnAssist.setText("Bonus: (+" + assistDiceBonus + ")[GLITCH]");
+        }
+        Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
+        secondChance.setVisibility(View.INVISIBLE);
+        secondChance.setEnabled(false);
+        if(includeTechnomancer){
+            if(!checkEdge.isChecked()) {
+                secondChance.setVisibility(View.VISIBLE);
+                secondChance.setEnabled(true);
+            }
+            if(assistantDice.length()>1){
+                assistantDice+=", ";
+            }
+            actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+            //Damage penalties
+            int DamagePenalties;
+            int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance"))));
+            if(temppenalties<0){temppenalties=0;}
+            DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance")));
+            if(DamagePenalties<0){DamagePenalties=0;}
+            DamagePenalties+=temppenalties;
+            actionDice-=DamagePenalties;
+
+            if(checkHotSim.isChecked()){actionDice+=2;}
+            actionLimit=GetLimit(ma.getLimitType());
+            assistantDice+="("+actionDice+")["+actionLimit+"]";
+            actionDice+= diePoolMod;
+            actionLimit+= limitMod;
+            result = dice.rollDice(actionDice,checkEdge.isChecked(), actionLimit);
+            secondChanceTMAssistantHits=result;
+            secondChanceTMAssistantDice=actionDice;
+            secondChanceTMAssistantLimit=actionLimit;
+            secondChanceAction=ma.getActionName();
+            if(result>0&& !dice.isGlitch && assistLimitBonus!=-1) {
+                assistLimitBonus++;
             }else {
-                btnAssist.setText("Bonus: (+" + assistDiceBonus + ")[+" + assistLimitBonus + "]");
+                if (dice.isCriticalGlitch) {//If it's a critical glitch, nobody provides a limit bonus
+                    assistLimitBonus=-1;
+                }
             }
-            btnAssist.setTextColor(Color.RED);
-            btnAssist.setClickable(false);
+            assistDiceBonus+=result;
+
+
+
+
+        }
+        if(assistantDice.length()==0){assistantDice="nothing";};
+        LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
+        LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + ma.getActionName());
+        Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + ma.getActionName());
+        UpdateAssistance(); //Reset all the other assistance buttons
+        if(assistLimitBonus==-1){
+            btnAssist.setText("Bonus: (+" + assistDiceBonus + ")[GLITCH]");
+        }else {
+            btnAssist.setText("Bonus: (+" + assistDiceBonus + ")[+" + assistLimitBonus + "]");
+        }
+        btnAssist.setTextColor(Color.RED);
+        btnAssist.setClickable(false);
 
         Main.data.setMatrixActionAssistDice(ma.getActionName(), assistDiceBonus);
         Main.data.setMatrixActionAssistLimit(ma.getActionName(), assistLimitBonus);
-
+        secondChanceLimit=assistLimitBonus;
         //Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistDiceBonus(assistDiceBonus);
         //Main.data.pvMatrixActions.get(Main.data.pvMatrixActions.indexOf(ma)).setAssistLimitBonus(assistLimitBonus);
         return;
@@ -525,56 +532,66 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
     public void rollAction(MatrixActions ma){
         CheckBox checkEdge = (CheckBox) getActivity().findViewById(R.id.CheckEdge);
         CheckBox checkHotSim = (CheckBox) getActivity().findViewById(R.id.HotSim);
-        Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
 
         Dice dice = new Dice();
         int result=0;
         Spinner spLeader= (Spinner) getActivity().findViewById(R.id.spLeader);
         //Reset assistant buttons
 
-            int actionDice;
-            int actionLimit;
-        boolean useEdge=false;
-            if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1){//Technomancer
-                actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
-                actionLimit=GetLimit(ma.getLimitType());
+        int actionDice;
+        int actionLimit;
 
-                //Damage penalties
-                int DamagePenalties;
-                int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance"))));
-                if(temppenalties<0){temppenalties=0;}
-                DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance")));
-                if(DamagePenalties<0){DamagePenalties=0;}
-                DamagePenalties+=temppenalties;
-                actionDice-=DamagePenalties;
+        Button secondChance = (Button) getActivity().findViewById(R.id.SecondChance);
+        secondChance.setVisibility(View.INVISIBLE);
+        secondChance.setEnabled(false);
+        if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1){//Technomancer
 
-                //Todo: Calculate penalties for each action from Qualities
-                //TODO: RememberEdge use when character is leading
-                if(checkEdge.isChecked()){
-                    Main.data.addStatValue("EdgeUsed", 1);
-                    checkEdge.setChecked(false);
-                }
-                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
-                    secondChance.setEnabled(false);
-                    secondChance.setVisibility(View.INVISIBLE);
-                    checkEdge.setEnabled(false);
-                }else{
-                    secondChance.setEnabled(true);
-                    secondChance.setVisibility(View.VISIBLE);
-                    checkEdge.setEnabled(true);
-                }
-            }else{
-                int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
-                int spriteRating = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
-                actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
-                actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
+            actionDice= Main.data.getDice(ma.getLinkedAttribute(),ma.getLinkedSkill(),ma.getActionName());
+            actionLimit=GetLimit(ma.getLimitType());
+
+            //Damage penalties
+            int DamagePenalties;
+            int temppenalties = (int) (Math.floor((Main.data.getStatValue("Stun")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance"))));
+            if(temppenalties<0){temppenalties=0;}
+            DamagePenalties = (int) Math.floor((Main.data.getStatValue("Physical")-Main.data.getQualityValue("High Pain Tolerance")) / (3-Main.data.getQualityValue("Low Pain Tolerance")));
+            if(DamagePenalties<0){DamagePenalties=0;}
+            DamagePenalties+=temppenalties;
+            actionDice-=DamagePenalties;
+            if((Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName()))<Main.data.getMatrixActionAssistDice(ma.getActionName())){
+                Main.data.setMatrixActionAssistDice(ma.getActionName(), Main.data.getSkillValue(ma.getLinkedSkill(),ma.getActionName()));
             }
+            if(checkEdge.isChecked()){
+                Main.data.addStatValue("EdgeUsed", 1);
+                checkEdge.setChecked(false);
+                Main.data.SaveStatToDB("EdgeUsed");
+            }
+            if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
+                secondChance.setEnabled(false);
+                secondChance.setVisibility(View.INVISIBLE);
+                checkEdge.setEnabled(false);
+            }else{
+                if(!checkEdge.isChecked()) {
+                    secondChance.setVisibility(View.VISIBLE);
+                    secondChance.setEnabled(true);
+                }
+                checkEdge.setEnabled(true);
+            }
+            if(checkHotSim.isChecked()){
+                actionDice+=2;
+            }
+        }else{
+            int spriteType = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
+            int spriteRating = Main.data.pvSprites.get(spLeader.getSelectedItemPosition()).getSpriteType();
+            actionLimit=GetLimit(ma.getLimitType(),spriteType, spriteRating);
+            actionDice=GetSpriteActionDice(spriteType, spriteRating, ma.getActionName());
+            if((actionDice-spriteRating)<Main.data.getMatrixActionAssistDice(ma.getActionName())){
+                Main.data.setMatrixActionAssistDice(ma.getActionName(), actionDice-spriteRating);
+            }
+        }
 
         actionDice+=Main.data.getMatrixActionAssistDice(ma.getActionName());
 
-        if(checkHotSim.isChecked()){
-            actionDice+=2;
-        }
+
 
 
         if(Main.data.getMatrixActionAssistLimit(ma.getActionName())>0){
@@ -582,12 +599,14 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         }
         actionDice+= diePoolMod;
         actionLimit+= limitMod;
+        secondChanceLimit=actionLimit;
+
         if(actionDice<0){
-                actionDice=0;
-                result=0;
-            }else {
-                result = dice.rollDice(actionDice,checkEdge.isChecked(), actionLimit);
-            }
+            actionDice=0;
+            result=0;
+        }else {
+            result = dice.rollDice(actionDice,checkEdge.isChecked(), actionLimit);
+        }
         TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
         TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
         TextView glitchText = (TextView) getActivity().findViewById(R.id.textGlitchStatus);
@@ -618,18 +637,8 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         Main = (MainActivity)getActivity();
 
 
-        //TODO: pop-up for NumberPicker selection to edit value field?
-        //https://stackoverflow.com/questions/17944061/how-to-use-number-picker-with-dialog
-        //TODO: Perhaps reuse this on all number entry options?
+        //TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
 
-        //TODO Push the Limit checkbox
-        //TODO Second Chance button
-        //TODO: Remember Edge use when character is assisting
-
-//TODO: One Service= An entire combat, one entire combat turn's worth of actions with a single action (job?), One use of a power
-        //TODO: One service = Assist Threading = + dice pool by level
-
-//TODO: Assistant is adding an exta person. Possibly the technomancer?
 
         final Button secondChance = (Button) v.findViewById(R.id.SecondChance);
         final CheckBox checkEdge = (CheckBox) v.findViewById(R.id.CheckEdge);
@@ -638,21 +647,41 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             @Override
             public void onClick(View v) {
                 Dice dice = new Dice();
-                //TODO: Store limit somewhere for second chance option
+
                 TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
                 TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
                 //Re-roll failures
-                //TODO: Re-roll failures for technomancer assistant
-                //TODO: Re-roll failures for sprite assistant
-                int newDice = Integer.valueOf( diceText.getText().toString()) - Integer.valueOf( hitsText.getText().toString());
-                int result = dice.rollDice(newDice,false);
-                hitsText.setText(String.valueOf(result + Integer.valueOf( hitsText.getText().toString()) ));
-                Main.data.addStatValue("EdgeUsed",1);
-                secondChance.setVisibility(View.INVISIBLE);
-                secondChance.setEnabled(false);
-                if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
-                    checkEdge.setEnabled(false);
+                Spinner spLeader = (Spinner) getActivity().findViewById(R.id.spLeader);
+                if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1) {//Technomancer leader
+                    int newDice = Integer.valueOf( diceText.getText().toString()) - Integer.valueOf( hitsText.getText().toString());
+                    int result = dice.rollDice(newDice,false, secondChanceLimit);
+                    hitsText.setText(String.valueOf(result + Integer.valueOf( hitsText.getText().toString()) ));
+                    secondChance.setVisibility(View.INVISIBLE);
+                    secondChance.setEnabled(false);
+                    if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
+                        checkEdge.setEnabled(false);
+                    }
+                }else {//Technomancer assistant
+                    Main.data.setMatrixActionAssistDice(secondChanceAction,dice.rollDice((secondChanceTMAssistantDice-secondChanceTMAssistantHits),false, secondChanceLimit-secondChanceTMAssistantHits));
+                    if(secondChanceTMAssistantHits==0&&!dice.isCriticalGlitch&&Main.data.getMatrixActionAssistLimit(secondChanceAction)>=0){
+                        Main.data.setMatrixActionAssistLimit(secondChanceAction,Main.data.getMatrixActionAssistLimit(secondChanceAction)+1);
+                    }
+                    //Updatebutton
+                    LinearLayout tableMatrix = (LinearLayout) getActivity().findViewById(R.id.tableMatrix);
+                    LinearLayout currentRow = (LinearLayout) tableMatrix.findViewWithTag("Row" + secondChanceAction);
+                    Button btnAssist = (Button) currentRow.findViewWithTag("Assist" + secondChanceAction);
+                    if(Main.data.getMatrixActionAssistLimit(secondChanceAction)==-1){
+                        btnAssist.setText("Bonus: (+" + Main.data.getMatrixActionAssistDice(secondChanceAction) + ")[GLITCH]");
+                    }else {
+                        btnAssist.setText("Bonus: (+" + Main.data.getMatrixActionAssistDice(secondChanceAction) + ")[+" + Main.data.getMatrixActionAssistLimit(secondChanceAction) + "]");
+                    }
                 }
+                Main.data.addStatValue("EdgeUsed",1);
+                Main.data.SaveStatToDB("EdgeUsed");
+
+                secondChance.setEnabled(false);
+                secondChance.setVisibility(View.INVISIBLE);
+
             }
         });
 
@@ -663,7 +692,7 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
         adp1.add("Technomancer");
         adp1.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spLeader.setAdapter(adp1);
-        spLeader.setSelection(adp1.getCount()-1);
+        spLeader.setSelection(adp1.getCount() - 1);
 
         spLeader.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
@@ -808,11 +837,11 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
             }
         });
 
-//TODO: Checkbox for pre-edge
-//Todo: Update Stats for  Edge when used
-        //Todo: Add box for current damage, so it can be changed on the fly
+
+
+
         //Todo: Update Stats for time so it can be changed on the fly (increment 15  minutes?)
-        //Todo: add onResume to refresh from DB
+
         boolean rowColor = false;
         int bgColor;
 
@@ -868,11 +897,11 @@ public int GetSpriteActionDice(int spriteType, int spriteRating, String actionNa
 
             btnAssist.setOnClickListener(new View.OnClickListener() {
 
-                                             @Override
-                                             public void onClick(View v) {
-                                                rollAssistance(action);
-                                             }
-                                         });
+                @Override
+                public void onClick(View v) {
+                    rollAssistance(action);
+                }
+            });
 
 //after hit, roll dice, add hits to dice, bump limit, remove button
 
