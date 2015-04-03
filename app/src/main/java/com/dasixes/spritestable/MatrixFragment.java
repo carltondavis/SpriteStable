@@ -257,8 +257,10 @@ public class MatrixFragment extends Fragment {
                     currentRow.setEnabled(false);
                     currentRow.setVisibility(View.INVISIBLE);
                 }else{
-                    currentRow.setEnabled(true);
-                    currentRow.setVisibility(View.VISIBLE);
+                    if(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge")) {
+                        currentRow.setEnabled(true);
+                        currentRow.setVisibility(View.VISIBLE);
+                    }
                 }
             }
             if(actiondice<=0){
@@ -468,8 +470,10 @@ public class MatrixFragment extends Fragment {
         secondChance.setEnabled(false);
         if(includeTechnomancer){
             if(!checkEdge.isChecked()) {
-                secondChance.setVisibility(View.VISIBLE);
-                secondChance.setEnabled(true);
+                if(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge")) {
+                    secondChance.setVisibility(View.VISIBLE);
+                    secondChance.setEnabled(true);
+                }
             }
             if(assistantDice.length()>1){
                 assistantDice+=", ";
@@ -655,7 +659,7 @@ public class MatrixFragment extends Fragment {
                 if(spLeader.getSelectedItemPosition()==spLeader.getCount()-1) {//Technomancer leader
                     int newDice = Integer.valueOf( diceText.getText().toString()) - Integer.valueOf( hitsText.getText().toString());
                     int result = dice.rollDice(newDice,false, secondChanceLimit);
-                    hitsText.setText(String.valueOf(result + Integer.valueOf( hitsText.getText().toString()) ));
+                    hitsText.setText(String.valueOf(result + Integer.valueOf(hitsText.getText().toString())));
                     secondChance.setVisibility(View.INVISIBLE);
                     secondChance.setEnabled(false);
                     if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){

@@ -621,7 +621,6 @@ public void setForce(Integer force){
         Button secondChanceFade = (Button) getActivity().findViewById(R.id.CFSecondChanceFade);
         CheckBox checkEdgeSkill = (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeSkill);
         CheckBox checkEdgeFade = (CheckBox) getActivity().findViewById(R.id.CFCheckEdgeFade);
-        //TODO: Store limit somewhere for second chance option
         TextView hitsText = (TextView) getActivity().findViewById(R.id.CFtextHitsResult);
         TextView diceText = (TextView) getActivity().findViewById(R.id.CFtextDiceNumber);
 
