@@ -139,6 +139,36 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:text="Die Pool Modifier: 0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnMAViewDiePool"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/SpriteSpinnerSprites"/>
+
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Limit Modifier: 0"
+        android:id="@+id/btnMAViewLimitMod"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btnMAViewDiePool"
+        />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Push the Limit"
+        android:id="@+id/checkSpritePushTheLimit"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/btnMAViewLimitMod"
+        />
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -191,6 +221,15 @@
                 android:layout_gravity="start"
                 android:visibility="invisible"
                 android:layout_below="@+id/textGlitchStatus"/>
+    <Button
+        android:id="@+id/CookieSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Second Chance"
+        android:layout_gravity="start"
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/Cookie"
+        android:layout_toRightOf="@+id/Cookie"/>
             <Button
                 android:id="@+id/ElectronStorm"
                 android:layout_width="wrap_content"
@@ -199,7 +238,15 @@
                 android:layout_gravity="start"
                 android:visibility="invisible"
                 android:layout_below="@+id/textGlitchStatus"/>
-
+    <Button
+        android:id="@+id/ElectronStormSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Second Chance"
+        android:layout_gravity="start"
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/ElectronStorm"
+        android:layout_toRightOf="@+id/ElectronStorm"/>
             <Button
                 android:id="@+id/Diagnostics"
                 android:layout_width="wrap_content"
@@ -209,6 +256,15 @@
                 android:visibility="invisible"
                 android:layout_below="@+id/textGlitchStatus"/>
     <Button
+        android:id="@+id/DiagnosticsSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Second Chance"
+        android:layout_gravity="start"
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/Diagnostics"
+        android:layout_toRightOf="@+id/Diagnostics"/>
+    <Button
         android:id="@+id/Gremlins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -216,6 +272,14 @@
         android:layout_gravity="start"
         android:visibility="invisible"
         android:layout_below="@+id/Diagnostics"/>
-
+    <Button
+        android:id="@+id/GremlinsSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Second Chance"
+        android:layout_gravity="start"
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/Gremlins"
+        android:layout_toRightOf="@+id/Gremlins"/>
 
 </RelativeLayout>

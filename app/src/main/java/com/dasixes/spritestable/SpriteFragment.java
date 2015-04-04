@@ -1,8 +1,9 @@
 
 package com.dasixes.spritestable;
-//TODO: Add results
-//TODO: Add spinners for Dice and Limit mods
 
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,7 +26,20 @@ import java.util.List;
 
 public class SpriteFragment extends Fragment {
     MainActivity Main = (MainActivity)getActivity();
+    int diePoolMod=0;
+    int limitMod=0;
+    int secondLimit=0;
 
+    public void setDieMod(Integer mod){
+        diePoolMod=mod;
+        Button btnMAViewDiePool = (Button) getActivity().findViewById(R.id.btnMAViewDiePool);
+        btnMAViewDiePool.setText("Die Pool Mod: " + mod);
+    }
+    public void setLimitMod(Integer mod){
+        limitMod=mod;
+        Button btnMAViewLimitMod = (Button) getActivity().findViewById(R.id.btnMAViewLimitMod);
+        btnMAViewLimitMod.setText("Limit Modifier: " + mod);
+    }
 
     @Override
     public void onResume() {
@@ -43,6 +60,7 @@ public class SpriteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sprite, container, false);
          Main = (MainActivity)getActivity();
+
 
         /*TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
         tv.setText(getArguments().getString("msg"));
@@ -68,7 +86,48 @@ public class SpriteFragment extends Fragment {
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
+        CheckBox checkPtL = (CheckBox) v.findViewById(R.id.checkSpritePushTheLimit);
+        if(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge")) {
+            checkPtL.setEnabled(true);
+            checkPtL.setVisibility(View.VISIBLE);
+        }else{
+            checkPtL.setEnabled(false);
+            checkPtL.setVisibility(View.INVISIBLE);
+        }
 
+        final Button btnPowerCookieSecond = (Button) v.findViewById(R.id.CookieSecond);
+        btnPowerCookieSecond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnPowerCookieSecond.setVisibility(View.INVISIBLE);
+                rollSecond();
+            }
+        });
+        final Button btnPowerElectronStormSecond = (Button) v.findViewById(R.id.ElectronStormSecond);
+        btnPowerElectronStormSecond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnPowerElectronStormSecond.setVisibility(View.INVISIBLE);
+                rollSecond();
+            }
+        });
+        final Button btnPowerDiagnosticsSecond = (Button) v.findViewById(R.id.DiagnosticsSecond);
+        btnPowerDiagnosticsSecond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnPowerDiagnosticsSecond.setVisibility(View.INVISIBLE);
+                rollSecond();
+            }
+        });
+        final Button btnPowerGremlinsSecond =(Button) v.findViewById(R.id.GremlinsSecond);
+        btnPowerGremlinsSecond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnPowerGremlinsSecond.setVisibility(View.INVISIBLE);
+                rollSecond();
+            }
+        });
+        final CheckBox checkPushTheLimit = (CheckBox) v.findViewById(R.id.checkSpritePushTheLimit);
 
 
         Button btnPowerCookie = (Button) v.findViewById(R.id.Cookie);
@@ -79,13 +138,22 @@ public class SpriteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //TODO: Add Push Limit
-                //Todo: Add Second Chance
-                rollPower(Main.data.getCurrentSprite().getRating()+Main.data.getCurrentSprite().getRating(), (Main.data.getCurrentSprite().getRating() + 3));
+                if(checkPushTheLimit.isChecked()){
+                    btnPowerCookieSecond.setVisibility(View.INVISIBLE);
+                }else {
+                    if(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge")) {
+                        btnPowerCookieSecond.setVisibility(View.VISIBLE);
+                    }
+                }
+                btnPowerElectronStormSecond.setVisibility(View.INVISIBLE);
+                btnPowerDiagnosticsSecond.setVisibility(View.INVISIBLE);
+                btnPowerGremlinsSecond.setVisibility(View.INVISIBLE);
+                secondLimit=Main.data.getCurrentSprite().getRating() + 3;
+                rollPower(Main.data.getCurrentSprite().getRating() + Main.data.getCurrentSprite().getRating(), (Main.data.getCurrentSprite().getRating() + 3));
             }
         });
 
-        //TODO: Display dice and limit
+
 
         Button btnPowerElectronStorm = (Button) v.findViewById(R.id.ElectronStorm);
         btnPowerElectronStorm.setText("Electron Storm Vs. Intuition + Firewall");
@@ -95,13 +163,22 @@ public class SpriteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //TODO: Add Push Limit
-                //Todo: Add Second Chance
-                rollPower(Main.data.getCurrentSprite().getRating()*2, (Main.data.getCurrentSprite().getRating() + 3));
+                btnPowerCookieSecond.setVisibility(View.INVISIBLE);
+                if(checkPushTheLimit.isChecked()){
+                    btnPowerElectronStormSecond.setVisibility(View.INVISIBLE);
+                }else {
+                    if(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge")) {
+                        btnPowerElectronStormSecond.setVisibility(View.VISIBLE);
+                    }
+                }
+                btnPowerDiagnosticsSecond.setVisibility(View.INVISIBLE);
+                btnPowerGremlinsSecond.setVisibility(View.INVISIBLE);
+                secondLimit=Main.data.getCurrentSprite().getRating() + 3;
+                rollPower(Main.data.getCurrentSprite().getRating() * 2, (Main.data.getCurrentSprite().getRating() + 3));
             }
         });
 
-        //TODO: Display dice and limit
+
 
 
         Button btnPowerDiagnostics = (Button) v.findViewById(R.id.Diagnostics);
@@ -112,14 +189,23 @@ public class SpriteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //TODO: Add Push Limit
-                //Todo: Add Second Chance
-                rollPower(Main.data.getCurrentSprite().getRating()*2, (Main.data.getCurrentSprite().getRating() + 3));
+                btnPowerCookieSecond.setVisibility(View.INVISIBLE);
+                btnPowerElectronStormSecond.setVisibility(View.INVISIBLE);
+                if(checkPushTheLimit.isChecked()){
+                    btnPowerDiagnosticsSecond.setVisibility(View.INVISIBLE);
+                }else {
+                    if(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge")) {
+                        btnPowerDiagnosticsSecond.setVisibility(View.VISIBLE);
+                    }
+                }
+                btnPowerGremlinsSecond.setVisibility(View.INVISIBLE);
+                secondLimit=Main.data.getCurrentSprite().getRating() + 3;
+                rollPower(Main.data.getCurrentSprite().getRating() * 2, (Main.data.getCurrentSprite().getRating() + 3));
             }
         });
 
 
-        Button btnPowerGremlins =(Button) v.findViewById(R.id.Gremlins);
+         Button btnPowerGremlins =(Button) v.findViewById(R.id.Gremlins);
         btnPowerGremlins.setText("Gremlins Vs. Device Rating + Firewall");
         btnPowerGremlins.setTextSize(8);
         btnPowerGremlins.setMaxLines(3);
@@ -127,12 +213,122 @@ public class SpriteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //TODO: Add Push Limit
-                //Todo: Add Second Chance
-                rollPower(Main.data.getCurrentSprite().getRating()*2, (Main.data.getCurrentSprite().getRating() + 1));
+                btnPowerCookieSecond.setVisibility(View.INVISIBLE);
+                btnPowerElectronStormSecond.setVisibility(View.INVISIBLE);
+                btnPowerDiagnosticsSecond.setVisibility(View.INVISIBLE);
+                if(checkPushTheLimit.isChecked()){
+                    btnPowerGremlinsSecond.setVisibility(View.INVISIBLE);
+                }else {
+                    if(Main.data.getStatValue("EdgeUsed")<Main.data.getStatValue("Edge")) {
+                        btnPowerGremlinsSecond.setVisibility(View.VISIBLE);
+                    }
+                }
+                secondLimit=Main.data.getCurrentSprite().getRating() + 1;
+                rollPower(Main.data.getCurrentSprite().getRating() * 2, (Main.data.getCurrentSprite().getRating() + 1));
             }
         });
 
+        RelativeLayout dpmLayout = new RelativeLayout(v.getContext());
+        final NumberPicker diePoolNumberPicker = new NumberPicker(v.getContext());
+        final int minDieValue = -20;
+        final int maxDieValue = 20;
+        diePoolNumberPicker.setMinValue(0);
+        diePoolNumberPicker.setMaxValue(maxDieValue - minDieValue);
+        diePoolNumberPicker.setValue(20);
+        diePoolNumberPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int index) {
+                return Integer.toString(index + minDieValue);
+            }
+        });
+        diePoolNumberPicker.setEnabled(true);
+        diePoolNumberPicker.setWrapSelectorWheel(true);
+
+        RelativeLayout.LayoutParams rlparams = new RelativeLayout.LayoutParams(50, 50);
+        RelativeLayout.LayoutParams numPicerParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        numPicerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+        dpmLayout.setLayoutParams(rlparams);
+        dpmLayout.addView(diePoolNumberPicker,numPicerParams);
+
+        AlertDialog.Builder dpmDialogBuilder = new AlertDialog.Builder(v.getContext());
+        dpmDialogBuilder.setTitle("Die Pool Modifier:");
+        dpmDialogBuilder.setView(dpmLayout);
+        dpmDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                setDieMod(diePoolNumberPicker.getValue()+minDieValue);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog dpmalertDialog = dpmDialogBuilder.create();
+        final Button btnMAViewDiePool = (Button) v.findViewById(R.id.btnMAViewDiePool);
+        btnMAViewDiePool.setText("Die Pool Mod: " + diePoolMod);
+        btnMAViewDiePool.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dpmalertDialog.show();
+            }
+        });
+
+        RelativeLayout dplLayout = new RelativeLayout(v.getContext());
+        final NumberPicker dplNumberPicker = new NumberPicker(v.getContext());
+        final int minLimitValue = -10;
+        final int maxLimitValue = 10;
+        dplNumberPicker.setMinValue(0);
+        dplNumberPicker.setMaxValue(maxLimitValue - minLimitValue);
+        dplNumberPicker.setValue(10);
+        dplNumberPicker.setFormatter(new NumberPicker.Formatter() {
+            @Override
+            public String format(int index) {
+                return Integer.toString(index + minLimitValue);
+            }
+        });
+        dplNumberPicker.setEnabled(true);
+        dplNumberPicker.setWrapSelectorWheel(true);
+
+        dplLayout.setLayoutParams(rlparams);
+        dplLayout.addView(dplNumberPicker,numPicerParams);
+
+        AlertDialog.Builder dplDialogBuilder = new AlertDialog.Builder(v.getContext());
+        dplDialogBuilder.setTitle("Pick Limit Modifier:");
+        dplDialogBuilder.setView(dplLayout);
+        dplDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                setLimitMod(dplNumberPicker.getValue()+ minLimitValue);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog dplDialog = dplDialogBuilder.create();
+        final Button btnMAViewLimitMod = (Button) v.findViewById(R.id.btnMAViewLimitMod);
+        btnMAViewLimitMod.setText("Limit Modifier: " + limitMod);
+        btnMAViewLimitMod.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dplDialog.show();
+            }
+        });
 
         UpdateSpritePage();
         return v;
@@ -291,11 +487,33 @@ public void hideAllPowers(){
         }
     }}
 
+    public void rollSecond(){
+        Dice dice = new Dice();
+        TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
+        TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
+        int hits=Integer.valueOf(hitsText.getText().toString());
+        int diceToRoll=Integer.valueOf(diceText.getText().toString());
+
+        int results = hits+dice.rollDice((diceToRoll-hits), false, secondLimit);
+
+        hitsText.setText(String.valueOf(results));
+        Main.data.addStatValue("EdgeUsed",1);
+    }
+
     public void rollPower(int diceToRoll, int limit){
         Dice dice = new Dice();
+        CheckBox checkPtL = (CheckBox) getActivity().findViewById(R.id.checkSpritePushTheLimit);
+        if(checkPtL.isChecked()){
+            Main.data.addStatValue("EdgeUsed",1);
+            if(Main.data.getStatValue("EdgeUsed")>=Main.data.getStatValue("Edge")){
+                checkPtL.setVisibility(View.INVISIBLE);
+                checkPtL.setEnabled(false);
+            }
+            checkPtL.setChecked(false);
+        }
         int results;
-        //TODO: Handle edge
-        results = dice.rollDice(diceToRoll, false, limit);
+        results = dice.rollDice(diceToRoll, checkPtL.isChecked(), limit);
+
 
     TextView hitsText = (TextView) getActivity().findViewById(R.id.textHitsResult);
     TextView diceText = (TextView) getActivity().findViewById(R.id.textDiceNumber);
@@ -326,6 +544,6 @@ public void hideAllPowers(){
         if(Main.data.getCurrentSprite().getServicesOwed()<1){
             hideAllPowers();
         }
-//TODO: Update display
+
     }
 }
